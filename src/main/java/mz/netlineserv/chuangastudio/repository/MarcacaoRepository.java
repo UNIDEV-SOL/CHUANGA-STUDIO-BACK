@@ -18,8 +18,12 @@ public interface MarcacaoRepository extends JpaRepository<Marcacao, UUID> {
 
     List<Marcacao> findByStatusAndDeletadoFalseOrderByDataMarcacaoDescHoraMarcacaoDesc(StatusMarcacao status);
 
-    @Query("select m from Marcacao m where m.deletado = false and m.dataMarcacao = :data order by m.horaMarcacao asc")
-    List<Marcacao> buscarPorData(@Param("data") LocalDate data);
+    @Query("SELECT DISTINCT m FROM Marcacao m " +
+            "JOIN FETCH m.cliente " +
+            "LEFT JOIN FETCH m.servicos " +
+            "WHERE m.cliente.id = :clienteId AND m.deletado = false " +
+            "ORDER BY m.dataMarcacao DESC, m.horaMarcacao DESC")
+    List<Marcacao> buscarDoClienteComDetalhes(@Param("clienteId") UUID clienteId);
 
     long countByDataMarcacaoAndDeletadoFalse(LocalDate data);
 

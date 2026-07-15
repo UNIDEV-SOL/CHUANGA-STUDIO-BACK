@@ -100,15 +100,17 @@ public class MarcacaoServiceImpl implements MarcacaoService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<MarcacaoResponse> listarDoClienteOnline() {
         Usuario cliente = usuarioService.obterUsuarioOnline();
-        return marcacaoRepository.findByClienteIdAndDeletadoFalseOrderByDataMarcacaoDescHoraMarcacaoDesc(cliente.getId())
+        return marcacaoRepository.buscarDoClienteComDetalhes(cliente.getId())
                 .stream()
                 .map(MarcacaoResponse::deEntidade)
                 .collect(Collectors.toList());
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<MarcacaoResponse> listarTodasAdmin(StatusMarcacao status, String busca) {
         List<Marcacao> marcacoes = status != null
                 ? marcacaoRepository.findByStatusAndDeletadoFalseOrderByDataMarcacaoDescHoraMarcacaoDesc(status)

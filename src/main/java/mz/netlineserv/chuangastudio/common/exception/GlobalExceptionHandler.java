@@ -1,5 +1,6 @@
 package mz.netlineserv.chuangastudio.common.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import mz.netlineserv.chuangastudio.common.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -47,6 +49,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> tratarErroGenerico(Exception ex) {
+        log.error("Erro inesperado ao processar a requisição", ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ApiResponse.erro("Ocorreu um erro inesperado. Tente novamente mais tarde."));
     }
