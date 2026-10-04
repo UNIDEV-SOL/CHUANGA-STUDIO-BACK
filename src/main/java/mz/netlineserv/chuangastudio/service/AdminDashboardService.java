@@ -1,18 +1,18 @@
 package mz.netlineserv.chuangastudio.service;
 
+import mz.netlineserv.chuangastudio.common.PageResponse;
 import mz.netlineserv.chuangastudio.dto.response.ClienteResumoResponse;
 import mz.netlineserv.chuangastudio.dto.response.EstatisticasAdminResponse;
 import mz.netlineserv.chuangastudio.dto.response.MarcacaoResponse;
-
-import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 public interface AdminDashboardService {
 
     EstatisticasAdminResponse obterEstatisticas();
 
-    List<MarcacaoResponse> proximasMarcacoes();
+    PageResponse<MarcacaoResponse> proximasMarcacoes(Pageable pageable);
 
-    List<MarcacaoResponse> atividadeRecente();
+    PageResponse<MarcacaoResponse> atividadeRecente(Pageable pageable);
 
-    List<ClienteResumoResponse> listarClientesComResumo();
+    PageResponse<ClienteResumoResponse> listarClientes(String busca, Long provinciaId, Long distritoId, Pageable pageable);
 }

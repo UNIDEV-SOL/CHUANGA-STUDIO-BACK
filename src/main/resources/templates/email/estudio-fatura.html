@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt"
+      th:replace="~{email/layout :: layout(~{::conteudo}, ${cliente.nome} + ' · ' + ${fatura.total})}">
+<body>
+<th:block th:fragment="conteudo">
+    <th:block th:replace="~{email/componentes :: titulo('Aviso ao estúdio', 'Fatura', ${fatura.paga} ? 'paga' : 'emitida')}"></th:block>
+    <p th:if="${!fatura.paga}" style="margin:18px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#555e6f;">
+        A fatura <strong th:text="${fatura.numero}">FT 2026/0001</strong> de <span th:text="${cliente.nome}">Cliente</span> foi emitida e enviada ao cliente. Aguarda pagamento.
+    </p>
+    <p th:if="${fatura.paga}" style="margin:18px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#555e6f;">
+        A fatura <strong th:text="${fatura.numero}">FT 2026/0001</strong> de <span th:text="${cliente.nome}">Cliente</span> foi paga<th:block th:if="${fatura.formaPagamento}"> por <span th:text="${fatura.formaPagamento}">M-Pesa</span></th:block>.
+    </p>
+    <table th:replace="~{email/componentes :: detalhes(${ {{'Cliente', cliente.nome}, {'Telefone', cliente.telefone ?: '—'}, {'Atendimento', atendimento.dataCurta + ' às ' + atendimento.hora}, {'Fatura nº', fatura.numero}, {fatura.paga ? 'Total pago' : 'Total a pagar', fatura.total}} })}"></table>
+    <th:block th:replace="~{email/componentes :: servicos(${itens}, 'Subtotal', ${fatura.subtotal})}"></th:block>
+    <table th:replace="~{email/componentes :: botao(${painelUrl}, 'Abrir no painel')}"></table>
+    <p style="margin:22px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.7;color:#8a8fa0;">
+        O PDF segue em anexo.
+        <th:block th:if="${cliente.whatsappUrl}">Contactar o cliente: <a th:href="${cliente.whatsappUrl}" style="color:#cd4686;">WhatsApp</a>.</th:block>
+    </p>
+</th:block>
+</body>
+</html>

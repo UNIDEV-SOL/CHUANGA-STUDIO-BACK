@@ -4,14 +4,16 @@ import mz.netlineserv.chuangastudio.domain.entity.Servico;
 import mz.netlineserv.chuangastudio.dto.request.ServicoRequest;
 import mz.netlineserv.chuangastudio.dto.response.ServicoResponse;
 
+import mz.netlineserv.chuangastudio.common.PageResponse;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.UUID;
 
 public interface ServicoService {
 
-    List<ServicoResponse> listarPublico();
+    PageResponse<ServicoResponse> listarPublico(String busca, String categoria, Pageable pageable);
 
-    List<ServicoResponse> listarTodosAdmin();
+    PageResponse<ServicoResponse> listarAdmin(String busca, String categoria, Boolean ativo, Pageable pageable);
 
     ServicoResponse criar(ServicoRequest request);
 

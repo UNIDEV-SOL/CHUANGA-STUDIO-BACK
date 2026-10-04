@@ -23,4 +23,9 @@ public class CadastroRequest {
     @NotBlank(message = "Palavra-passe é obrigatória")
     @Size(min = 6, message = "Palavra-passe deve ter pelo menos 6 caracteres")
     private String senha;
+
+    /** Morada (opcional). */
+    private Long provinciaId;
+
+    private Long distritoId;
 }

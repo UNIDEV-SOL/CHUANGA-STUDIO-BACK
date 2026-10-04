@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt"
+      th:replace="~{email/layout :: layout(~{::conteudo}, 'Recebeu um vale-oferta de ' + ${valor} + ' para usar no Chuanga Studio.')}">
+<body>
+<th:block th:fragment="conteudo">
+    <th:block th:replace="~{email/componentes :: titulo('Vale-oferta', 'Um mimo', 'para si')}"></th:block>
+    <p style="margin:18px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#555e6f;">
+        Olá<th:block th:if="${nome}"> <span th:text="${nome}">Ana</span></th:block>,
+        <th:block th:if="${de}"><strong th:text="${de}">Maria</strong> ofereceu-lhe</th:block><th:block th:unless="${de}">recebeu</th:block>
+        um vale de <strong th:text="${valor}">1 000,00 MZN</strong> para usar no Chuanga Studio.
+    </p>
+    <table th:if="${mensagem}" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:22px;background-color:#fdf0f5;border-left:4px solid #f893bc;border-radius:12px;">
+        <tr><td style="padding:18px 20px;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#071123;font-style:italic;" th:text="'“' + ${mensagem} + '”'">Mensagem</td></tr>
+    </table>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:24px;border:2px dashed #f893bc;border-radius:16px;">
+        <tr><td style="padding:22px;text-align:center;">
+            <div style="font-family:'Manrope',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#cd4686;">Código do vale</div>
+            <div style="margin-top:8px;font-family:'Courier New',monospace;font-size:26px;font-weight:700;letter-spacing:3px;color:#122555;" th:text="${codigo}">CHG-XXXX-XXXX</div>
+            <div th:if="${validoAte}" style="margin-top:8px;font-family:'Manrope',Helvetica,Arial,sans-serif;font-size:13px;color:#8a8fa0;">Válido até <span th:text="${validoAte}">1 de outubro de 2027</span></div>
+        </td></tr>
+    </table>
+    <p style="margin:18px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#555e6f;">Basta indicar o código no estúdio ao pagar. Pode usá-lo em várias visitas até esgotar o saldo.</p>
+    <table th:replace="~{email/componentes :: botao(${link}, 'Ver o saldo do vale')}"></table>
+</th:block>
+</body>
+</html>

@@ -10,6 +10,11 @@ import mz.netlineserv.chuangastudio.service.ServicoService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import mz.netlineserv.chuangastudio.common.PageResponse;
+import mz.netlineserv.chuangastudio.repository.spec.BaseSpecification;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -21,19 +26,18 @@ public class ServicoServiceImpl implements ServicoService {
     private final ServicoRepository servicoRepository;
 
     @Override
-    public List<ServicoResponse> listarPublico() {
-        return servicoRepository.findByAtivoTrueAndDeletadoFalseOrderByCategoriaAscNomeAsc()
-                .stream()
-                .map(ServicoResponse::deEntidade)
-                .collect(Collectors.toList());
+    public PageResponse<ServicoResponse> listarPublico(String busca, String categoria, Pageable pageable) {
+        return listarAdmin(busca, categoria, true, pageable);
     }
 
     @Override
-    public List<ServicoResponse> listarTodosAdmin() {
-        return servicoRepository.findByDeletadoFalseOrderByCategoriaAscNomeAsc()
-                .stream()
-                .map(ServicoResponse::deEntidade)
-                .collect(Collectors.toList());
+    public PageResponse<ServicoResponse> listarAdmin(String busca, String categoria, Boolean ativo, Pageable pageable) {
+        Specification<Servico> spec = BaseSpecification.of(Servico.class)
+                .likeAny(busca, "nome", "descricao")
+                .equals("categoria", categoria)
+                .equals("ativo", ativo)
+                .build();
+        return PageResponse.from(servicoRepository.findAll(spec, pageable).map(ServicoResponse::deEntidade));
     }
 
     @Override
@@ -75,5 +79,6 @@ public class ServicoServiceImpl implements ServicoService {
         servico.setDuracaoMinutos(request.getDuracaoMinutos());
         servico.setDestaque(request.isDestaque());
         servico.setAtivo(request.isAtivo());
+        servico.setManutencaoDias(request.getManutencaoDias());
     }
 }

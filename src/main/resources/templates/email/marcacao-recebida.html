@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt"
+      th:replace="~{email/layout :: layout(~{::conteudo}, 'Recebemos o seu pedido para ' + ${data} + ' às ' + ${hora} + '. Vamos confirmar em breve.')}">
+<body>
+<th:block th:fragment="conteudo">
+    <th:block th:replace="~{email/componentes :: titulo('Pedido recebido', 'Recebemos o seu', 'pedido')}"></th:block>
+    <p style="margin:18px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#555e6f;">
+        Olá <span th:text="${nome}">Ana</span>, obrigada por escolher o Chuanga Studio.
+        A sua marcação está a aguardar confirmação: vamos verificar o adiantamento e
+        confirmamos assim que possível.
+    </p>
+    <table th:replace="~{email/componentes :: selo('Aguarda confirmação', '#fbf3e0', '#8a6a1f')}"></table>
+    <table th:replace="~{email/componentes :: detalhes(${ {{'Data', data}, {'Hora', hora}, {'Pedido nº', codigo}} })}"></table>
+    <th:block th:replace="~{email/componentes :: servicos(${itens}, 'Total', ${total})}"></th:block>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:28px;background-color:#fdf0f5;border-left:4px solid #f893bc;border-radius:12px;">
+        <tr>
+            <td style="padding:18px 20px;">
+                <div style="font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#cd4686;">Adiantamento</div>
+                <div style="margin-top:6px;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.7;color:#071123;">
+                    <strong style="color:#122555;" th:text="${adiantamento}">150,00 MZN</strong>
+                    <span th:if="${metodo}">via <span th:text="${metodo}">M-Pesa</span></span>
+                    <span th:if="${referencia}">&middot; ref. <span th:text="${referencia}">ABC123</span></span>
+                    <br>Restante a pagar no estúdio: <strong style="color:#122555;" th:text="${restante}">0,00 MZN</strong>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <table th:if="${observacoes}" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:28px;background-color:#fdf0f5;border-left:4px solid #f893bc;border-radius:12px;">
+        <tr>
+            <td style="padding:18px 20px;">
+                <div style="font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#cd4686;">As suas notas</div>
+                <div style="margin-top:6px;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.7;color:#071123;">
+                    <span style="font-style:italic;" th:text="${observacoes}">Notas</span>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <table th:replace="~{email/componentes :: botao(${estudio.minhaAreaUrl}, 'Ver as minhas marcações')}"></table>
+    <p style="margin:22px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.7;color:#8a8fa0;">
+        Precisa de alterar alguma coisa? Responda a este email ou fale connosco pelo
+        <a th:href="${estudio.whatsappUrl}" style="color:#cd4686;">WhatsApp</a>.
+    </p>
+</th:block>
+</body>
+</html>

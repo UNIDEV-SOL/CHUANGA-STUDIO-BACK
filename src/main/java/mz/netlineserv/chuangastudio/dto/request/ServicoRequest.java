@@ -31,4 +31,9 @@ public class ServicoRequest {
     private boolean destaque;
 
     private boolean ativo = true;
+
+    /** Dias até ao lembrete de manutenção (vazio = sem lembrete). */
+    @jakarta.validation.constraints.Min(value = 1, message = "Os dias de manutenção devem ser pelo menos 1")
+    @jakarta.validation.constraints.Max(value = 365, message = "Os dias de manutenção não podem passar de 365")
+    private Integer manutencaoDias;
 }

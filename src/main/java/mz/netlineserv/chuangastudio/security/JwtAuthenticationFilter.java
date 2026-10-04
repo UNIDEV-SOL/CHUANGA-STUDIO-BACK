@@ -46,9 +46,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails usuario = userDetailsService.loadUserByUsername(email);
+            UserDetails usuario;
+            try {
+                usuario = userDetailsService.loadUserByUsername(email);
+            } catch (Exception ex) {
+                // Conta apagada entretanto: o pedido segue sem autenticação.
+                filterChain.doFilter(request, response);
+                return;
+            }
 
-            if (usuario instanceof UsuarioAutenticado usuarioAutenticado && jwtService.tokenValido(token, usuarioAutenticado)) {
+            // Conta desativada perde o acesso logo, sem esperar que o token expire.
+            if (usuario instanceof UsuarioAutenticado usuarioAutenticado && usuario.isEnabled()
+                    && jwtService.tokenValido(token, usuarioAutenticado)) {
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

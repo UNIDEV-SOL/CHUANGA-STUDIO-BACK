@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt"
+      th:replace="~{email/layout :: layout(~{::conteudo}, 'Total estimado: ' + ${total} + '. Veja os detalhes e marque quando quiser.')}">
+<body>
+<th:block th:fragment="conteudo">
+    <th:block th:replace="~{email/componentes :: titulo('A sua cotação', 'Aqui está a sua', 'cotação')}"></th:block>
+    <p style="margin:18px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#555e6f;">
+        Olá <span th:text="${nome}">Ana</span>, obrigada pelo interesse no Chuanga Studio.
+        Preparámos a estimativa para os serviços que escolheu.
+    </p>
+    <table th:replace="~{email/componentes :: detalhes(${ {{'Cotação nº', codigo}, {'Pedida em', dataPedido}} })}"></table>
+    <th:block th:replace="~{email/componentes :: servicos(${itens}, 'Total estimado', ${total})}"></th:block>
+    <p style="margin:22px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.7;color:#8a8fa0;">Os valores são uma estimativa com base nos preços atuais do nosso menu.</p>
+    <table th:if="${mensagem}" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:28px;background-color:#fdf0f5;border-left:4px solid #f893bc;border-radius:12px;">
+        <tr>
+            <td style="padding:18px 20px;">
+                <div style="font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#cd4686;">A sua mensagem</div>
+                <div style="margin-top:6px;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.7;color:#071123;">
+                    <span style="font-style:italic;" th:text="${mensagem}">Mensagem</span>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <p style="margin:18px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#555e6f;">Gostou? Reserve online em poucos minutos, ou fale connosco para afinarmos os detalhes.</p>
+    <table th:replace="~{email/componentes :: botao(${estudio.reservarUrl}, 'Marcar agora')}"></table>
+    <p style="margin:22px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.7;color:#8a8fa0;">
+        Prefere conversar? Estamos no <a th:href="${estudio.whatsappUrl}" style="color:#cd4686;">WhatsApp</a>
+        e no <a th:href="'tel:' + ${#strings.replace(estudio.telefone, ' ', '')}" th:text="${estudio.telefone}" style="color:#cd4686;">telefone</a>.
+    </p>
+</th:block>
+</body>
+</html>

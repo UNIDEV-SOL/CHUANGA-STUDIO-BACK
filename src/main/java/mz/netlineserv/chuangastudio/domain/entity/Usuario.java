@@ -37,4 +37,18 @@ public class Usuario extends BaseAuditEntity {
 
     @Column(name = "login_google", nullable = false)
     private boolean loginGoogle = false;
+
+    /** Ficha da cliente: só a equipa vê (alergias, formato/cor preferidos...). */
+    @JsonIgnore
+    @Column(name = "notas_internas", columnDefinition = "TEXT")
+    private String notasInternas;
+
+    /** Morada (opcional). */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "provincia_id")
+    private Provincia provincia;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "distrito_id")
+    private Distrito distrito;
 }

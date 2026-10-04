@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt"
+      th:replace="~{email/layout :: layout(~{::conteudo}, 'Faturado ' + ${kpis.faturado} + ' · recebido ' + ${kpis.recebido})}">
+<body>
+<th:block th:fragment="conteudo">
+    <th:block th:replace="~{email/componentes :: titulo('Relatório de caixa', ${titulo}, '')}"></th:block>
+    <p style="margin:12px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#555e6f;" th:text="${periodo}">27 de setembro a 3 de outubro</p>
+    <p th:if="${semMovimento}" style="margin:12px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#555e6f;">Sem atendimentos faturados nem pagamentos neste período.</p>
+    <table th:replace="~{email/componentes :: detalhes(${ {{'Faturado', kpis.faturado}, {'Atendimentos', kpis.atendimentos + ' · ticket médio ' + kpis.ticketMedio}, {'Recebido na caixa', kpis.recebido}, {'Adiantamentos já pagos', kpis.adiantamentos}, {'Por receber (todas as datas)', kpis.porReceber}, {'Descontos', kpis.descontos}} })}"></table>
+    <div th:unless="${#lists.isEmpty(formas)}" style="margin-top:26px;font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-size:22px;color:#122555;">Por forma de pagamento</div>
+    <table th:unless="${#lists.isEmpty(formas)}" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:8px;">
+        <tr th:each="f : ${formas}">
+            <td style="padding:10px 0;border-bottom:1px solid #efe9f0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;color:#071123;">
+                <span th:text="${f.rotulo}">M-Pesa</span> <span style="color:#8a8fa0;font-size:12px;" th:text="'· ' + ${f.detalhe}">2</span></td>
+            <td style="padding:10px 0;border-bottom:1px solid #efe9f0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;font-weight:600;color:#122555;text-align:right;white-space:nowrap;" th:text="${f.valor}">0</td>
+        </tr>
+    </table>
+    <p style="margin:22px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.7;color:#8a8fa0;">O relatório completo (por dia e serviços mais vendidos) segue em PDF.</p>
+    <table th:replace="~{email/componentes :: botao(${painelUrl}, 'Abrir relatórios no painel')}"></table>
+</th:block>
+</body>
+</html>
