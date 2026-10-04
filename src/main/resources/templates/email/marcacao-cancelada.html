@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt"
+      th:replace="~{email/layout :: layout(~{::conteudo}, 'A marcação de ' + ${data} + ' às ' + ${hora} + ' foi cancelada.')}">
+<body>
+<th:block th:fragment="conteudo">
+    <th:block th:replace="~{email/componentes :: titulo('Marcação cancelada', 'A sua marcação foi', 'cancelada')}"></th:block>
+    <p style="margin:18px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#555e6f;">
+        Olá <span th:text="${nome}">Ana</span>, a marcação abaixo foi cancelada.
+        Se não pediu este cancelamento, ou se já tinha pago o adiantamento, fale connosco
+        para resolvermos.
+    </p>
+    <table th:replace="~{email/componentes :: selo('Cancelada', '#fde8ee', '#b4234d')}"></table>
+    <table th:replace="~{email/componentes :: detalhes(${ {{'Data', data}, {'Hora', hora}, {'Pedido nº', codigo}} })}"></table>
+    <th:block th:replace="~{email/componentes :: servicos(${itens}, 'Total', ${total})}"></th:block>
+    <p style="margin:18px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#555e6f;">Esperamos receber a sua visita noutra altura. Escolha um novo horário quando lhe der jeito.</p>
+    <table th:replace="~{email/componentes :: botao(${estudio.reservarUrl}, 'Fazer nova marcação')}"></table>
+    <p style="margin:22px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.7;color:#8a8fa0;">
+        Dúvidas? Fale connosco pelo <a th:href="${estudio.whatsappUrl}" style="color:#cd4686;">WhatsApp</a>.
+    </p>
+</th:block>
+</body>
+</html>
