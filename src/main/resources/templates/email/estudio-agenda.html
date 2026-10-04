@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt"
+      th:replace="~{email/layout :: layout(~{::conteudo}, ${#lists.size(marcacoes)} + ' marcações amanhã')}">
+<body>
+<th:block th:fragment="conteudo">
+    <th:block th:replace="~{email/componentes :: titulo('Aviso ao estúdio', 'Agenda de', 'amanhã')}"></th:block>
+    <p style="margin:18px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#555e6f;" th:text="${dia}">Segunda-feira, 5 de outubro de 2026</p>
+    <p th:if="${#lists.isEmpty(marcacoes)}" style="margin:18px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#555e6f;">Sem marcações para amanhã.</p>
+    <table th:unless="${#lists.isEmpty(marcacoes)}" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:20px;">
+        <tr th:each="m : ${marcacoes}">
+            <td style="padding:12px 12px 12px 0;border-bottom:1px solid #efe9f0;vertical-align:top;width:56px;font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:600;color:#122555;" th:text="${m.hora}">09:00</td>
+            <td style="padding:12px 0;border-bottom:1px solid #efe9f0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5;color:#071123;">
+                <strong th:text="${m.cliente}">Ana</strong>
+                <span th:if="${m.porConfirmar}" style="margin-left:6px;font-size:11px;font-weight:700;color:#8a6a1f;background-color:#fbf3e0;border-radius:99px;padding:2px 8px;">por confirmar</span>
+                <br><span style="color:#555e6f;" th:text="${m.servicos}">Manicure</span>
+                <br><span style="color:#8a8fa0;font-size:12px;" th:text="${m.telefone} + ' · ' + ${m.total}">84 · 500 MZN</span>
+            </td>
+        </tr>
+    </table>
+    <table th:replace="~{email/componentes :: botao(${painelUrl}, 'Abrir no painel')}"></table>
+</th:block>
+</body>
+</html>
