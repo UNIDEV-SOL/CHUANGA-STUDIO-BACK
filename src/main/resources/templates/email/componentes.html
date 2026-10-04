@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!-- Blocos reutilizados pelos emails de marcação e cotação. -->
+<html xmlns:th="http://www.thymeleaf.org" lang="pt">
+<body>
+
+<!-- Etiqueta pequena + título em serif com uma palavra em itálico rosa -->
+<th:block th:fragment="titulo(etiqueta, texto, destaque)">
+    <div style="font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#cd4686;"
+         th:text="${etiqueta}">Etiqueta</div>
+    <h1 class="cs-titulo"
+        style="margin:10px 0 0;font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-size:36px;font-weight:500;line-height:1.15;color:#122555;">
+        <span th:text="${texto}">Texto</span>
+        <em style="font-style:italic;color:#cd4686;" th:text="${destaque}">destaque</em>
+    </h1>
+</th:block>
+
+
+<table th:fragment="selo(texto, fundo, cor)" role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:22px;">
+    <tr>
+        <td th:style="'background-color:' + ${fundo} + ';border-radius:999px;padding:7px 16px;font-family:Manrope,Helvetica Neue,Helvetica,Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:0.5px;color:' + ${cor} + ';'"
+            th:text="${texto}">Estado</td>
+    </tr>
+</table>
+
+<!-- Caixa com pares rótulo/valor. linhas = lista de {rótulo, valor} -->
+<table th:fragment="detalhes(linhas)" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+       style="margin-top:26px;background-color:#f6f4fa;border-radius:14px;">
+    <tr th:each="linha, it : ${linhas}">
+        <td th:style="'padding:' + (${it.first} ? '18px' : '6px') + ' 20px ' + (${it.last} ? '18px' : '6px') + ';font-family:Manrope,Helvetica Neue,Helvetica,Arial,sans-serif;font-size:13px;color:#8a8fa0;width:38%;vertical-align:top;'"
+            th:text="${linha[0]}">Rótulo</td>
+        <td th:style="'padding:' + (${it.first} ? '18px' : '6px') + ' 20px ' + (${it.last} ? '18px' : '6px') + ';font-family:Manrope,Helvetica Neue,Helvetica,Arial,sans-serif;font-size:14px;font-weight:600;color:#122555;text-align:right;'"
+            th:text="${linha[1]}">Valor</td>
+    </tr>
+</table>
+
+<!-- Lista de serviços com preço e total -->
+<th:block th:fragment="servicos(itens, rotuloTotal, total)">
+    <div style="margin-top:30px;font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-size:22px;color:#122555;">Serviços</div>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:8px;">
+        <tr th:each="item : ${itens}">
+            <td style="padding:12px 0;border-bottom:1px solid #efe9f0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;color:#071123;"
+                th:text="${item.nome}">Serviço</td>
+            <td style="padding:12px 0;border-bottom:1px solid #efe9f0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;color:#555e6f;text-align:right;white-space:nowrap;"
+                th:text="${item.preco}">0,00 MZN</td>
+        </tr>
+        <tr>
+            <td style="padding:16px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#122555;"
+                th:text="${rotuloTotal}">Total</td>
+            <td style="padding:16px 0 0;font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-size:26px;font-weight:600;color:#122555;text-align:right;white-space:nowrap;"
+                th:text="${total}">0,00 MZN</td>
+        </tr>
+    </table>
+</th:block>
+
+
+<!-- Botão principal -->
+<table th:fragment="botao(url, texto)" role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:32px;">
+    <tr>
+        <td style="background-color:#122555;border-radius:999px;">
+            <a th:href="${url}" th:text="${texto}"
+               style="display:inline-block;padding:14px 30px;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;font-weight:700;color:#ffffff;text-decoration:none;border-radius:999px;">Botão</a>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
