@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!--
+  Moldura comum a todos os emails. Estilos inline e tabelas de propósito:
+  é o que o Gmail e o Outlook respeitam. Cores e fontes vêm do frontend (styles.css).
+-->
+<html xmlns:th="http://www.thymeleaf.org" lang="pt" th:fragment="layout(conteudo, preheader)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="x-apple-disable-message-reformatting">
+    <meta name="color-scheme" content="light only">
+    <meta name="supported-color-schemes" content="light only">
+    <title th:text="${assunto}">Chuanga Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&amp;family=Manrope:wght@400;600;700&amp;display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; padding: 0; -webkit-text-size-adjust: 100%; }
+        a { color: #cd4686; }
+        @media (max-width: 620px) {
+            .cs-header { padding: 30px 22px 26px !important; }
+            .cs-card { padding: 30px 22px !important; }
+            .cs-titulo { font-size: 30px !important; }
+            .cs-marca { font-size: 30px !important; }
+        }
+    </style>
+</head>
+<body style="margin:0;padding:0;background-color:#f7f1f4;">
+<div style="display:none;max-height:0;max-width:0;overflow:hidden;opacity:0;mso-hide:all;font-size:1px;line-height:1px;color:#f7f1f4;"
+     th:text="${preheader}">Pré-visualização</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f7f1f4;">
+    <tr>
+        <td align="center" style="padding:32px 12px;">
+            <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;">
+
+                <tr>
+                    <td class="cs-header" align="center"
+                        style="background-color:#122555;border-radius:20px 20px 0 0;padding:38px 40px 32px;">
+                        <div style="font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#f893bc;">
+                            Atelier de beleza &middot; Maputo
+                        </div>
+                        <div class="cs-marca"
+                             style="font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-size:38px;font-weight:500;line-height:1.15;color:#ffffff;margin-top:12px;">
+                            Chuanga <span style="color:#f893bc;">&#9829;</span> Studio
+                        </div>
+                        <div style="font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-style:italic;font-size:16px;color:#c3c8e0;margin-top:2px;">
+                            por Angela Mazive
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="height:4px;line-height:4px;font-size:0;background-color:#f893bc;background-image:linear-gradient(90deg,#f893bc,#d5b36a);">&nbsp;</td>
+                </tr>
+
+                <tr>
+                    <td class="cs-card" style="background-color:#ffffff;border-radius:0 0 20px 20px;padding:40px 44px;">
+                        <th:block th:replace="${conteudo}"/>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td align="center" style="padding:30px 24px 8px;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;line-height:1.8;color:#8a8fa0;">
+                        <div style="font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-size:20px;color:#122555;">
+                            Chuanga <span style="color:#cd4686;">&#9829;</span> Studio
+                        </div>
+                        <div th:text="${estudio.localizacao}">Maputo – Moçambique</div>
+                        <div>
+                            <a th:href="'tel:' + ${#strings.replace(estudio.telefone, ' ', '')}" th:text="${estudio.telefone}"
+                               style="color:#555e6f;text-decoration:none;">+258 84 123 4567</a>
+                            &nbsp;&middot;&nbsp;
+                            <a th:href="${estudio.whatsappUrl}" style="color:#555e6f;text-decoration:none;">WhatsApp</a>
+                            &nbsp;&middot;&nbsp;
+                            <a th:href="${estudio.siteUrl}" style="color:#555e6f;text-decoration:none;">Visitar o site</a>
+                        </div>
+                        <div style="margin-top:14px;" th:text="${notaRodape} ?: 'Recebeu este email porque fez um pedido no Chuanga Studio.'">Recebeu este email porque fez um pedido no Chuanga Studio.</div>
+                        <div>&copy; <span th:text="${estudio.ano}">2026</span> Chuanga Studio &middot; Feito com <span style="color:#cd4686;">&#9829;</span> em Maputo</div>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
