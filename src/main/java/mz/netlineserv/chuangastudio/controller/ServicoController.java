@@ -3,6 +3,12 @@ package mz.netlineserv.chuangastudio.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mz.netlineserv.chuangastudio.common.ApiResponse;
+import mz.netlineserv.chuangastudio.common.PageResponse;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+
 import mz.netlineserv.chuangastudio.dto.request.ServicoRequest;
 import mz.netlineserv.chuangastudio.dto.response.ServicoResponse;
 import mz.netlineserv.chuangastudio.service.ServicoService;
@@ -20,13 +26,20 @@ public class ServicoController {
 
     // Endpoint público, consumido pelas páginas de Serviços, Cotação e Reserva do site.
     @GetMapping("/publico/servicos")
-    public ResponseEntity<ApiResponse<List<ServicoResponse>>> listarPublico() {
-        return ResponseEntity.ok(ApiResponse.sucesso(servicoService.listarPublico()));
+    public ResponseEntity<ApiResponse<PageResponse<ServicoResponse>>> listarPublico(
+            @RequestParam(required = false) String busca,
+            @RequestParam(required = false) String categoria,
+            @ParameterObject @PageableDefault(size = 20, sort = {"categoria", "nome"}) Pageable pageable) {
+        return ResponseEntity.ok(ApiResponse.sucesso(servicoService.listarPublico(busca, categoria, pageable)));
     }
 
     @GetMapping("/admin/servicos")
-    public ResponseEntity<ApiResponse<List<ServicoResponse>>> listarAdmin() {
-        return ResponseEntity.ok(ApiResponse.sucesso(servicoService.listarTodosAdmin()));
+    public ResponseEntity<ApiResponse<PageResponse<ServicoResponse>>> listarAdmin(
+            @RequestParam(required = false) String busca,
+            @RequestParam(required = false) String categoria,
+            @RequestParam(required = false) Boolean ativo,
+            @ParameterObject @PageableDefault(size = 20, sort = {"categoria", "nome"}) Pageable pageable) {
+        return ResponseEntity.ok(ApiResponse.sucesso(servicoService.listarAdmin(busca, categoria, ativo, pageable)));
     }
 
     @PostMapping("/admin/servicos")
