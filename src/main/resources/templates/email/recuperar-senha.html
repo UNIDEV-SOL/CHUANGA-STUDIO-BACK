@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt"
+      th:replace="~{email/layout :: layout(~{::conteudo}, 'Use o botão para escolher uma nova palavra-passe. O link é válido durante ' + ${validadeMinutos} + ' minutos.')}">
+<body>
+<th:block th:fragment="conteudo">
+    <th:block th:replace="~{email/componentes :: titulo('A sua conta', 'Nova', 'palavra-passe')}"></th:block>
+    <p style="margin:18px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#555e6f;">
+        Olá <span th:text="${nome}">Ana</span>, recebemos um pedido para redefinir a palavra-passe da sua conta
+        no Chuanga Studio. Carregue no botão para escolher uma nova.
+    </p>
+    <table th:replace="~{email/componentes :: botao(${link}, 'Escolher nova palavra-passe')}"></table>
+    <p style="margin:22px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.7;color:#8a8fa0;">
+        O link é válido durante <span th:text="${validadeMinutos}">60</span> minutos e só pode ser usado uma vez.
+        Se não fez este pedido, ignore este email: a palavra-passe atual continua a funcionar.
+    </p>
+</th:block>
+</body>
+</html>
