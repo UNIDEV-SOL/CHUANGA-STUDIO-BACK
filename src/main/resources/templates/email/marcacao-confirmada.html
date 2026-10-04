@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt"
+      th:replace="~{email/layout :: layout(~{::conteudo}, 'Confirmado: ' + ${data} + ' às ' + ${hora} + '. Até breve no Chuanga Studio!')}">
+<body>
+<th:block th:fragment="conteudo">
+    <th:block th:replace="~{email/componentes :: titulo('Marcação confirmada', 'Está tudo', 'pronto')}"></th:block>
+    <p style="margin:18px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#555e6f;">
+        Olá <span th:text="${nome}">Ana</span>, a sua marcação está confirmada.
+        Mal podemos esperar pela sua visita.
+    </p>
+    <table th:replace="~{email/componentes :: selo('Confirmada', '#e5f4ec', '#1f6b44')}"></table>
+    <table th:replace="~{email/componentes :: detalhes(${ {{'Data', data}, {'Hora', hora}, {'Pedido nº', codigo}} })}"></table>
+    <th:block th:replace="~{email/componentes :: servicos(${itens}, 'Total', ${total})}"></th:block>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:28px;background-color:#fdf0f5;border-left:4px solid #f893bc;border-radius:12px;">
+        <tr>
+            <td style="padding:18px 20px;">
+                <div style="font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#cd4686;">Pagamento</div>
+                <div style="margin-top:6px;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.7;color:#071123;">
+                    <th:block th:if="${adiantamentoPago}">Adiantamento de <strong style="color:#122555;" th:text="${adiantamento}">150,00 MZN</strong> recebido &#10003;<br></th:block>
+                    Restante a pagar no estúdio: <strong style="color:#122555;" th:text="${adiantamentoPago} ? ${restante} : ${total}">0,00 MZN</strong>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <table th:if="${observacoes}" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:28px;background-color:#fdf0f5;border-left:4px solid #f893bc;border-radius:12px;">
+        <tr>
+            <td style="padding:18px 20px;">
+                <div style="font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#cd4686;">As suas notas</div>
+                <div style="margin-top:6px;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.7;color:#071123;">
+                    <span style="font-style:italic;" th:text="${observacoes}">Notas</span>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <p style="margin:18px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#555e6f;">
+        Chegue alguns minutos antes para começarmos com calma. Se precisar de remarcar,
+        avise-nos com antecedência.
+    </p>
+    <table th:replace="~{email/componentes :: botao(${calendarioUrl}, 'Adicionar ao Google Calendar')}"></table>
+    <p style="margin:14px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.7;color:#8a8fa0;">
+        Usa iPhone ou Outlook? Abra o anexo <strong>marcacao-chuanga-studio.ics</strong> para guardar no calendário.
+        Para ver ou remarcar, entre na <a th:href="${estudio.minhaAreaUrl}" style="color:#cd4686;">sua área</a>.
+    </p>
+</th:block>
+</body>
+</html>
