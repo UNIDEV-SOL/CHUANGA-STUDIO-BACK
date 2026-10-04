@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt"
+      th:replace="~{email/layout :: layout(~{::conteudo}, 'A sua marcação é ' + ${quando} + ' às ' + ${hora} + '. Até já!')}">
+<body>
+<th:block th:fragment="conteudo">
+    <th:block th:replace="~{email/componentes :: titulo('Lembrete', 'Até', ${quando == 'hoje'} ? 'logo' : (${quando == 'amanhã'} ? 'amanhã' : 'breve'))}"></th:block>
+    <p style="margin:18px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#555e6f;">
+        Olá <span th:text="${nome}">Ana</span>, só para lembrar que a sua marcação no Chuanga Studio é <span th:text="${quando}">amanhã</span>, às <span th:text="${hora}">10:00</span>.
+        Estamos à sua espera!
+    </p>
+    <table th:replace="~{email/componentes :: detalhes(${ {{'Data', data}, {'Hora', hora}, {'Onde', estudio.localizacao}} })}"></table>
+    <th:block th:replace="~{email/componentes :: servicos(${itens}, 'Total', ${total})}"></th:block>
+    <p style="margin:18px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#555e6f;">
+        Chegue alguns minutos antes. Se precisar de mudar a hora, pode remarcar na sua área pessoal
+        ou falar connosco.
+    </p>
+    <table th:replace="~{email/componentes :: botao(${estudio.minhaAreaUrl}, 'Ver ou remarcar')}"></table>
+    <p style="margin:22px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.7;color:#8a8fa0;">
+        Imprevisto de última hora? Avise-nos pelo <a th:href="${estudio.whatsappUrl}" style="color:#cd4686;">WhatsApp</a>
+        para libertarmos o horário.
+    </p>
+</th:block>
+</body>
+</html>
