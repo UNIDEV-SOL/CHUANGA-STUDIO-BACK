@@ -1,5 +1,6 @@
 package mz.netlineserv.chuangastudio.dto.request;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
@@ -18,6 +19,7 @@ public class CriarCotacaoRequest {
     @NotBlank(message = "Telefone é obrigatório")
     private String telefone;
 
+    @Email(message = "Email inválido")
     private String email;
 
     private String mensagem;
