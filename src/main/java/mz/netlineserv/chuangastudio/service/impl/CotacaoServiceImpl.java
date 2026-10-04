@@ -8,13 +8,20 @@ import mz.netlineserv.chuangastudio.domain.entity.Servico;
 import mz.netlineserv.chuangastudio.domain.enums.StatusCotacao;
 import mz.netlineserv.chuangastudio.dto.request.CriarCotacaoRequest;
 import mz.netlineserv.chuangastudio.dto.response.CotacaoResponse;
+import mz.netlineserv.chuangastudio.notificacao.NotificacaoCotacaoEvent;
 import mz.netlineserv.chuangastudio.repository.CotacaoRepository;
 import mz.netlineserv.chuangastudio.repository.ServicoRepository;
 import mz.netlineserv.chuangastudio.service.CotacaoService;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import mz.netlineserv.chuangastudio.common.PageResponse;
+import mz.netlineserv.chuangastudio.repository.spec.BaseSpecification;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -25,6 +32,7 @@ public class CotacaoServiceImpl implements CotacaoService {
 
     private final CotacaoRepository cotacaoRepository;
     private final ServicoRepository servicoRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     @Transactional
@@ -41,7 +49,7 @@ public class CotacaoServiceImpl implements CotacaoService {
         Cotacao cotacao = new Cotacao();
         cotacao.setNome(request.getNome());
         cotacao.setTelefone(request.getTelefone());
-        cotacao.setEmail(request.getEmail());
+        cotacao.setEmail(request.getEmail() != null && !request.getEmail().isBlank() ? request.getEmail().trim() : null);
         cotacao.setMensagem(request.getMensagem());
         cotacao.setTotalEstimado(totalEstimado);
         cotacao.setStatus(StatusCotacao.NOVO);
@@ -54,16 +62,19 @@ public class CotacaoServiceImpl implements CotacaoService {
             cotacao.adicionarServico(item);
         }
 
-        return CotacaoResponse.deEntidade(cotacaoRepository.save(cotacao));
+        Cotacao salva = cotacaoRepository.save(cotacao);
+        eventPublisher.publishEvent(new NotificacaoCotacaoEvent(salva.getId()));
+        return CotacaoResponse.deEntidade(salva);
     }
 
     @Override
-    public List<CotacaoResponse> listarAdmin(StatusCotacao status) {
-        List<Cotacao> cotacoes = status != null
-                ? cotacaoRepository.findByStatusAndDeletadoFalseOrderByCriadoEmDesc(status)
-                : cotacaoRepository.findByDeletadoFalseOrderByCriadoEmDesc();
-
-        return cotacoes.stream().map(CotacaoResponse::deEntidade).collect(Collectors.toList());
+    @Transactional(readOnly = true)
+    public PageResponse<CotacaoResponse> listarAdmin(StatusCotacao status, String busca, Pageable pageable) {
+        Specification<Cotacao> spec = BaseSpecification.of(Cotacao.class)
+                .equals("status", status)
+                .likeAny(busca, "nome", "telefone", "email")
+                .build();
+        return PageResponse.from(cotacaoRepository.findAll(spec, pageable).map(CotacaoResponse::deEntidade));
     }
 
     @Override
