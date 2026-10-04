@@ -3,6 +3,12 @@ package mz.netlineserv.chuangastudio.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mz.netlineserv.chuangastudio.common.ApiResponse;
+import mz.netlineserv.chuangastudio.common.PageResponse;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+
 import mz.netlineserv.chuangastudio.domain.enums.StatusCotacao;
 import mz.netlineserv.chuangastudio.dto.request.CriarCotacaoRequest;
 import mz.netlineserv.chuangastudio.dto.response.CotacaoResponse;
@@ -26,9 +32,11 @@ public class CotacaoController {
     }
 
     @GetMapping("/admin/cotacoes")
-    public ResponseEntity<ApiResponse<List<CotacaoResponse>>> listarAdmin(
-            @RequestParam(required = false) StatusCotacao status) {
-        return ResponseEntity.ok(ApiResponse.sucesso(cotacaoService.listarAdmin(status)));
+    public ResponseEntity<ApiResponse<PageResponse<CotacaoResponse>>> listarAdmin(
+            @RequestParam(required = false) StatusCotacao status,
+            @RequestParam(required = false) String busca,
+            @ParameterObject @PageableDefault(size = 20, sort = "criadoEm", direction = Sort.Direction.DESC) Pageable pageable) {
+        return ResponseEntity.ok(ApiResponse.sucesso(cotacaoService.listarAdmin(status, busca, pageable)));
     }
 
     @PatchMapping("/admin/cotacoes/{id}/respondido")
