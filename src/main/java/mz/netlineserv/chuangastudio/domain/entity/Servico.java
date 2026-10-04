@@ -35,4 +35,8 @@ public class Servico extends BaseAuditEntity {
 
     @Column(nullable = false)
     private boolean ativo = true;
+
+    /** Lembrete de manutenção: X dias depois do serviço (nulo = sem lembrete). */
+    @Column(name = "manutencao_dias")
+    private Integer manutencaoDias;
 }
