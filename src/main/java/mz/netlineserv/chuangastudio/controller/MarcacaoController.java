@@ -3,9 +3,18 @@ package mz.netlineserv.chuangastudio.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mz.netlineserv.chuangastudio.common.ApiResponse;
+import mz.netlineserv.chuangastudio.common.PageResponse;
+import mz.netlineserv.chuangastudio.dto.request.FiltroMarcacoes;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
+import java.time.LocalDate;
 import mz.netlineserv.chuangastudio.domain.enums.StatusMarcacao;
 import mz.netlineserv.chuangastudio.dto.request.AtualizarStatusMarcacaoRequest;
 import mz.netlineserv.chuangastudio.dto.request.CriarMarcacaoRequest;
+import mz.netlineserv.chuangastudio.dto.request.RemarcarRequest;
 import mz.netlineserv.chuangastudio.dto.response.MarcacaoResponse;
 import mz.netlineserv.chuangastudio.security.UsuarioAutenticado;
 import mz.netlineserv.chuangastudio.service.MarcacaoService;
@@ -33,20 +42,54 @@ public class MarcacaoController {
     }
 
     @GetMapping("/minha-area/marcacoes")
-    public ResponseEntity<ApiResponse<List<MarcacaoResponse>>> minhasMarcacoes() {
-        return ResponseEntity.ok(ApiResponse.sucesso(marcacaoService.listarDoClienteOnline()));
+    public ResponseEntity<ApiResponse<PageResponse<MarcacaoResponse>>> minhasMarcacoes(
+            @ParameterObject @PageableDefault(size = 20, sort = {"dataMarcacao", "horaMarcacao"}, direction = Sort.Direction.DESC) Pageable pageable) {
+        return ResponseEntity.ok(ApiResponse.sucesso(marcacaoService.listarDoClienteOnline(pageable)));
     }
 
     @PatchMapping("/minha-area/marcacoes/{id}/cancelar")
     public ResponseEntity<ApiResponse<MarcacaoResponse>> cancelarMinhaMarcacao(@PathVariable UUID id) {
-        return ResponseEntity.ok(ApiResponse.sucesso("Marcação cancelada.", marcacaoService.cancelar(id)));
+        return ResponseEntity.ok(ApiResponse.sucesso("Marcação cancelada.", marcacaoService.cancelarDoClienteOnline(id)));
+    }
+
+    @PatchMapping("/minha-area/marcacoes/{id}/remarcar")
+    public ResponseEntity<ApiResponse<MarcacaoResponse>> remarcarMinhaMarcacao(@PathVariable UUID id,
+                                                                              @Valid @RequestBody RemarcarRequest request) {
+        return ResponseEntity.ok(ApiResponse.sucesso("Marcação remarcada.",
+                marcacaoService.remarcarDoClienteOnline(id, request.data(), request.hora())));
+    }
+
+    @PatchMapping("/admin/marcacoes/{id}/remarcar")
+    public ResponseEntity<ApiResponse<MarcacaoResponse>> remarcarAdmin(@PathVariable UUID id,
+                                                                      @Valid @RequestBody RemarcarRequest request) {
+        return ResponseEntity.ok(ApiResponse.sucesso("Marcação remarcada. A cliente foi avisada por email.",
+                marcacaoService.remarcarAdmin(id, request.data(), request.hora())));
+    }
+
+    @PatchMapping("/admin/marcacoes/{id}/profissional")
+    public ResponseEntity<ApiResponse<MarcacaoResponse>> atribuirProfissional(@PathVariable UUID id,
+                                                                             @RequestBody java.util.Map<String, UUID> corpo) {
+        return ResponseEntity.ok(ApiResponse.sucesso("Profissional atualizada.",
+                marcacaoService.atribuirProfissional(id, corpo.get("profissionalId"))));
     }
 
     @GetMapping("/admin/marcacoes")
-    public ResponseEntity<ApiResponse<List<MarcacaoResponse>>> listarAdmin(
+    public ResponseEntity<ApiResponse<PageResponse<MarcacaoResponse>>> listarAdmin(
             @RequestParam(required = false) StatusMarcacao status,
-            @RequestParam(required = false) String busca) {
-        return ResponseEntity.ok(ApiResponse.sucesso(marcacaoService.listarTodasAdmin(status, busca)));
+            @RequestParam(required = false) String busca,
+            @RequestParam(required = false) UUID profissionalId,
+            @RequestParam(required = false) Boolean semProfissional,
+            @RequestParam(required = false) UUID clienteId,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim,
+            @ParameterObject @PageableDefault(size = 20, sort = {"dataMarcacao", "horaMarcacao"}, direction = Sort.Direction.DESC) Pageable pageable) {
+        FiltroMarcacoes filtro = new FiltroMarcacoes(status, busca, profissionalId, semProfissional, clienteId, dataInicio, dataFim);
+        return ResponseEntity.ok(ApiResponse.sucesso(marcacaoService.listarAdmin(filtro, pageable)));
+    }
+
+    @GetMapping("/admin/marcacoes/{id}")
+    public ResponseEntity<ApiResponse<MarcacaoResponse>> obterAdmin(@PathVariable UUID id) {
+        return ResponseEntity.ok(ApiResponse.sucesso(marcacaoService.obterAdmin(id)));
     }
 
     @PatchMapping("/admin/marcacoes/{id}/status")
