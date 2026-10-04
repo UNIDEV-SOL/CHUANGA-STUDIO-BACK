@@ -19,6 +19,7 @@ public class ServicoResponse {
     private Integer duracaoMinutos;
     private boolean destaque;
     private boolean ativo;
+    private Integer manutencaoDias;
 
     public static ServicoResponse deEntidade(Servico servico) {
         return new ServicoResponse(
@@ -29,7 +30,8 @@ public class ServicoResponse {
                 servico.getPreco(),
                 servico.getDuracaoMinutos(),
                 servico.isDestaque(),
-                servico.isAtivo()
+                servico.isAtivo(),
+                servico.getManutencaoDias()
         );
     }
 }
