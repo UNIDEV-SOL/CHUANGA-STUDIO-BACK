@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
 /**
  * Garante que existe pelo menos um usuário admin ao subir a aplicação.
  * Equivalente ao "admin seed" que o frontend tinha no usersStore local.
