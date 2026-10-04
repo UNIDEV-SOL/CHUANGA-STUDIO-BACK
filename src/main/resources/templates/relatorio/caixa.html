@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<!-- Relatório de caixa em PDF (A4). Mesma identidade da fatura; layout em tabelas (openhtmltopdf). -->
+<html xmlns:th="http://www.thymeleaf.org" lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titulo}">Relatório de caixa</title>
+    <style>
+        @page { size: A4; margin: 0 0 16mm 0; @bottom-center { content: element(rodape); } }
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: 'Manrope', sans-serif; font-size: 9.5pt; color: #071123; }
+        table { border-collapse: collapse; width: 100%; }
+        td { vertical-align: top; padding: 0; }
+        .cabecalho { background-color: #122555; color: #ffffff; padding: 9mm 16mm 7mm; }
+        .etiqueta { font-size: 7pt; font-weight: 700; letter-spacing: 2.2pt; text-transform: uppercase; color: #f893bc; }
+        .marca { font-family: 'Cormorant Garamond', serif; font-size: 24pt; font-weight: 500; margin-top: 2.5mm; }
+        .marca img { width: 13pt; height: 13pt; vertical-align: middle; margin: 0 2pt; }
+        .titulo-doc { font-size: 15pt; font-weight: 700; margin-top: 2.5mm; }
+        .sub { font-size: 8.5pt; color: #c3c8e0; margin-top: 1mm; }
+        .faixa td { height: 3pt; font-size: 0; line-height: 0; }
+        .conteudo { padding: 6mm 16mm 0; }
+        .periodo { font-family: 'Cormorant Garamond', serif; font-size: 20pt; font-weight: 500; color: #122555; }
+        .kpi { background-color: #f6f4fa; border-radius: 9pt; padding: 3.2mm 5mm; }
+        .kpi .rotulo { font-size: 7pt; font-weight: 700; letter-spacing: 1.6pt; text-transform: uppercase; color: #cd4686; }
+        .kpi .valor { font-size: 15pt; font-weight: 700; color: #122555; margin-top: 1.5mm; }
+        .kpi .nota { font-size: 7.5pt; color: #8a8fa0; margin-top: 1mm; }
+        h2 { font-family: 'Cormorant Garamond', serif; font-size: 15pt; font-weight: 600; color: #122555; margin: 5mm 0 1.5mm; }
+        .linhas td { padding: 1.1mm 0; border-bottom: 0.75pt solid #efe9f0; }
+        .linhas .num { text-align: right; white-space: nowrap; font-weight: 600; color: #122555; }
+        .linhas .det { color: #8a8fa0; font-size: 8pt; }
+        .barra { height: 4pt; background-color: #f6f4fa; border-radius: 2pt; }
+        .barra div { height: 4pt; background-color: #122555; border-radius: 2pt; }
+        .vazio { color: #8a8fa0; padding: 3mm 0; }
+        /* Paginação: nunca partir uma linha nem deixar uma secção curta órfã noutra página. */
+        tr { page-break-inside: avoid; }
+        .bloco { page-break-inside: avoid; }
+        h2 { page-break-after: avoid; }
+        .rodape { position: running(rodape); text-align: center; font-size: 7.5pt; color: #8a8fa0; line-height: 1.7; padding: 0 16mm; }
+    </style>
+</head>
+<body>
+<div class="rodape">
+    Chuanga Studio · relatório gerado a <span th:text="${geradoEm}">03/10/2026 às 20:00</span>
+    · faturado = serviços faturados sem descontos · recebido = pagamentos registados no período
+</div>
+
+<div class="cabecalho">
+    <table>
+        <tr>
+            <td>
+                <div class="etiqueta">Atelier de beleza · Maputo</div>
+                <div class="marca">Chuanga <img th:src="${coracaoClaro}" alt=""/> Studio</div>
+            </td>
+            <td style="text-align: right; width: 85mm;">
+                <div class="etiqueta">Relatório de caixa</div>
+                <div class="titulo-doc" th:text="${titulo}">Relatório semanal</div>
+                <div class="sub">Uso interno da equipa</div>
+            </td>
+        </tr>
+    </table>
+</div>
+<table class="faixa"><tr><td style="background-color:#f893bc;"></td><td style="background-color:#e8a493;"></td><td style="background-color:#d5b36a;"></td></tr></table>
+
+<div class="conteudo">
+    <div class="periodo" th:text="${periodo}">27 de setembro a 3 de outubro de 2026</div>
+
+    <table class="bloco" style="margin-top: 4mm;">
+        <tr>
+            <td style="width: 50%; padding: 0 2mm 4mm 0;">
+                <div class="kpi"><div class="rotulo">Faturado</div><div class="valor" th:text="${kpis.faturado}">0</div>
+                    <div class="nota"><span th:text="${kpis.atendimentos}">0</span> atendimentos · ticket médio <span th:text="${kpis.ticketMedio}">0</span></div></div>
+            </td>
+            <td style="width: 50%; padding: 0 0 4mm 2mm;">
+                <div class="kpi"><div class="rotulo">Recebido na caixa</div><div class="valor" th:text="${kpis.recebido}">0</div>
+                    <div class="nota">+ <span th:text="${kpis.adiantamentos}">0</span> de adiantamentos já pagos</div></div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 0 2mm 0 0;">
+                <div class="kpi"><div class="rotulo">Por receber</div><div class="valor" th:text="${kpis.porReceber}">0</div>
+                    <div class="nota"><span th:text="${kpis.faturasPorReceber}">0</span> faturas por pagar (todas as datas)</div></div>
+            </td>
+            <td style="padding: 0 0 0 2mm;">
+                <div class="kpi"><div class="rotulo">Descontos dados</div><div class="valor" th:text="${kpis.descontos}">0</div>
+                    <div class="nota"><span th:text="${kpis.canceladas}">0</span> marcações canceladas no período</div></div>
+            </td>
+        </tr>
+    </table>
+
+    <div th:if="${!#lists.isEmpty(dias)}" th:class="${#lists.size(dias) <= 16} ? 'bloco' : ''">
+        <h2 th:text="${porSemana} ? 'Por semana' : 'Por dia'">Por dia</h2>
+        <table class="linhas">
+            <tr th:each="d : ${dias}">
+                <td style="width: 32mm; white-space: nowrap;" th:text="${d.rotulo}">Sáb 03/10</td>
+                <td style="padding-right: 4mm;"><div class="barra"><div th:style="'width:' + ${d.percentagem} + '%'"></div></div></td>
+                <td class="det" style="width: 42mm; text-align: right;" th:text="${d.detalhe}"></td>
+                <td class="num" style="width: 30mm;" th:text="${d.valor}">0</td>
+            </tr>
+        </table>
+    </div>
+
+    <table class="bloco">
+        <tr>
+            <td style="width: 50%; padding-right: 5mm;">
+                <h2>Recebido por forma de pagamento</h2>
+                <div class="vazio" th:if="${#lists.isEmpty(formas)}">Sem pagamentos no período.</div>
+                <table class="linhas" th:unless="${#lists.isEmpty(formas)}">
+                    <tr th:each="f : ${formas}">
+                        <td>
+                            <span th:text="${f.rotulo}">M-Pesa</span> <span class="det" th:text="'· ' + ${f.detalhe}">· 2 pagamentos</span>
+                            <div class="barra" style="margin-top: 0.8mm;"><div th:style="'width:' + ${f.percentagem} + '%'"></div></div>
+                        </td>
+                        <td class="num" style="width: 28mm;" th:text="${f.valor}">0</td>
+                    </tr>
+                </table>
+            </td>
+            <td style="width: 50%; padding-left: 5mm;">
+                <h2>Serviços mais vendidos</h2>
+                <div class="vazio" th:if="${#lists.isEmpty(servicos)}">Sem faturas no período.</div>
+                <table class="linhas" th:unless="${#lists.isEmpty(servicos)}">
+                    <tr th:each="s : ${servicos}">
+                        <td th:text="${s.rotulo}">Verniz Gel</td>
+                        <td class="det" style="width: 10mm; text-align: right;" th:text="${s.detalhe + '×'}">3×</td>
+                        <td class="num" style="width: 28mm;" th:text="${s.valor}">0</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
