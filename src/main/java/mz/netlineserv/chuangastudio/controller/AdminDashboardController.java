@@ -10,6 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+import mz.netlineserv.chuangastudio.common.PageResponse;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 
 import java.util.List;
 
@@ -26,17 +32,23 @@ public class AdminDashboardController {
     }
 
     @GetMapping("/marcacoes/proximas")
-    public ResponseEntity<ApiResponse<List<MarcacaoResponse>>> proximasMarcacoes() {
-        return ResponseEntity.ok(ApiResponse.sucesso(adminDashboardService.proximasMarcacoes()));
+    public ResponseEntity<ApiResponse<PageResponse<MarcacaoResponse>>> proximasMarcacoes(
+            @ParameterObject @PageableDefault(size = 10) Pageable pageable) {
+        return ResponseEntity.ok(ApiResponse.sucesso(adminDashboardService.proximasMarcacoes(pageable)));
     }
 
     @GetMapping("/atividade-recente")
-    public ResponseEntity<ApiResponse<List<MarcacaoResponse>>> atividadeRecente() {
-        return ResponseEntity.ok(ApiResponse.sucesso(adminDashboardService.atividadeRecente()));
+    public ResponseEntity<ApiResponse<PageResponse<MarcacaoResponse>>> atividadeRecente(
+            @ParameterObject @PageableDefault(size = 10) Pageable pageable) {
+        return ResponseEntity.ok(ApiResponse.sucesso(adminDashboardService.atividadeRecente(pageable)));
     }
 
     @GetMapping("/clientes")
-    public ResponseEntity<ApiResponse<List<ClienteResumoResponse>>> clientes() {
-        return ResponseEntity.ok(ApiResponse.sucesso(adminDashboardService.listarClientesComResumo()));
+    public ResponseEntity<ApiResponse<PageResponse<ClienteResumoResponse>>> clientes(
+            @RequestParam(required = false) String busca,
+            @RequestParam(required = false) Long provinciaId,
+            @RequestParam(required = false) Long distritoId,
+            @ParameterObject @PageableDefault(size = 20, sort = "criadoEm", direction = Sort.Direction.DESC) Pageable pageable) {
+        return ResponseEntity.ok(ApiResponse.sucesso(adminDashboardService.listarClientes(busca, provinciaId, distritoId, pageable)));
     }
 }
