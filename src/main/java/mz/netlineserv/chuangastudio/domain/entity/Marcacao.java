@@ -10,6 +10,7 @@ import mz.netlineserv.chuangastudio.domain.enums.StatusMarcacao;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +51,21 @@ public class Marcacao extends BaseAuditEntity {
 
     @Column(name = "adiantamento_pago", nullable = false)
     private boolean adiantamentoPago = false;
+
+    @Column(columnDefinition = "TEXT")
+    private String observacoes;
+
+    /** Preenchido quando o lembrete da véspera é enviado; volta a nulo se a marcação for remarcada. */
+    @Column(name = "lembrete_enviado_em")
+    private LocalDateTime lembreteEnviadoEm;
+
+    @Column(name = "lembrete_manutencao_em")
+    private LocalDateTime lembreteManutencaoEm;
+
+    /** Quem faz o atendimento. Nulo em marcações antigas ou quando o estúdio não tem equipa registada. */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profissional_id")
+    private Profissional profissional;
 
     @OneToMany(mappedBy = "marcacao", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<MarcacaoServico> servicos = new ArrayList<>();
