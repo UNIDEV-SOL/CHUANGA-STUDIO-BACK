@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import mz.netlineserv.chuangastudio.domain.enums.MetodoPagamento;
@@ -42,4 +43,15 @@ public class CriarMarcacaoRequest {
 
     @NotBlank(message = "Referência do pagamento é obrigatória")
     private String referenciaPagamento;
+
+    @Size(max = 500, message = "As observações não podem ter mais de 500 caracteres")
+    private String observacoes;
+
+    /** Profissional preferida; nula = a primeira livre. */
+    private UUID profissionalId;
+
+    /** Morada da cliente nova (opcional). */
+    private Long provinciaId;
+
+    private Long distritoId;
 }
