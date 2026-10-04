@@ -84,20 +84,39 @@ public class WhatsAppSender {
                             )
                     )
             );
-            restClient.post()
-                    .uri("/{id}/messages", phoneNumberId)
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(corpo)
-                    .retrieve()
-                    .toBodilessEntity();
-            log.info("Fatura {} enviada por WhatsApp para {}.", numeroFatura, para);
+            try {
+                enviar(corpo);
+                log.info("Fatura {} enviada por WhatsApp (template) para {}.", numeroFatura, para);
+            } catch (RestClientResponseException ex) {
+                // Template ainda não aprovado/criado: tenta como documento direto. A Meta só aceita
+                // se a cliente tiver escrito ao número nas últimas 24 h (janela de atendimento).
+                log.warn("Template {} recusado ({}): a enviar a fatura {} como documento.", templateFatura,
+                        ex.getStatusCode().value(), numeroFatura);
+                enviar(Map.of(
+                        "messaging_product", "whatsapp",
+                        "to", para,
+                        "type", "document",
+                        "document", Map.of("id", mediaId, "filename", nomeFicheiro,
+                                "caption", "Olá " + nomeCliente + "! Segue a sua fatura " + numeroFatura
+                                        + " do Chuanga Studio (" + total + "). Obrigada pela visita 💅")));
+                log.info("Fatura {} enviada por WhatsApp (documento) para {}.", numeroFatura, para);
+            }
         } catch (RestClientResponseException ex) {
             log.error("WhatsApp recusou a fatura {} para {}: {} {}", numeroFatura, para,
                     ex.getStatusCode().value(), ex.getResponseBodyAsString());
         } catch (RestClientException ex) {
             log.error("Falha ao contactar o WhatsApp para a fatura {} ({}).", numeroFatura, para, ex);
         }
+    }
+
+    private void enviar(Map<String, Object> corpo) {
+        restClient.post()
+                .uri("/{id}/messages", phoneNumberId)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(corpo)
+                .retrieve()
+                .toBodilessEntity();
     }
 
     /** O PDF é carregado primeiro para a Meta; a mensagem referencia o id devolvido. */
