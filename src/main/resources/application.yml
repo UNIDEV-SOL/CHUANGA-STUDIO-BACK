@@ -5,6 +5,10 @@ spring:
   profiles:
     active: dev
 
+  # Lê as variáveis do .env na raiz do projeto (se existir), sem depender do IDE.
+  config:
+    import: optional:file:.env[.properties]
+
   datasource:
     url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:chuanga_studio}
     username: ${DB_USER:postgres}
@@ -18,8 +22,20 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        # Carrega relações das linhas de uma página em lote (evita uma query por linha).
+        default_batch_fetch_size: 50
         default_schema: public
     show-sql: false
+
+  servlet:
+    multipart:
+      # Fotos da galeria (o painel já as reduz antes de enviar).
+      max-file-size: 10MB
+      max-request-size: 20MB
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
 
   flyway:
     enabled: true
@@ -42,6 +58,57 @@ app:
   admin:
     seed-email: ${ADMIN_SEED_EMAIL:admin@chuangastudio.co.mz}
     seed-password: ${ADMIN_SEED_PASSWORD:ChuangaAdmin123}
+  email:
+    # Sem RESEND_API_KEY os emails não são enviados: ficam só no log (e na pasta de pré-visualização, se definida).
+    resend-api-key: ${RESEND_API_KEY:}
+    # Sem domínio verificado no Resend, use "Chuanga Studio <onboarding@resend.dev>" (só entrega no email da conta Resend).
+    remetente: ${EMAIL_REMETENTE:Chuanga Studio <onboarding@resend.dev>}
+    responder-para: ${EMAIL_RESPONDER_PARA:}
+    pasta-pre-visualizacao: ${EMAIL_PASTA_PRE_VISUALIZACAO:}
+    # Recebe os avisos (marcações, cancelamentos, cotações, faturas). Vários: separar por vírgula. Vazio = sem avisos.
+    estudio: ${EMAIL_ESTUDIO:}
+  estudio:
+    site-url: ${SITE_URL:https://chuanga-studio.vercel.app}
+    # URL pública desta API (com /api): usada no link do PDF da fatura enviado ao cliente.
+    api-url: ${API_URL:http://localhost:8080/api}
+    telefone: ${ESTUDIO_TELEFONE:+258 84 658 9542}
+    whatsapp: ${ESTUDIO_WHATSAPP:258846589542}
+    localizacao: ${ESTUDIO_LOCALIZACAO:Maputo – Moçambique}
+    # Aparecem na fatura (rodapé e "Como pagar"). Vazio = não mostra.
+    nuit: ${ESTUDIO_NUIT:}
+    mpesa: ${ESTUDIO_MPESA:}
+    emola: ${ESTUDIO_EMOLA:}
+  whatsapp:
+    # WhatsApp Business Cloud API (Meta). Sem token/phone-number-id as faturas não vão por WhatsApp.
+    token: ${WHATSAPP_TOKEN:}
+    phone-number-id: ${WHATSAPP_PHONE_NUMBER_ID:}
+    # Template aprovado no WhatsApp Manager: cabeçalho DOCUMENTO, corpo com {{1}} nome, {{2}} nº fatura, {{3}} valor.
+    template-fatura: ${WHATSAPP_TEMPLATE_FATURA:fatura_chuanga}
+    idioma: ${WHATSAPP_TEMPLATE_IDIOMA:pt_PT}
+    api-version: ${WHATSAPP_API_VERSION:v21.0}
+  marcacoes:
+    # Quantas marcações podem decorrer ao mesmo tempo (nº de profissionais).
+    atendimentos-simultaneos: ${ATENDIMENTOS_SIMULTANEOS:1}
+    # De quanto em quanto tempo aparecem horas de início na reserva.
+    intervalo-minutos: ${MARCACOES_INTERVALO_MINUTOS:30}
+    # Até quantos dias à frente se aceitam marcações.
+    dias-antecedencia-maxima: ${MARCACOES_DIAS_ANTECEDENCIA:90}
+    # A cliente só pode remarcar pela "Minha área" até X horas antes.
+    antecedencia-remarcar-horas: ${MARCACOES_ANTECEDENCIA_REMARCAR_HORAS:24}
+  relatorios:
+    # Relatórios de caixa por email ao estúdio (com PDF). Semanal: sábado 20:00; fecho do dia: seg–sex 20:00.
+    semanal-ativo: ${RELATORIO_SEMANAL_ATIVO:true}
+    semanal-cron: ${RELATORIO_SEMANAL_CRON:0 0 20 * * SAT}
+    diario-ativo: ${RELATORIO_DIARIO_ATIVO:true}
+    diario-cron: ${RELATORIO_DIARIO_CRON:0 0 20 * * MON-FRI}
+  lembretes:
+    # Lembrete por email à cliente X horas antes e agenda de amanhã para o estúdio (às 18:00).
+    ativo: ${LEMBRETES_ATIVO:true}
+    horas-antes: ${LEMBRETES_HORAS_ANTES:24}
+  seguranca:
+    # Limite de pedidos por IP no login, registo, recuperação, reservas e cotações.
+    limite-pedidos: ${LIMITE_PEDIDOS_ATIVO:true}
+    recuperacao-senha-minutos: ${RECUPERACAO_SENHA_MINUTOS:60}
 
 springdoc:
   swagger-ui:
