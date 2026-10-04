@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt"
+      th:replace="~{email/layout :: layout(~{::conteudo}, 'Já passaram cerca de ' + ${semanas} + ' semanas desde ' + ${servico} + '. Marque a manutenção.')}">
+<body>
+<th:block th:fragment="conteudo">
+    <th:block th:replace="~{email/componentes :: titulo('Lembrete', 'Hora da', 'manutenção')}"></th:block>
+    <p style="margin:18px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#555e6f;">
+        Olá <span th:text="${nome}">Ana</span>, já passaram cerca de <strong th:text="${semanas} + ' semanas'">3 semanas</strong>
+        desde que fez <strong th:text="${servico}">Alongamento em gel</strong> connosco (<span th:text="${data}">5 de outubro</span>).
+        Para as unhas continuarem bonitas e resistentes, está na altura da manutenção.
+    </p>
+    <table th:replace="~{email/componentes :: botao(${link}, 'Marcar a manutenção')}"></table>
+    <p style="margin:22px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.7;color:#8a8fa0;">
+        Se já marcou, ignore este email. Até breve!
+    </p>
+</th:block>
+</body>
+</html>
