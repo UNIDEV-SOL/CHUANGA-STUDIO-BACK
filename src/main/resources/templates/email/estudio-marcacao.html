@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt"
+      th:replace="~{email/layout :: layout(~{::conteudo}, ${clienteNome} + ' · ' + ${data} + ' às ' + ${hora})}">
+<body>
+<th:block th:fragment="conteudo">
+    <!-- th:replace corre antes de th:if, por isso a escolha vai nos parâmetros e não em dois blocos condicionais -->
+    <th:block th:replace="~{email/componentes :: titulo('Aviso ao estúdio', ${cancelada or remarcada} ? 'Marcação' : 'Nova', ${cancelada} ? 'cancelada' : (${remarcada} ? 'remarcada' : 'marcação'))}"></th:block>
+    <p th:if="${cancelada}" style="margin:18px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#555e6f;"><span th:text="${clienteNome}">Cliente</span> cancelou a marcação. O horário ficou livre.</p>
+    <p th:if="${remarcada}" style="margin:18px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#555e6f;"><span th:text="${clienteNome}">Cliente</span> mudou a marcação<th:block th:if="${anterior}"> (era <span th:text="${anterior}">5 de outubro às 10:00</span>)</th:block>. Os dados abaixo já são os novos.</p>
+    <p th:unless="${cancelada or remarcada}" style="margin:18px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#555e6f;"><span th:text="${clienteNome}">Cliente</span> fez uma marcação pelo site. Verifique o adiantamento e confirme no painel.</p>
+    <table th:replace="~{email/componentes :: detalhes(${ {{'Cliente', clienteNome}, {'Telefone', clienteTelefone ?: '—'}, {'Data', data}, {'Hora', hora}, {'Pedido nº', codigo}} })}"></table>
+    <th:block th:replace="~{email/componentes :: servicos(${itens}, 'Total', ${total})}"></th:block>
+    <table th:if="${!cancelada and !remarcada}" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:28px;background-color:#fdf0f5;border-left:4px solid #f893bc;border-radius:12px;">
+        <tr><td style="padding:18px 20px;">
+            <div style="font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#cd4686;">Adiantamento</div>
+            <div style="margin-top:6px;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.7;color:#071123;"><strong style="color:#122555;" th:text="${adiantamento}">150,00 MZN</strong> <span th:if="${metodo}">via <span th:text="${metodo}">M-Pesa</span></span> <span th:if="${referencia}">&middot; ref. <span th:text="${referencia}">REF</span></span></div>
+        </td></tr>
+    </table>
+    <table th:if="${observacoes}" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:28px;background-color:#fdf0f5;border-left:4px solid #f893bc;border-radius:12px;">
+        <tr><td style="padding:18px 20px;">
+            <div style="font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#cd4686;">Notas do cliente</div>
+            <div style="margin-top:6px;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.7;color:#071123;"><span style="font-style:italic;" th:text="${observacoes}">Notas</span></div>
+        </td></tr>
+    </table>
+    <table th:replace="~{email/componentes :: botao(${painelUrl}, 'Abrir no painel')}"></table>
+    <p style="margin:22px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.7;color:#8a8fa0;">
+        Contactar o cliente:
+        <a th:if="${clienteWhatsappUrl}" th:href="${clienteWhatsappUrl}" style="color:#cd4686;">WhatsApp</a>
+        <th:block th:if="${clienteEmail}"> &middot; <a th:href="'mailto:' + ${clienteEmail}" th:text="${clienteEmail}" style="color:#cd4686;">email</a></th:block>
+        <br>Pode responder diretamente a este email para escrever ao cliente.
+    </p>
+</th:block>
+</body>
+</html>
