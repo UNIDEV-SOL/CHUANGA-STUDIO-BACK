@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<!--
+  Fatura em PDF (A4), renderizada pelo openhtmltopdf. Mesma identidade dos emails
+  (templates/email/layout.html). CSS 2.1 + algumas extensões: nada de flexbox/grid,
+  o layout é feito com tabelas. As fontes são registadas em FaturaPdfRenderer.
+-->
+<html xmlns:th="http://www.thymeleaf.org" lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'Fatura ' + ${fatura.numero}">Fatura</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0 0 16mm 0;
+            @bottom-center { content: element(rodape); }
+        }
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: 'Manrope', sans-serif; font-size: 9.5pt; color: #071123; }
+        .serif { font-family: 'Cormorant Garamond', serif; }
+        table { border-collapse: collapse; width: 100%; }
+        td { vertical-align: top; padding: 0; }
+
+        .cabecalho { background-color: #122555; color: #ffffff; padding: 9mm 16mm 7mm; }
+        .etiqueta { font-size: 7pt; font-weight: 700; letter-spacing: 2.2pt; text-transform: uppercase; color: #f893bc; }
+        .marca { font-family: 'Cormorant Garamond', serif; font-size: 27pt; font-weight: 500; line-height: 1.1; margin-top: 3mm; }
+        .marca img { width: 15pt; height: 15pt; vertical-align: middle; margin: 0 2pt; }
+        .assinatura { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 11pt; color: #c3c8e0; }
+        /* Números em Manrope: os algarismos da Cormorant são "antigos" (o 1 parece um I). */
+        .numero { font-size: 17pt; font-weight: 700; letter-spacing: 0.5pt; margin-top: 2.5mm; }
+        .emissao { font-size: 8.5pt; color: #c3c8e0; margin-top: 1mm; }
+
+        .faixa td { height: 3pt; font-size: 0; line-height: 0; }
+
+        .conteudo { padding: 6mm 16mm 0; }
+        .titulo { font-family: 'Cormorant Garamond', serif; font-size: 21pt; font-weight: 500; color: #122555; line-height: 1.15; margin: 2mm 0 0; }
+        .titulo em { font-style: italic; color: #cd4686; }
+        .intro { color: #555e6f; font-size: 9.5pt; line-height: 1.5; margin: 2mm 0 0; }
+
+        .selo { display: inline-block; white-space: nowrap; border-radius: 99pt; padding: 4pt 11pt; font-size: 8pt; font-weight: 700; letter-spacing: 0.4pt; }
+        .selo-pendente { background-color: #fbf3e0; color: #8a6a1f; }
+        .selo-paga { background-color: #e5f4ec; color: #1f6b44; }
+        .selo-anulada { background-color: #fde8ee; color: #b4234d; }
+
+        .caixa { background-color: #f6f4fa; border-radius: 9pt; padding: 3.2mm 5mm; }
+        .rotulo { font-size: 7pt; font-weight: 700; letter-spacing: 1.8pt; text-transform: uppercase; color: #cd4686; margin-bottom: 2mm; }
+        .forte { font-weight: 600; color: #122555; font-size: 10.5pt; }
+        .suave { color: #555e6f; line-height: 1.6; }
+
+        .itens th { font-size: 7pt; font-weight: 700; letter-spacing: 1.2pt; text-transform: uppercase; color: #8a8fa0; text-align: left; padding: 0 0 2.5mm; border-bottom: 1pt solid #122555; }
+        .itens td { padding: 1.5mm 0; border-bottom: 0.75pt solid #efe9f0; }
+        .itens .num { text-align: right; white-space: nowrap; }
+        .itens .qtd { text-align: center; width: 14mm; }
+
+        .totais td { padding: 0.9mm 0; color: #555e6f; }
+        .totais .valor { text-align: right; white-space: nowrap; color: #122555; font-weight: 600; }
+        .totais .final td { border-top: 1pt solid #122555; padding-top: 3mm; }
+        .totais .final .legenda { font-size: 8pt; font-weight: 700; letter-spacing: 1pt; text-transform: uppercase; color: #122555; padding-top: 4.2mm; }
+        .totais .final .valor { font-size: 17pt; font-weight: 700; color: #cd4686; }
+
+        .nota { background-color: #fdf0f5; border-left: 3pt solid #f893bc; border-radius: 7pt; padding: 3mm 5mm; margin-top: 3.5mm; page-break-inside: avoid; }
+        .nota .linha { margin-top: 0.8mm; line-height: 1.5; }
+
+        .carimbo { display: inline-block; margin: 4mm 0 0 14mm; transform: rotate(-12deg); border: 2.2pt solid; border-radius: 7pt; padding: 2.5mm 6mm; font-family: 'Cormorant Garamond', serif; font-size: 26pt; font-weight: 600; letter-spacing: 3pt; text-transform: uppercase; opacity: 0.8; }
+        .carimbo-paga { color: #1f6b44; border-color: #1f6b44; }
+        .carimbo-anulada { color: #b4234d; border-color: #b4234d; }
+
+        /* Paginação: linhas inteiras; totais, notas e agradecimento não ficam sozinhos noutra página. */
+        tr { page-break-inside: avoid; }
+        .bloco { page-break-inside: avoid; }
+        .agradecimento { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13pt; color: #122555; text-align: center; margin-top: 5mm; }
+
+        .rodape { position: running(rodape); text-align: center; font-size: 7.5pt; color: #8a8fa0; line-height: 1.7; padding: 0 16mm; }
+        .rodape .marca-rodape { font-family: 'Cormorant Garamond', serif; font-size: 12pt; color: #122555; }
+        .rodape img { width: 8pt; height: 8pt; vertical-align: -0.5pt; }
+    </style>
+</head>
+<body>
+
+<div class="rodape">
+    <div class="marca-rodape">Chuanga <img th:src="${coracao}" alt=""/> Studio</div>
+    <div>
+        <span th:text="${estudio.localizacao}">Maputo – Moçambique</span>
+        &#160;·&#160; <span th:text="${estudio.telefone}">+258 84 123 4567</span>
+        &#160;·&#160; <span th:text="${#strings.replace(#strings.replace(estudio.siteUrl, 'https://', ''), 'http://', '')}">chuangastudio.co.mz</span>
+        <th:block th:if="${estudio.nuit}">&#160;·&#160; NUIT <span th:text="${estudio.nuit}">000000000</span></th:block>
+    </div>
+</div>
+
+<div class="cabecalho">
+    <table>
+        <tr>
+            <td>
+                <div class="etiqueta">Atelier de beleza · Maputo</div>
+                <div class="marca">Chuanga <img th:src="${coracaoClaro}" alt=""/> Studio</div>
+                <div class="assinatura">por Angela Mazive</div>
+            </td>
+            <td style="text-align: right; width: 70mm;">
+                <div class="etiqueta">Fatura</div>
+                <div class="numero" th:text="${fatura.numero}">FT 2026/0001</div>
+                <div class="emissao">Emitida a <span th:text="${fatura.dataEmissao}">03/10/2026</span> às <span th:text="${fatura.horaEmissao}">17:00</span></div>
+            </td>
+        </tr>
+    </table>
+</div>
+<table class="faixa">
+    <tr>
+        <td style="background-color: #f893bc;"></td>
+        <td style="background-color: #e8a493;"></td>
+        <td style="background-color: #d5b36a;"></td>
+    </tr>
+</table>
+
+<div class="conteudo">
+    <table>
+        <tr>
+            <td>
+                <div class="etiqueta" style="color: #cd4686;" th:text="${fatura.paga} ? 'Recibo' : 'Conta do atendimento'">Conta do atendimento</div>
+                <div class="titulo">
+                    Obrigada pela visita, <em th:text="${cliente.primeiroNome}">Ana</em>
+                </div>
+            </td>
+            <td style="text-align: right; width: 45mm; padding-top: 2mm;">
+                <span th:if="${fatura.pendente}" class="selo selo-pendente">Por pagar</span>
+                <span th:if="${fatura.paga}" class="selo selo-paga">Paga</span>
+                <span th:if="${fatura.anulada}" class="selo selo-anulada">Anulada</span>
+            </td>
+        </tr>
+    </table>
+    <p class="intro" th:if="${!fatura.paga}">Aqui está o resumo dos serviços realizados hoje, já com o adiantamento descontado.</p>
+    <p class="intro" th:if="${fatura.paga}">Recebemos o seu pagamento. Este documento serve de recibo.</p>
+
+    <table style="margin-top: 4mm;">
+        <tr>
+            <td style="width: 50%; padding-right: 2.5mm;">
+                <div class="caixa">
+                    <div class="rotulo">Faturado a</div>
+                    <div class="forte" th:text="${cliente.nome}">Ana Macuácua</div>
+                    <div class="suave">
+                        <div th:if="${cliente.telefone}" th:text="${cliente.telefone}">841234567</div>
+                        <div th:if="${cliente.email}" th:text="${cliente.email}">ana@email.com</div>
+                        <div th:if="${cliente.nuit}">NUIT <span th:text="${cliente.nuit}">123456789</span></div>
+                    </div>
+                </div>
+            </td>
+            <td style="width: 50%; padding-left: 2.5mm;">
+                <div class="caixa">
+                    <div class="rotulo">Atendimento</div>
+                    <div class="forte" th:text="${atendimento.data}">Sábado, 4 de outubro de 2026</div>
+                    <div class="suave">
+                        <div>às <span th:text="${atendimento.hora}">10:00</span></div>
+                        <div>Pedido nº <span th:text="${atendimento.codigo}">088B471E</span></div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <table class="itens" style="margin-top: 5mm;">
+        <thead>
+        <tr>
+            <th>Serviço</th>
+            <th class="qtd" style="text-align: center;">Qtd</th>
+            <th class="num" style="text-align: right; width: 32mm;">Preço</th>
+            <th class="num" style="text-align: right; width: 34mm;">Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="linha : ${linhas}">
+            <td th:text="${linha.descricao}">Alongamento em Gel</td>
+            <td class="qtd" th:text="${linha.quantidade}">1</td>
+            <td class="num" style="color: #555e6f;" th:text="${linha.precoUnitario}">900,00 MZN</td>
+            <td class="num" style="font-weight: 600; color: #122555;" th:text="${linha.total}">900,00 MZN</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table class="bloco" style="margin-top: 3mm;">
+        <tr>
+            <td style="width: 50%;">
+                <div th:if="${fatura.paga}" class="carimbo carimbo-paga">Pago</div>
+                <div th:if="${fatura.anulada}" class="carimbo carimbo-anulada">Anulada</div>
+            </td>
+            <td style="width: 50%;">
+                <table class="totais">
+                    <tr>
+                        <td>Subtotal</td>
+                        <td class="valor" th:text="${fatura.subtotal}">900,00 MZN</td>
+                    </tr>
+                    <tr th:if="${fatura.desconto}">
+                        <td>Desconto</td>
+                        <td class="valor" th:text="${fatura.desconto}">− 50,00 MZN</td>
+                    </tr>
+                    <tr th:if="${fatura.fidelizacao}">
+                        <td>Recompensa de fidelização</td>
+                        <td class="valor" th:text="${fatura.fidelizacao}">− 500,00 MZN</td>
+                    </tr>
+                    <tr th:if="${fatura.adiantamento}">
+                        <td>Adiantamento já pago</td>
+                        <td class="valor" th:text="${fatura.adiantamento}">− 150,00 MZN</td>
+                    </tr>
+                    <tr th:if="${fatura.vale}">
+                        <td>Vale-oferta <span th:text="${fatura.valeCodigo}">CHG-XXXX</span></td>
+                        <td class="valor" th:text="${fatura.vale}">− 300,00 MZN</td>
+                    </tr>
+                    <tr class="final">
+                        <td class="legenda" th:text="${fatura.paga} ? 'Total pago' : 'Total a pagar'">Total a pagar</td>
+                        <td class="valor" th:text="${fatura.total}">750,00 MZN</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <!--
+      Pagamento (ou estado) e observações lado a lado, e o agradecimento logo abaixo, tudo num só bloco:
+      poupa altura (8 serviços cabem numa página) e nada fica sozinho numa página nova.
+    -->
+    <div class="bloco">
+        <table style="margin-top: 4mm;">
+            <tr>
+                <td th:style="${fatura.observacoes} ? 'width: 50%; padding-right: 2.5mm;' : ''">
+                    <div class="nota" style="margin-top: 0;" th:if="${fatura.pendente}">
+                        <div class="rotulo" style="margin-bottom: 0;">Como pagar</div>
+                        <div class="linha">Na caixa do estúdio, em numerário ou cartão.</div>
+                        <div class="linha" th:if="${estudio.mpesa}">M-Pesa para <strong style="color: #122555;" th:text="${estudio.mpesa}">84 000 0000</strong></div>
+                        <div class="linha" th:if="${estudio.emola}">e-Mola para <strong style="color: #122555;" th:text="${estudio.emola}">86 000 0000</strong></div>
+                        <div class="linha" th:if="${estudio.mpesa != null or estudio.emola != null}">
+                            Na transferência, indique a referência <strong style="color: #122555; white-space: nowrap;" th:text="${fatura.numero}">FT 2026/0001</strong>.
+                        </div>
+                    </div>
+                    <div class="nota" th:if="${fatura.paga}" style="margin-top: 0; background-color: #e5f4ec; border-left-color: #1f6b44;">
+                        <div class="rotulo" style="margin-bottom: 0; color: #1f6b44;">Pagamento recebido</div>
+                        <div class="linha">
+                            <span th:text="${fatura.pagoEm}">03/10/2026 às 17:30</span>
+                            <th:block th:if="${fatura.formaPagamento}"> · <span th:text="${fatura.formaPagamento}">M-Pesa</span></th:block>
+                            <th:block th:if="${fatura.referencia}"> · ref. <span th:text="${fatura.referencia}">ABC123</span></th:block>
+                        </div>
+                    </div>
+                    <div class="nota" th:if="${fatura.anulada}" style="margin-top: 0;">
+                        <div class="rotulo" style="margin-bottom: 0;">Fatura anulada</div>
+                        <div class="linha">Este documento foi anulado e não tem valor para pagamento.</div>
+                    </div>
+                </td>
+                <td th:if="${fatura.observacoes}" style="width: 50%; padding-left: 2.5mm;">
+                    <div class="nota" style="margin-top: 0; background-color: #f6f4fa; border-left-color: #c3c8e0;">
+                        <div class="rotulo" style="margin-bottom: 0; color: #122555;">Observações</div>
+                        <div class="linha" style="font-style: italic;" th:text="${fatura.observacoes}">Observações</div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div class="agradecimento">Foi um prazer cuidar de si. Até à próxima visita!</div>
+    </div>
+</div>
+
+</body>
+</html>
