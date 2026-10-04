@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt"
+      th:replace="~{email/layout :: layout(~{::conteudo}, 'Nova data: ' + ${data} + ' às ' + ${hora} + '.')}">
+<body>
+<th:block th:fragment="conteudo">
+    <th:block th:replace="~{email/componentes :: titulo('Marcação remarcada', 'Nova', 'data')}"></th:block>
+    <p style="margin:18px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#555e6f;">
+        Olá <span th:text="${nome}">Ana</span>, a sua marcação mudou de data.
+        <th:block th:if="${anterior}">Estava marcada para <span th:text="${anterior}">5 de outubro às 10:00</span>.</th:block>
+    </p>
+    <table th:replace="~{email/componentes :: selo('Nova data', '#e5f4ec', '#1f6b44')}"></table>
+    <table th:replace="~{email/componentes :: detalhes(${ {{'Data', data}, {'Hora', hora}, {'Pedido nº', codigo}} })}"></table>
+    <th:block th:replace="~{email/componentes :: servicos(${itens}, 'Total', ${total})}"></th:block>
+    <p style="margin:18px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#555e6f;">
+        O adiantamento continua válido para a nova data. Juntámos o evento em anexo para pôr no calendário do telemóvel.
+    </p>
+    <table th:replace="~{email/componentes :: botao(${calendarioUrl}, 'Adicionar ao Google Calendar')}"></table>
+    <p style="margin:22px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.7;color:#8a8fa0;">
+        Não pediu esta alteração? Fale connosco pelo <a th:href="${estudio.whatsappUrl}" style="color:#cd4686;">WhatsApp</a>.
+    </p>
+</th:block>
+</body>
+</html>
