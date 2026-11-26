@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.dto.request;
+package mz.netlineserv.chuangastudio.modules.catalog.request;
 
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Max;
