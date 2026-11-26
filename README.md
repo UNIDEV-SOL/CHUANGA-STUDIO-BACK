@@ -27,24 +27,54 @@ definidos em `ADMIN_SEED_EMAIL` / `ADMIN_SEED_PASSWORD` (por padrão
 
 ## Estrutura de pastas
 
+Arquitetura modular, igual ao SPO-BACK: cada área do negócio tem a sua pasta em `modules/`,
+com as mesmas subpastas; o que é usado por vários módulos fica em `shared/`.
+
 ```
 src/main/java/mz/netlineserv/chuangastudio/
 ├── ChuangaStudioApplication.java
-├── common/            (BaseAuditEntity, ApiResponse, exceções, GlobalExceptionHandler)
-├── config/            (SecurityConfig, JpaAuditingConfig, DataSeeder)
-├── security/           (JwtService, JwtAuthenticationFilter, UsuarioAutenticado, UsuarioDetailsServiceImpl)
-├── domain/
-│   ├── entity/         (Usuario, Servico, Marcacao, MarcacaoServico, Cotacao, CotacaoServico)
-│   └── enums/          (PapelUsuario, StatusMarcacao, MetodoPagamento, StatusCotacao)
-├── repository/
-├── service/ + service/impl/
-├── controller/
-└── dto/
-    ├── request/
-    └── response/
-
-src/main/resources/db/migration/   (V1..V4 — Flyway)
+├── modules/
+│   ├── auth/            login, cadastro, recuperação de senha (OTP)
+│   ├── users/           utilizadores, perfil, seed do admin
+│   ├── clients/         fichas de clientes
+│   ├── professionals/   equipa (profissionais)
+│   ├── catalog/         serviços do estúdio
+│   ├── bookings/        marcações, lembretes e manutenções
+│   ├── schedule/        agenda: horário, dias fechados, disponibilidade
+│   ├── quotations/      cotações
+│   ├── invoices/        faturas (+ pdf/)
+│   ├── reports/         dashboard e relatórios de caixa (+ pdf/)
+│   ├── gallery/         galeria
+│   ├── loyalty/         fidelização e vales-oferta
+│   ├── reviews/         avaliações
+│   ├── chat/            conversas, grupos e anexos
+│   ├── notifications/   notificações (+ event/ e listeners)
+│   └── locations/       províncias e distritos
+│
+│   Dentro de cada módulo (só as que fazem falta):
+│   controller/  domain/ (entidades + enums)  repository/  request/  service/  vm/ (respostas)
+│
+└── shared/
+    ├── common/       ApiResponse, PageResponse
+    ├── config/       SecurityConfig, OpenApiConfig, JpaAuditing, DadosEstudio...
+    ├── security/     JWT, filtros, limites de pedidos, proteção do login
+    ├── exceptions/   exceções + GlobalExceptionHandler
+    ├── validators/   @SenhaValida, formatos
+    ├── persistence/  BaseAuditEntity, BaseSpecification
+    ├── email/  pdf/  whatsapp/  utils/  web/
 ```
+
+Os serviços são classes diretas (`AuthService`, `FaturaService`...), sem interface + `Impl`.
+
+```
+src/main/resources/db/migration/   (Flyway)
+```
+
+## Docker e deploy
+
+- `Dockerfile` — imagem de produção (build com Maven, runtime só com JRE 21, sem root, healthcheck).
+- `.github/workflows/docker-publish.yml` — testa e publica a imagem em `ghcr.io/igortobias/chuanga-studio-backend`.
+- `deploy/` — `compose.yaml` e `.env.example` para o servidor; passo a passo em [`deploy/DEPLOY.md`](deploy/DEPLOY.md).
 
 ## Mapeamento rota do frontend → endpoint
 
