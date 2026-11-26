@@ -1,14 +1,14 @@
-package mz.netlineserv.chuangastudio.controller;
+package mz.netlineserv.chuangastudio.modules.notifications.controller;
 
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.common.ApiResponse;
-import mz.netlineserv.chuangastudio.common.PageResponse;
-import mz.netlineserv.chuangastudio.domain.entity.Notificacao;
-import mz.netlineserv.chuangastudio.domain.entity.NotificacaoLeitura;
-import mz.netlineserv.chuangastudio.domain.enums.TipoNotificacao;
-import mz.netlineserv.chuangastudio.repository.NotificacaoRepository;
-import mz.netlineserv.chuangastudio.repository.spec.BaseSpecification;
-import mz.netlineserv.chuangastudio.service.UsuarioService;
+import mz.netlineserv.chuangastudio.shared.common.ApiResponse;
+import mz.netlineserv.chuangastudio.shared.common.PageResponse;
+import mz.netlineserv.chuangastudio.modules.notifications.domain.Notificacao;
+import mz.netlineserv.chuangastudio.modules.notifications.domain.NotificacaoLeitura;
+import mz.netlineserv.chuangastudio.modules.notifications.domain.TipoNotificacao;
+import mz.netlineserv.chuangastudio.modules.notifications.repository.NotificacaoRepository;
+import mz.netlineserv.chuangastudio.shared.persistence.BaseSpecification;
+import mz.netlineserv.chuangastudio.modules.users.service.UsuarioService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
