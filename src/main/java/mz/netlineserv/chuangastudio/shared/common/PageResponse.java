@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.common;
+package mz.netlineserv.chuangastudio.shared.common;
 
 import org.springframework.data.domain.Page;
 
