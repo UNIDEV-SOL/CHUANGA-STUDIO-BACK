@@ -32,6 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * o relatório de uma semana e a fatura de um atendimento grande cabem numa página,
  * e nenhum PDF acaba com uma página quase vazia (só uma linha).
  */
+
 class PdfPaginacaoTest {
 
     private PdfGerador pdfGerador;
@@ -49,7 +50,7 @@ class PdfPaginacaoTest {
         engine.setTemplateResolver(resolver);
 
         DadosEstudio estudio = new DadosEstudio();
-        ReflectionTestUtils.setField(estudio, "siteUrl", "https://chuanga-studio.vercel.app");
+        ReflectionTestUtils.setField(estudio, "siteUrl", "https://chuanga-studio-front.vercel.app");
         ReflectionTestUtils.setField(estudio, "apiUrl", "https://api.exemplo.co.mz/api");
         ReflectionTestUtils.setField(estudio, "telefone", "+258 84 658 9542");
         ReflectionTestUtils.setField(estudio, "whatsapp", "258846589542");
