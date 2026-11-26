@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.domain.enums;
+package mz.netlineserv.chuangastudio.modules.quotations.domain;
 
 public enum StatusCotacao {
     NOVO,
