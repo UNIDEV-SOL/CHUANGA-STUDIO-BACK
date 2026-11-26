@@ -1,13 +1,13 @@
-package mz.netlineserv.chuangastudio.chat;
+package mz.netlineserv.chuangastudio.modules.chat.service;
 
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.common.exception.AcessoNegadoException;
-import mz.netlineserv.chuangastudio.common.exception.RecursoNaoEncontradoException;
-import mz.netlineserv.chuangastudio.common.exception.RegraNegocioException;
-import mz.netlineserv.chuangastudio.domain.entity.Usuario;
-import mz.netlineserv.chuangastudio.domain.enums.PapelUsuario;
-import mz.netlineserv.chuangastudio.repository.UsuarioRepository;
-import mz.netlineserv.chuangastudio.service.UsuarioService;
+import mz.netlineserv.chuangastudio.shared.exceptions.AcessoNegadoException;
+import mz.netlineserv.chuangastudio.shared.exceptions.RecursoNaoEncontradoException;
+import mz.netlineserv.chuangastudio.shared.exceptions.RegraNegocioException;
+import mz.netlineserv.chuangastudio.modules.users.domain.Usuario;
+import mz.netlineserv.chuangastudio.modules.users.domain.PapelUsuario;
+import mz.netlineserv.chuangastudio.modules.users.repository.UsuarioRepository;
+import mz.netlineserv.chuangastudio.modules.users.service.UsuarioService;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -16,6 +16,12 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import mz.netlineserv.chuangastudio.modules.chat.domain.Conversa;
+import mz.netlineserv.chuangastudio.modules.chat.domain.ConversaMembro;
+import mz.netlineserv.chuangastudio.modules.chat.domain.Mensagem;
+import mz.netlineserv.chuangastudio.modules.chat.repository.ConversaMembroRepository;
+import mz.netlineserv.chuangastudio.modules.chat.repository.ConversaRepository;
+import mz.netlineserv.chuangastudio.modules.chat.repository.MensagemRepository;
 
 /**
  * Regras e conversões partilhadas pelo chat: quem vê o quê, quem administra cada grupo,
