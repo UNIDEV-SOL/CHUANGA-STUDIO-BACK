@@ -1,7 +1,7 @@
-package mz.netlineserv.chuangastudio.repository;
+package mz.netlineserv.chuangastudio.modules.invoices.repository;
 
-import mz.netlineserv.chuangastudio.domain.entity.Fatura;
-import mz.netlineserv.chuangastudio.domain.enums.StatusFatura;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.Fatura;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.StatusFatura;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -28,7 +28,7 @@ public interface FaturaRepository extends JpaRepository<Fatura, UUID>, JpaSpecif
     List<Fatura> buscarTodasComDetalhes();
 
     @Query(COM_DETALHES + "WHERE m.cliente.id = :clienteId AND f.deletado = false " +
-            "AND f.status <> mz.netlineserv.chuangastudio.domain.enums.StatusFatura.ANULADA " +
+            "AND f.status <> mz.netlineserv.chuangastudio.modules.invoices.domain.StatusFatura.ANULADA " +
             "ORDER BY f.dataEmissao DESC")
     List<Fatura> buscarDoClienteComDetalhes(@Param("clienteId") UUID clienteId);
 
@@ -36,16 +36,16 @@ public interface FaturaRepository extends JpaRepository<Fatura, UUID>, JpaSpecif
 
     /** Fatura válida de cada marcação de uma página (para a lista do painel). */
     @Query("SELECT f FROM Fatura f WHERE f.marcacao.id IN :ids AND f.deletado = false " +
-            "AND f.status <> mz.netlineserv.chuangastudio.domain.enums.StatusFatura.ANULADA")
+            "AND f.status <> mz.netlineserv.chuangastudio.modules.invoices.domain.StatusFatura.ANULADA")
     List<Fatura> buscarValidasDasMarcacoes(@Param("ids") java.util.Collection<UUID> ids);
 
     /** Visitas para a fidelização: atendimentos faturados (sem anuladas). */
     @Query("SELECT COUNT(f) FROM Fatura f WHERE f.marcacao.cliente.id = :cliente AND f.deletado = false " +
-            "AND f.status <> mz.netlineserv.chuangastudio.domain.enums.StatusFatura.ANULADA")
+            "AND f.status <> mz.netlineserv.chuangastudio.modules.invoices.domain.StatusFatura.ANULADA")
     long contarVisitas(@Param("cliente") UUID cliente);
 
     @Query("SELECT COUNT(f) FROM Fatura f WHERE f.marcacao.cliente.id = :cliente AND f.deletado = false " +
-            "AND f.status <> mz.netlineserv.chuangastudio.domain.enums.StatusFatura.ANULADA AND f.descontoFidelizacao > 0")
+            "AND f.status <> mz.netlineserv.chuangastudio.modules.invoices.domain.StatusFatura.ANULADA AND f.descontoFidelizacao > 0")
     long contarRecompensasUsadas(@Param("cliente") UUID cliente);
 
     @Query(value = "SELECT nextval('fatura_numero_seq')", nativeQuery = true)
