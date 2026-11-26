@@ -37,6 +37,12 @@ spring:
     serialization:
       write-dates-as-timestamps: false
 
+  data:
+    web:
+      pageable:
+        # Ninguém pede 2000 linhas de uma vez (o valor por omissão do Spring).
+        max-page-size: 100
+
   flyway:
     enabled: true
     baseline-on-migrate: true
@@ -46,6 +52,10 @@ server:
   port: ${SERVER_PORT:8080}
   servlet:
     context-path: /api
+  # Atrás do proxy (Render, Railway, Nginx) o IP real vem no X-Forwarded-For, mas o Tomcat só o
+  # aceita de proxies internos (10.x, 192.168.x, 172.16-31.x, 127.x): o cliente não o falsifica.
+  # Se o proxy tiver outro IP, definir SERVER_TOMCAT_REMOTEIP_INTERNAL_PROXIES (regex).
+  forward-headers-strategy: native
 
 jwt:
   secret: ${JWT_SECRET:troque-esta-chave-em-producao-troque-esta-chave-em-producao}
@@ -106,9 +116,19 @@ app:
     ativo: ${LEMBRETES_ATIVO:true}
     horas-antes: ${LEMBRETES_HORAS_ANTES:24}
   seguranca:
-    # Limite de pedidos por IP no login, registo, recuperação, reservas e cotações.
+    # Limite de pedidos por conta/IP em toda a API (regras em LimitePedidosFilter).
     limite-pedidos: ${LIMITE_PEDIDOS_ATIVO:true}
-    recuperacao-senha-minutos: ${RECUPERACAO_SENHA_MINUTOS:60}
+    # Recuperação por código OTP: validade do código e tentativas por código.
+    recuperacao-senha-minutos: ${RECUPERACAO_SENHA_MINUTOS:10}
+    recuperacao-senha-tentativas: ${RECUPERACAO_SENHA_TENTATIVAS:5}
+    login:
+      # Palavras-passe erradas seguidas na mesma conta antes de a bloquear temporariamente.
+      max-falhas: ${LOGIN_MAX_FALHAS:5}
+      bloqueio-minutos: ${LOGIN_BLOQUEIO_MINUTOS:15}
+  erros:
+    # true = os erros 500 trazem a exceção, a mensagem e a linha do código na resposta.
+    # Em produção fica false por omissão (o detalhe vai para o log, com uma referência na resposta).
+    detalhados: ${ERROS_DETALHADOS:true}
 
 springdoc:
   swagger-ui:
