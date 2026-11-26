@@ -1,12 +1,12 @@
-package mz.netlineserv.chuangastudio.controller;
+package mz.netlineserv.chuangastudio.modules.locations.controller;
 
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.common.ApiResponse;
-import mz.netlineserv.chuangastudio.common.PageResponse;
-import mz.netlineserv.chuangastudio.domain.entity.Distrito;
-import mz.netlineserv.chuangastudio.domain.entity.Provincia;
-import mz.netlineserv.chuangastudio.repository.DistritoRepository;
-import mz.netlineserv.chuangastudio.repository.ProvinciaRepository;
+import mz.netlineserv.chuangastudio.shared.common.ApiResponse;
+import mz.netlineserv.chuangastudio.shared.common.PageResponse;
+import mz.netlineserv.chuangastudio.modules.locations.domain.Distrito;
+import mz.netlineserv.chuangastudio.modules.locations.domain.Provincia;
+import mz.netlineserv.chuangastudio.modules.locations.repository.DistritoRepository;
+import mz.netlineserv.chuangastudio.modules.locations.repository.ProvinciaRepository;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
