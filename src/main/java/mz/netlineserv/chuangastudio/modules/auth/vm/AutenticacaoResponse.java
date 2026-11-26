@@ -1,7 +1,8 @@
-package mz.netlineserv.chuangastudio.dto.response;
+package mz.netlineserv.chuangastudio.modules.auth.vm;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import mz.netlineserv.chuangastudio.modules.users.vm.UsuarioResponse;
 
 @Getter
 @AllArgsConstructor
