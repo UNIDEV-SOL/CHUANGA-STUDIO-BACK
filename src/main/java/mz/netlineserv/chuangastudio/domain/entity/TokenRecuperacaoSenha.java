@@ -8,7 +8,10 @@ import mz.netlineserv.chuangastudio.common.BaseAuditEntity;
 
 import java.time.LocalDateTime;
 
-/** Pedido de nova palavra-passe. Só o hash SHA-256 do token é guardado; o token vai no link do email. */
+/**
+ * Pedido de nova palavra-passe por código OTP. Só se guardam hashes: o do código enviado por email e,
+ * depois de o código ser confirmado, o do token curto que autoriza escolher a nova palavra-passe.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,4 +31,12 @@ public class TokenRecuperacaoSenha extends BaseAuditEntity {
 
     @Column(name = "usado_em")
     private LocalDateTime usadoEm;
+
+    /** Hash do código de 6 dígitos; fica nulo depois de confirmado (não serve uma segunda vez). */
+    @Column(name = "codigo_hash", length = 64)
+    private String codigoHash;
+
+    /** Códigos errados já tentados neste pedido. */
+    @Column(name = "tentativas", nullable = false)
+    private int tentativas;
 }
