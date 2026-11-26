@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.common.exception;
+package mz.netlineserv.chuangastudio.shared.exceptions;
 
 import lombok.Getter;
 
