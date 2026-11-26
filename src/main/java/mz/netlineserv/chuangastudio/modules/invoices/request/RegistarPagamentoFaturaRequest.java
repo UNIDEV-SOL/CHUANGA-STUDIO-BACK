@@ -1,10 +1,10 @@
-package mz.netlineserv.chuangastudio.dto.request;
+package mz.netlineserv.chuangastudio.modules.invoices.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import mz.netlineserv.chuangastudio.domain.enums.FormaPagamento;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.FormaPagamento;
 
 @Getter
 @Setter
