@@ -1,20 +1,20 @@
-package mz.netlineserv.chuangastudio.controller;
+package mz.netlineserv.chuangastudio.modules.invoices.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.common.ApiResponse;
-import mz.netlineserv.chuangastudio.common.PageResponse;
+import mz.netlineserv.chuangastudio.shared.common.ApiResponse;
+import mz.netlineserv.chuangastudio.shared.common.PageResponse;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 
-import mz.netlineserv.chuangastudio.domain.enums.StatusFatura;
-import mz.netlineserv.chuangastudio.dto.request.EmitirFaturaRequest;
-import mz.netlineserv.chuangastudio.dto.request.ReenviarFaturaRequest;
-import mz.netlineserv.chuangastudio.dto.request.RegistarPagamentoFaturaRequest;
-import mz.netlineserv.chuangastudio.dto.response.FaturaResponse;
-import mz.netlineserv.chuangastudio.service.FaturaService;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.StatusFatura;
+import mz.netlineserv.chuangastudio.modules.invoices.request.EmitirFaturaRequest;
+import mz.netlineserv.chuangastudio.modules.invoices.request.ReenviarFaturaRequest;
+import mz.netlineserv.chuangastudio.modules.invoices.request.RegistarPagamentoFaturaRequest;
+import mz.netlineserv.chuangastudio.modules.invoices.vm.FaturaResponse;
+import mz.netlineserv.chuangastudio.modules.invoices.service.FaturaService;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
