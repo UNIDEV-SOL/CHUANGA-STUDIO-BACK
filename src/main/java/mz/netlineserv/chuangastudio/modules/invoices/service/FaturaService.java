@@ -1,30 +1,28 @@
-package mz.netlineserv.chuangastudio.service.impl;
+package mz.netlineserv.chuangastudio.modules.invoices.service;
 
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.common.exception.AcessoNegadoException;
-import mz.netlineserv.chuangastudio.common.exception.RecursoNaoEncontradoException;
-import mz.netlineserv.chuangastudio.common.exception.RegraNegocioException;
-import mz.netlineserv.chuangastudio.domain.entity.*;
-import mz.netlineserv.chuangastudio.domain.enums.FormaPagamento;
-import mz.netlineserv.chuangastudio.domain.enums.StatusFatura;
-import mz.netlineserv.chuangastudio.domain.enums.StatusMarcacao;
-import mz.netlineserv.chuangastudio.dto.request.EmitirFaturaRequest;
-import mz.netlineserv.chuangastudio.dto.request.RegistarPagamentoFaturaRequest;
-import mz.netlineserv.chuangastudio.dto.response.FaturaResponse;
-import mz.netlineserv.chuangastudio.notificacao.DadosEstudio;
-import mz.netlineserv.chuangastudio.notificacao.FaturaPdfRenderer;
-import mz.netlineserv.chuangastudio.notificacao.NotificacaoFaturaEvent;
-import mz.netlineserv.chuangastudio.repository.FaturaRepository;
-import mz.netlineserv.chuangastudio.repository.MarcacaoRepository;
-import mz.netlineserv.chuangastudio.repository.ServicoRepository;
-import mz.netlineserv.chuangastudio.service.FaturaService;
-import mz.netlineserv.chuangastudio.service.UsuarioService;
+import mz.netlineserv.chuangastudio.shared.exceptions.AcessoNegadoException;
+import mz.netlineserv.chuangastudio.shared.exceptions.RecursoNaoEncontradoException;
+import mz.netlineserv.chuangastudio.shared.exceptions.RegraNegocioException;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.FormaPagamento;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.StatusFatura;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.StatusMarcacao;
+import mz.netlineserv.chuangastudio.modules.invoices.request.EmitirFaturaRequest;
+import mz.netlineserv.chuangastudio.modules.invoices.request.RegistarPagamentoFaturaRequest;
+import mz.netlineserv.chuangastudio.modules.invoices.vm.FaturaResponse;
+import mz.netlineserv.chuangastudio.shared.config.DadosEstudio;
+import mz.netlineserv.chuangastudio.modules.invoices.pdf.FaturaPdfRenderer;
+import mz.netlineserv.chuangastudio.modules.notifications.event.NotificacaoFaturaEvent;
+import mz.netlineserv.chuangastudio.modules.invoices.repository.FaturaRepository;
+import mz.netlineserv.chuangastudio.modules.bookings.repository.MarcacaoRepository;
+import mz.netlineserv.chuangastudio.modules.catalog.repository.ServicoRepository;
+import mz.netlineserv.chuangastudio.modules.users.service.UsuarioService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import mz.netlineserv.chuangastudio.common.PageResponse;
-import mz.netlineserv.chuangastudio.repository.spec.BaseSpecification;
+import mz.netlineserv.chuangastudio.shared.common.PageResponse;
+import mz.netlineserv.chuangastudio.shared.persistence.BaseSpecification;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -37,10 +35,19 @@ import java.time.ZoneId;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.Marcacao;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.MarcacaoServico;
+import mz.netlineserv.chuangastudio.modules.catalog.domain.Servico;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.Fatura;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.FaturaItem;
+import mz.netlineserv.chuangastudio.modules.users.domain.Usuario;
 
 @Service
 @RequiredArgsConstructor
-public class FaturaServiceImpl implements FaturaService {
+public class FaturaService {
+
+    public record Pdf(String nomeFicheiro, byte[] conteudo) {
+        }
 
     private static final ZoneId FUSO_ESTUDIO = ZoneId.of("Africa/Maputo");
     private static final SecureRandom ALEATORIO = new SecureRandom();
@@ -51,11 +58,10 @@ public class FaturaServiceImpl implements FaturaService {
     private final UsuarioService usuarioService;
     private final FaturaPdfRenderer faturaPdfRenderer;
     private final DadosEstudio dadosEstudio;
-    private final mz.netlineserv.chuangastudio.fidelizacao.FidelizacaoService fidelizacaoService;
-    private final mz.netlineserv.chuangastudio.fidelizacao.ValeService valeService;
+    private final mz.netlineserv.chuangastudio.modules.loyalty.service.FidelizacaoService fidelizacaoService;
+    private final mz.netlineserv.chuangastudio.modules.loyalty.service.ValeService valeService;
     private final ApplicationEventPublisher eventPublisher;
 
-    @Override
     @Transactional
     public FaturaResponse emitir(UUID marcacaoId, EmitirFaturaRequest request) {
         Marcacao marcacao = marcacaoRepository.buscarPorIdComDetalhes(marcacaoId)
@@ -127,7 +133,6 @@ public class FaturaServiceImpl implements FaturaService {
         return paraResposta(salva);
     }
 
-    @Override
     @Transactional
     public FaturaResponse registarPagamento(UUID id, RegistarPagamentoFaturaRequest request) {
         Fatura fatura = buscar(id);
@@ -139,7 +144,6 @@ public class FaturaServiceImpl implements FaturaService {
         return paraResposta(faturaRepository.save(fatura));
     }
 
-    @Override
     @Transactional
     public FaturaResponse anular(UUID id) {
         Fatura fatura = buscar(id);
@@ -161,7 +165,6 @@ public class FaturaServiceImpl implements FaturaService {
         return paraResposta(faturaRepository.save(fatura));
     }
 
-    @Override
     @Transactional
     public void reenviar(UUID id, String email) {
         Fatura fatura = buscar(id);
@@ -175,7 +178,6 @@ public class FaturaServiceImpl implements FaturaService {
         eventPublisher.publishEvent(new NotificacaoFaturaEvent(fatura.getId(), destino, false));
     }
 
-    @Override
     @Transactional(readOnly = true)
     public PageResponse<FaturaResponse> listarAdmin(StatusFatura status, String busca, UUID clienteId,
                                                    LocalDate dataInicio, LocalDate dataFim, Pageable pageable) {
@@ -189,7 +191,6 @@ public class FaturaServiceImpl implements FaturaService {
         return PageResponse.from(faturaRepository.findAll(spec, pageable).map(this::paraResposta));
     }
 
-    @Override
     @Transactional(readOnly = true)
     public PageResponse<FaturaResponse> listarDoClienteOnline(Pageable pageable) {
         Usuario cliente = usuarioService.obterUsuarioOnline();
@@ -200,19 +201,16 @@ public class FaturaServiceImpl implements FaturaService {
         return PageResponse.from(faturaRepository.findAll(spec, pageable).map(this::paraResposta));
     }
 
-    @Override
     @Transactional(readOnly = true)
     public FaturaResponse obterAdmin(UUID id) {
         return paraResposta(buscar(id));
     }
 
-    @Override
     @Transactional(readOnly = true)
     public Pdf pdfAdmin(UUID id) {
         return pdf(buscar(id));
     }
 
-    @Override
     @Transactional(readOnly = true)
     public Pdf pdfDoClienteOnline(UUID id) {
         Usuario cliente = usuarioService.obterUsuarioOnline();
@@ -223,7 +221,6 @@ public class FaturaServiceImpl implements FaturaService {
         return pdf(fatura);
     }
 
-    @Override
     @Transactional(readOnly = true)
     public Pdf pdfPublico(String token) {
         return pdf(faturaRepository.buscarPorTokenComDetalhes(token)
