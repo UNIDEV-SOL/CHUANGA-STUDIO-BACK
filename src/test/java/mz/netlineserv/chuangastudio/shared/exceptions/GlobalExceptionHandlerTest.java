@@ -1,10 +1,9 @@
-package mz.netlineserv.chuangastudio.common;
+package mz.netlineserv.chuangastudio.shared.exceptions;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import mz.netlineserv.chuangastudio.common.exception.GlobalExceptionHandler;
-import mz.netlineserv.chuangastudio.common.validacao.SenhaValida;
-import mz.netlineserv.chuangastudio.domain.enums.PapelUsuario;
+import mz.netlineserv.chuangastudio.shared.validators.SenhaValida;
+import mz.netlineserv.chuangastudio.modules.users.domain.PapelUsuario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
