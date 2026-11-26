@@ -1,11 +1,11 @@
-package mz.netlineserv.chuangastudio.security;
+package mz.netlineserv.chuangastudio.shared.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mz.netlineserv.chuangastudio.common.ApiResponse;
+import mz.netlineserv.chuangastudio.shared.common.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
