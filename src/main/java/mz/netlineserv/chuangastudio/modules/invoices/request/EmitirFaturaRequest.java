@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.dto.request;
+package mz.netlineserv.chuangastudio.modules.invoices.request;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Max;
@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size;
 import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
-import mz.netlineserv.chuangastudio.domain.enums.FormaPagamento;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.FormaPagamento;
 
 import java.math.BigDecimal;
 import java.util.List;
