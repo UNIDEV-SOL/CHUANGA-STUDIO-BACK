@@ -1,6 +1,6 @@
-package mz.netlineserv.chuangastudio.config;
+package mz.netlineserv.chuangastudio.shared.config;
 
-import mz.netlineserv.chuangastudio.security.UsuarioAutenticado;
+import mz.netlineserv.chuangastudio.shared.security.UsuarioAutenticado;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
