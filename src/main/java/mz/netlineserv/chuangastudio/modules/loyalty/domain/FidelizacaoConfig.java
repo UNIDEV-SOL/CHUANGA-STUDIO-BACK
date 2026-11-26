@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.fidelizacao;
+package mz.netlineserv.chuangastudio.modules.loyalty.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
