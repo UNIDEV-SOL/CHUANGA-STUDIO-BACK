@@ -1,10 +1,10 @@
-package mz.netlineserv.chuangastudio.fidelizacao;
+package mz.netlineserv.chuangastudio.modules.loyalty.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.common.ApiResponse;
-import mz.netlineserv.chuangastudio.common.PageResponse;
-import mz.netlineserv.chuangastudio.service.UsuarioService;
+import mz.netlineserv.chuangastudio.shared.common.ApiResponse;
+import mz.netlineserv.chuangastudio.shared.common.PageResponse;
+import mz.netlineserv.chuangastudio.modules.users.service.UsuarioService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -13,6 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
+import mz.netlineserv.chuangastudio.modules.loyalty.domain.Vale;
+import mz.netlineserv.chuangastudio.modules.loyalty.service.FidelizacaoService;
+import mz.netlineserv.chuangastudio.modules.loyalty.service.ValeService;
 
 @RestController
 @RequiredArgsConstructor
