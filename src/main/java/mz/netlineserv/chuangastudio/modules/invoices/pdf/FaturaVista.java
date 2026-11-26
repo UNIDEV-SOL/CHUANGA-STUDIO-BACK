@@ -1,10 +1,10 @@
-package mz.netlineserv.chuangastudio.notificacao;
+package mz.netlineserv.chuangastudio.modules.invoices.pdf;
 
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.domain.entity.Fatura;
-import mz.netlineserv.chuangastudio.domain.entity.Marcacao;
-import mz.netlineserv.chuangastudio.domain.entity.Usuario;
-import mz.netlineserv.chuangastudio.domain.enums.StatusFatura;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.Fatura;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.Marcacao;
+import mz.netlineserv.chuangastudio.modules.users.domain.Usuario;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.StatusFatura;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.Context;
 
@@ -13,7 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static mz.netlineserv.chuangastudio.notificacao.Formatos.*;
+import static mz.netlineserv.chuangastudio.shared.utils.Formatos.*;
+import mz.netlineserv.chuangastudio.shared.config.DadosEstudio;
 
 /** Variáveis de uma fatura para os templates (PDF e emails), já formatadas. */
 @Component
