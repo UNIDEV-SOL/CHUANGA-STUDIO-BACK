@@ -66,7 +66,7 @@ public class NotificacaoEmailListener {
     public void aoPedirRecuperacaoSenha(NotificacaoRecuperacaoSenhaEvent evento) {
         try {
             usuarioRepository.findById(evento.usuarioId()).ifPresent(usuario ->
-                    emailSender.enviar(emailComposer.comporRecuperacaoSenha(usuario, evento.token(), evento.validadeMinutos())));
+                    emailSender.enviar(emailComposer.comporRecuperacaoSenha(usuario, evento.codigo(), evento.validadeMinutos())));
         } catch (Exception ex) {
             log.error("Falha ao enviar o email de recuperação de palavra-passe ao utilizador {}", evento.usuarioId(), ex);
         }
