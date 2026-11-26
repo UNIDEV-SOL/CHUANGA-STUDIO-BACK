@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.chat;
+package mz.netlineserv.chuangastudio.modules.chat.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
