@@ -1,7 +1,7 @@
-package mz.netlineserv.chuangastudio.repository;
+package mz.netlineserv.chuangastudio.modules.quotations.repository;
 
-import mz.netlineserv.chuangastudio.domain.entity.Cotacao;
-import mz.netlineserv.chuangastudio.domain.enums.StatusCotacao;
+import mz.netlineserv.chuangastudio.modules.quotations.domain.Cotacao;
+import mz.netlineserv.chuangastudio.modules.quotations.domain.StatusCotacao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
