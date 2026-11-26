@@ -48,28 +48,28 @@ src/main/resources/db/migration/   (V1..V4 — Flyway)
 
 ## Mapeamento rota do frontend → endpoint
 
-| Página / fluxo do frontend                | Endpoint                                          | Autenticação        |
-|--------------------------------------------|----------------------------------------------------|----------------------|
-| `/servicos`, `/cotacao`, `/reservar`       | `GET /publico/servicos`                            | Público              |
-| `/entrar` (login)                          | `POST /auth/entrar`                                | Público              |
-| `/entrar` (cadastro)                       | `POST /auth/cadastrar`                             | Público              |
-| `/cotacao` (envio)                         | `POST /publico/cotacoes`                           | Público              |
-| `/reservar` (passo final do wizard)        | `POST /publico/marcacoes`                          | Público ou autenticado |
-| `/minha-area` (perfil)                     | `GET /minha-area/perfil`                           | Cliente              |
-| `/minha-area` (próximas/histórico)         | `GET /minha-area/marcacoes`                        | Cliente              |
-| `/minha-area` (cancelar)                   | `PATCH /minha-area/marcacoes/{id}/cancelar`        | Cliente              |
-| `/admin` (visão geral)                     | `GET /admin/estatisticas`                          | Admin                |
-| `/admin` (próximas marcações)              | `GET /admin/marcacoes/proximas`                    | Admin                |
-| `/admin` (atividade recente)               | `GET /admin/atividade-recente`                     | Admin                |
-| `/admin/clientes`                          | `GET /admin/clientes`                              | Admin                |
-| `/admin/marcacoes` (listar + filtros)      | `GET /admin/marcacoes?status=&busca=`              | Admin                |
-| `/admin/marcacoes` (mudar status)          | `PATCH /admin/marcacoes/{id}/status`                | Admin                |
-| `/admin/marcacoes` (confirmar pagamento)   | `PATCH /admin/marcacoes/{id}/confirmar-pagamento`   | Admin                |
-| `/admin/marcacoes` (eliminar)              | `DELETE /admin/marcacoes/{id}`                      | Admin                |
-| `/admin/cotacoes` (listar + filtro status) | `GET /admin/cotacoes?status=`                       | Admin                |
-| `/admin/cotacoes` (marcar respondido)      | `PATCH /admin/cotacoes/{id}/respondido`             | Admin                |
-| `/admin/cotacoes` (arquivar)               | `PATCH /admin/cotacoes/{id}/arquivar`               | Admin                |
-| `/admin/servicos` (CRUD)                   | `GET/POST/PUT/DELETE /admin/servicos[/{id}]`        | Admin                |
+| Página / fluxo do frontend                 | Endpoint                                            | Autenticação           |
+|--------------------------------------------|-----------------------------------------------------|------------------------|
+| `/servicos`, `/cotacao`, `/reservar`       | `GET /publico/servicos`                             | Público                |
+| `/entrar` (login)                          | `POST /auth/entrar`                                 | Público                |
+| `/entrar` (cadastro)                       | `POST /auth/cadastrar`                              | Público                |
+| `/cotacao` (envio)                         | `POST /publico/cotacoes`                            | Público                |
+| `/reservar` (passo final do wizard)        | `POST /publico/marcacoes`                           | Público ou autenticado |
+| `/minha-area` (perfil)                     | `GET /minha-area/perfil`                            | Cliente                |
+| `/minha-area` (próximas/histórico)         | `GET /minha-area/marcacoes`                         | Cliente                |
+| `/minha-area` (cancelar)                   | `PATCH /minha-area/marcacoes/{id}/cancelar`         | Cliente                |
+| `/admin` (visão geral)                     | `GET /admin/estatisticas`                           | Admin                  |
+| `/admin` (próximas marcações)              | `GET /admin/marcacoes/proximas`                     | Admin                  |
+| `/admin` (atividade recente)               | `GET /admin/atividade-recente`                      | Admin                  |
+| `/admin/clientes`                          | `GET /admin/clientes`                               | Admin                  |
+| `/admin/marcacoes` (listar + filtros)      | `GET /admin/marcacoes?status=&busca=`               | Admin                  |
+| `/admin/marcacoes` (mudar status)          | `PATCH /admin/marcacoes/{id}/status`                | Admin                  |
+| `/admin/marcacoes` (confirmar pagamento)   | `PATCH /admin/marcacoes/{id}/confirmar-pagamento`   | Admin                  |
+| `/admin/marcacoes` (eliminar)              | `DELETE /admin/marcacoes/{id}`                      | Admin                  |
+| `/admin/cotacoes` (listar + filtro status) | `GET /admin/cotacoes?status=`                       | Admin                  |
+| `/admin/cotacoes` (marcar respondido)      | `PATCH /admin/cotacoes/{id}/respondido`             | Admin                  |
+| `/admin/cotacoes` (arquivar)               | `PATCH /admin/cotacoes/{id}/arquivar`               | Admin                  |
+| `/admin/servicos` (CRUD)                   | `GET/POST/PUT/DELETE /admin/servicos[/{id}]`        | Admin                  |
 
 Todas as respostas seguem o wrapper `ApiResponse<T>`:
 ```json
