@@ -1,6 +1,6 @@
-package mz.netlineserv.chuangastudio.repository;
+package mz.netlineserv.chuangastudio.modules.catalog.repository;
 
-import mz.netlineserv.chuangastudio.domain.entity.Servico;
+import mz.netlineserv.chuangastudio.modules.catalog.domain.Servico;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
