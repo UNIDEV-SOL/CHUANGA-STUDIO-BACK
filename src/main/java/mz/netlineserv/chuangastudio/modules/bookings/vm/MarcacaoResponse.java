@@ -1,10 +1,10 @@
-package mz.netlineserv.chuangastudio.dto.response;
+package mz.netlineserv.chuangastudio.modules.bookings.vm;
 
 import lombok.AllArgsConstructor;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
-import mz.netlineserv.chuangastudio.domain.entity.Marcacao;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.Marcacao;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
