@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.notificacao;
+package mz.netlineserv.chuangastudio.shared.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import mz.netlineserv.chuangastudio.shared.utils.Formatos;
 
 /** Contactos e dados de pagamento do estúdio, usados nos emails e no PDF da fatura. */
 @Component
