@@ -1,17 +1,17 @@
-package mz.netlineserv.chuangastudio.notificacao;
+package mz.netlineserv.chuangastudio.modules.notifications.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mz.netlineserv.chuangastudio.domain.entity.Marcacao;
-import mz.netlineserv.chuangastudio.domain.entity.MarcacaoServico;
-import mz.netlineserv.chuangastudio.domain.entity.Notificacao;
-import mz.netlineserv.chuangastudio.domain.enums.StatusFatura;
-import mz.netlineserv.chuangastudio.domain.enums.TipoNotificacao;
-import mz.netlineserv.chuangastudio.repository.CotacaoRepository;
-import mz.netlineserv.chuangastudio.repository.FaturaRepository;
-import mz.netlineserv.chuangastudio.repository.MarcacaoRepository;
-import mz.netlineserv.chuangastudio.repository.NotificacaoRepository;
-import mz.netlineserv.chuangastudio.repository.UsuarioRepository;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.Marcacao;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.MarcacaoServico;
+import mz.netlineserv.chuangastudio.modules.notifications.domain.Notificacao;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.StatusFatura;
+import mz.netlineserv.chuangastudio.modules.notifications.domain.TipoNotificacao;
+import mz.netlineserv.chuangastudio.modules.quotations.repository.CotacaoRepository;
+import mz.netlineserv.chuangastudio.modules.invoices.repository.FaturaRepository;
+import mz.netlineserv.chuangastudio.modules.bookings.repository.MarcacaoRepository;
+import mz.netlineserv.chuangastudio.modules.notifications.repository.NotificacaoRepository;
+import mz.netlineserv.chuangastudio.modules.users.repository.UsuarioRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +20,11 @@ import org.springframework.transaction.event.TransactionalEventListener;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static mz.netlineserv.chuangastudio.notificacao.Formatos.*;
+import static mz.netlineserv.chuangastudio.shared.utils.Formatos.*;
+import mz.netlineserv.chuangastudio.modules.notifications.event.NotificacaoCotacaoEvent;
+import mz.netlineserv.chuangastudio.modules.notifications.event.NotificacaoFaturaEvent;
+import mz.netlineserv.chuangastudio.modules.notifications.event.NotificacaoMarcacaoEvent;
+import mz.netlineserv.chuangastudio.modules.notifications.event.NovoClienteEvent;
 
 /**
  * Notificações do sistema (sino do painel): os mesmos eventos que geram emails geram também
