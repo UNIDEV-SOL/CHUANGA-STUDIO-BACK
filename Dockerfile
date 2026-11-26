@@ -7,6 +7,11 @@ RUN mvn -q clean package -DskipTests
 
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
+# Sem utilizador root dentro do contentor.
+RUN addgroup -S app && adduser -S app -G app
+COPY --from=build --chown=app:app /app/target/*.jar app.jar
+USER app
+# Produção por omissão: exige os segredos por variável de ambiente e recusa os de exemplo.
+ENV SPRING_PROFILES_ACTIVE=prod
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
