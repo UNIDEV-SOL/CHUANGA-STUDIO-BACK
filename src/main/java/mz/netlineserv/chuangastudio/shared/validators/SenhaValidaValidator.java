@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.common.validacao;
+package mz.netlineserv.chuangastudio.shared.validators;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
