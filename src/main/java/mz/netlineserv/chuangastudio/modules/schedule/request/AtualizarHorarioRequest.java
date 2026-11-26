@@ -1,8 +1,8 @@
-package mz.netlineserv.chuangastudio.dto.request;
+package mz.netlineserv.chuangastudio.modules.schedule.request;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
-import mz.netlineserv.chuangastudio.dto.HorarioDiaDto;
+import mz.netlineserv.chuangastudio.modules.schedule.vm.HorarioDiaDto;
 
 import java.util.List;
 
