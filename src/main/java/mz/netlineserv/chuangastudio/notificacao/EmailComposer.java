@@ -220,13 +220,13 @@ public class EmailComposer {
                 templateEngine.process("email/estudio-cotacao", ctx), cotacao.getEmail()));
     }
 
-    public EmailMensagem comporRecuperacaoSenha(Usuario usuario, String token, int validadeMinutos) {
+    public EmailMensagem comporRecuperacaoSenha(Usuario usuario, String codigo, int validadeMinutos) {
         Context ctx = contextoBase();
         ctx.setVariable("nome", primeiroNome(usuario.getNome()));
-        ctx.setVariable("link", urlSite() + "/redefinir-senha?token=" + token);
+        ctx.setVariable("codigo", codigo);
         ctx.setVariable("validadeMinutos", validadeMinutos);
         ctx.setVariable("notaRodape", "Recebeu este email porque alguém pediu para redefinir a palavra-passe da sua conta.");
-        String assunto = "Redefinir a palavra-passe · Chuanga Studio";
+        String assunto = codigo + " é o seu código para redefinir a palavra-passe · Chuanga Studio";
         ctx.setVariable("assunto", assunto);
         return new EmailMensagem(usuario.getEmail(), assunto, templateEngine.process("email/recuperar-senha", ctx));
     }
