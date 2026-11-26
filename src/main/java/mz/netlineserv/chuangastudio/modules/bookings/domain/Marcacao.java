@@ -1,12 +1,10 @@
-package mz.netlineserv.chuangastudio.domain.entity;
+package mz.netlineserv.chuangastudio.modules.bookings.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mz.netlineserv.chuangastudio.common.BaseAuditEntity;
-import mz.netlineserv.chuangastudio.domain.enums.MetodoPagamento;
-import mz.netlineserv.chuangastudio.domain.enums.StatusMarcacao;
+import mz.netlineserv.chuangastudio.shared.persistence.BaseAuditEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,6 +12,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import mz.netlineserv.chuangastudio.modules.professionals.domain.Profissional;
+import mz.netlineserv.chuangastudio.modules.users.domain.Usuario;
 
 @Getter
 @Setter
