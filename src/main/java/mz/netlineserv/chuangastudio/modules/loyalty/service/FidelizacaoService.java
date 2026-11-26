@@ -1,14 +1,16 @@
-package mz.netlineserv.chuangastudio.fidelizacao;
+package mz.netlineserv.chuangastudio.modules.loyalty.service;
 
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.common.exception.RegraNegocioException;
-import mz.netlineserv.chuangastudio.repository.FaturaRepository;
+import mz.netlineserv.chuangastudio.shared.exceptions.RegraNegocioException;
+import mz.netlineserv.chuangastudio.modules.invoices.repository.FaturaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import mz.netlineserv.chuangastudio.modules.loyalty.domain.FidelizacaoConfig;
+import mz.netlineserv.chuangastudio.modules.loyalty.repository.FidelizacaoConfigRepository;
 
 /**
  * Cartão de carimbos: cada atendimento faturado é um carimbo; a cada N carimbos a cliente ganha
