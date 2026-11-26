@@ -1,19 +1,19 @@
-package mz.netlineserv.chuangastudio.avaliacao;
+package mz.netlineserv.chuangastudio.modules.reviews.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mz.netlineserv.chuangastudio.common.PageResponse;
-import mz.netlineserv.chuangastudio.common.exception.RecursoNaoEncontradoException;
-import mz.netlineserv.chuangastudio.common.exception.RegraNegocioException;
-import mz.netlineserv.chuangastudio.domain.entity.Marcacao;
-import mz.netlineserv.chuangastudio.domain.entity.MarcacaoServico;
-import mz.netlineserv.chuangastudio.domain.entity.Notificacao;
-import mz.netlineserv.chuangastudio.domain.enums.TipoNotificacao;
-import mz.netlineserv.chuangastudio.notificacao.EmailComposer;
-import mz.netlineserv.chuangastudio.notificacao.EmailSender;
-import mz.netlineserv.chuangastudio.notificacao.Formatos;
-import mz.netlineserv.chuangastudio.repository.NotificacaoRepository;
-import mz.netlineserv.chuangastudio.repository.spec.BaseSpecification;
+import mz.netlineserv.chuangastudio.shared.common.PageResponse;
+import mz.netlineserv.chuangastudio.shared.exceptions.RecursoNaoEncontradoException;
+import mz.netlineserv.chuangastudio.shared.exceptions.RegraNegocioException;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.Marcacao;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.MarcacaoServico;
+import mz.netlineserv.chuangastudio.modules.notifications.domain.Notificacao;
+import mz.netlineserv.chuangastudio.modules.notifications.domain.TipoNotificacao;
+import mz.netlineserv.chuangastudio.shared.email.EmailComposer;
+import mz.netlineserv.chuangastudio.shared.email.EmailSender;
+import mz.netlineserv.chuangastudio.shared.utils.Formatos;
+import mz.netlineserv.chuangastudio.modules.notifications.repository.NotificacaoRepository;
+import mz.netlineserv.chuangastudio.shared.persistence.BaseSpecification;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +26,8 @@ import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import mz.netlineserv.chuangastudio.modules.reviews.domain.Avaliacao;
+import mz.netlineserv.chuangastudio.modules.reviews.repository.AvaliacaoRepository;
 
 @Slf4j
 @Service
