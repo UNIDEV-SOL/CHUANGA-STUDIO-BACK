@@ -88,6 +88,8 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/publico/**").permitAll()
                         .requestMatchers("/", "/docs/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                        // Healthcheck do Docker (só diz UP/DOWN)
+                        .requestMatchers("/actuator/health").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         // /minha-area/perfil fica aberto a qualquer sessão (o frontend usa-o para validar o token do admin).
                         .requestMatchers("/minha-area/marcacoes/**", "/minha-area/faturas/**", "/minha-area/galeria/**", "/minha-area/fidelizacao").hasRole("CLIENTE")
