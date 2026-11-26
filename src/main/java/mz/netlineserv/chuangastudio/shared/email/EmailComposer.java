@@ -1,13 +1,13 @@
-package mz.netlineserv.chuangastudio.notificacao;
+package mz.netlineserv.chuangastudio.shared.email;
 
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.domain.entity.Cotacao;
-import mz.netlineserv.chuangastudio.domain.entity.Fatura;
-import mz.netlineserv.chuangastudio.domain.entity.Marcacao;
-import mz.netlineserv.chuangastudio.domain.entity.Usuario;
-import mz.netlineserv.chuangastudio.domain.enums.MetodoPagamento;
-import mz.netlineserv.chuangastudio.domain.enums.StatusFatura;
-import mz.netlineserv.chuangastudio.dto.response.RelatorioCaixaResponse;
+import mz.netlineserv.chuangastudio.modules.quotations.domain.Cotacao;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.Fatura;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.Marcacao;
+import mz.netlineserv.chuangastudio.modules.users.domain.Usuario;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.MetodoPagamento;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.StatusFatura;
+import mz.netlineserv.chuangastudio.modules.reports.vm.RelatorioCaixaResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.ITemplateEngine;
@@ -21,7 +21,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static mz.netlineserv.chuangastudio.notificacao.Formatos.*;
+import static mz.netlineserv.chuangastudio.shared.utils.Formatos.*;
+import mz.netlineserv.chuangastudio.modules.invoices.pdf.FaturaPdfRenderer;
+import mz.netlineserv.chuangastudio.modules.invoices.pdf.FaturaVista;
+import mz.netlineserv.chuangastudio.modules.notifications.event.NotificacaoMarcacaoEvent;
+import mz.netlineserv.chuangastudio.modules.reports.pdf.RelatorioPdfRenderer;
+import mz.netlineserv.chuangastudio.modules.reports.pdf.RelatorioVista;
+import mz.netlineserv.chuangastudio.shared.config.DadosEstudio;
+import mz.netlineserv.chuangastudio.shared.utils.Calendario;
 
 /** Transforma marcações, cotações e faturas em emails HTML a partir dos templates em templates/email. */
 @Component
@@ -169,7 +176,7 @@ public class EmailComposer {
                 "cliente", m.getCliente().getNome(),
                 "telefone", m.getCliente().getTelefone() != null ? m.getCliente().getTelefone() : "—",
                 "servicos", Calendario.descricao(m).replaceAll(" · Pedido nº .*$", ""),
-                "porConfirmar", m.getStatus() == mz.netlineserv.chuangastudio.domain.enums.StatusMarcacao.AGUARDA_CONFIRMACAO,
+                "porConfirmar", m.getStatus() == mz.netlineserv.chuangastudio.modules.bookings.domain.StatusMarcacao.AGUARDA_CONFIRMACAO,
                 "total", dinheiro(m.getValorTotal())
         )).toList());
         String assunto = "Agenda de amanhã · " + marcacoes.size() + (marcacoes.size() == 1 ? " marcação" : " marcações")
@@ -258,7 +265,7 @@ public class EmailComposer {
         return new EmailMensagem(marcacao.getCliente().getEmail(), assunto, templateEngine.process("email/manutencao-lembrete", ctx));
     }
 
-    public EmailMensagem comporVale(mz.netlineserv.chuangastudio.fidelizacao.Vale vale) {
+    public EmailMensagem comporVale(mz.netlineserv.chuangastudio.modules.loyalty.domain.Vale vale) {
         Context ctx = contextoBase();
         ctx.setVariable("nome", vale.getBeneficiarioNome() != null ? primeiroNome(vale.getBeneficiarioNome()) : null);
         ctx.setVariable("de", vale.getCompradorNome());
