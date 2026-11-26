@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.dto.request;
+package mz.netlineserv.chuangastudio.modules.schedule.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
