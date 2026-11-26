@@ -8,6 +8,8 @@ import lombok.Setter;
 import mz.netlineserv.chuangastudio.common.BaseAuditEntity;
 import mz.netlineserv.chuangastudio.domain.enums.PapelUsuario;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,6 +26,11 @@ public class Usuario extends BaseAuditEntity {
     @JsonIgnore
     @Column(name = "senha_hash", nullable = false)
     private String senhaHash;
+
+    /** Sessões (JWT) emitidas antes disto são recusadas. Nula = nunca foi alterada. */
+    @JsonIgnore
+    @Column(name = "senha_alterada_em")
+    private LocalDateTime senhaAlteradaEm;
 
     @Column(length = 30)
     private String telefone;
