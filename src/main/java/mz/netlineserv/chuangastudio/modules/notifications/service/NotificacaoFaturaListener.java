@@ -1,15 +1,21 @@
-package mz.netlineserv.chuangastudio.notificacao;
+package mz.netlineserv.chuangastudio.modules.notifications.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mz.netlineserv.chuangastudio.domain.entity.Fatura;
-import mz.netlineserv.chuangastudio.domain.entity.Usuario;
-import mz.netlineserv.chuangastudio.repository.FaturaRepository;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.Fatura;
+import mz.netlineserv.chuangastudio.modules.users.domain.Usuario;
+import mz.netlineserv.chuangastudio.modules.invoices.repository.FaturaRepository;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
+import mz.netlineserv.chuangastudio.modules.invoices.pdf.FaturaPdfRenderer;
+import mz.netlineserv.chuangastudio.modules.notifications.event.NotificacaoFaturaEvent;
+import mz.netlineserv.chuangastudio.shared.email.EmailComposer;
+import mz.netlineserv.chuangastudio.shared.email.EmailSender;
+import mz.netlineserv.chuangastudio.shared.utils.Formatos;
+import mz.netlineserv.chuangastudio.shared.whatsapp.WhatsAppSender;
 
 /**
  * Envia a fatura em PDF ao cliente (email e WhatsApp) e uma cópia ao estúdio,
