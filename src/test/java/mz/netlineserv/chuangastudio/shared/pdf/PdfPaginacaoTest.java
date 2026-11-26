@@ -1,11 +1,11 @@
-package mz.netlineserv.chuangastudio.notificacao;
+package mz.netlineserv.chuangastudio.shared.pdf;
 
-import mz.netlineserv.chuangastudio.domain.entity.Fatura;
-import mz.netlineserv.chuangastudio.domain.entity.FaturaItem;
-import mz.netlineserv.chuangastudio.domain.entity.Marcacao;
-import mz.netlineserv.chuangastudio.domain.entity.Usuario;
-import mz.netlineserv.chuangastudio.domain.enums.StatusFatura;
-import mz.netlineserv.chuangastudio.dto.response.RelatorioCaixaResponse;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.Fatura;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.FaturaItem;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.Marcacao;
+import mz.netlineserv.chuangastudio.modules.users.domain.Usuario;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.StatusFatura;
+import mz.netlineserv.chuangastudio.modules.reports.vm.RelatorioCaixaResponse;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -26,6 +26,11 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import mz.netlineserv.chuangastudio.modules.invoices.pdf.FaturaPdfRenderer;
+import mz.netlineserv.chuangastudio.modules.invoices.pdf.FaturaVista;
+import mz.netlineserv.chuangastudio.modules.reports.pdf.RelatorioPdfRenderer;
+import mz.netlineserv.chuangastudio.modules.reports.pdf.RelatorioVista;
+import mz.netlineserv.chuangastudio.shared.config.DadosEstudio;
 
 /**
  * Gera os PDFs a sério nos piores casos habituais e verifica a paginação:
