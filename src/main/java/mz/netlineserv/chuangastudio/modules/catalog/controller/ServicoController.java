@@ -1,17 +1,17 @@
-package mz.netlineserv.chuangastudio.controller;
+package mz.netlineserv.chuangastudio.modules.catalog.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.common.ApiResponse;
-import mz.netlineserv.chuangastudio.common.PageResponse;
+import mz.netlineserv.chuangastudio.shared.common.ApiResponse;
+import mz.netlineserv.chuangastudio.shared.common.PageResponse;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 
-import mz.netlineserv.chuangastudio.dto.request.ServicoRequest;
-import mz.netlineserv.chuangastudio.dto.response.ServicoResponse;
-import mz.netlineserv.chuangastudio.service.ServicoService;
+import mz.netlineserv.chuangastudio.modules.catalog.request.ServicoRequest;
+import mz.netlineserv.chuangastudio.modules.catalog.vm.ServicoResponse;
+import mz.netlineserv.chuangastudio.modules.catalog.service.ServicoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
