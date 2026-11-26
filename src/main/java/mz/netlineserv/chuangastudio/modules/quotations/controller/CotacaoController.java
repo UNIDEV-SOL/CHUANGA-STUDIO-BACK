@@ -1,18 +1,18 @@
-package mz.netlineserv.chuangastudio.controller;
+package mz.netlineserv.chuangastudio.modules.quotations.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.common.ApiResponse;
-import mz.netlineserv.chuangastudio.common.PageResponse;
+import mz.netlineserv.chuangastudio.shared.common.ApiResponse;
+import mz.netlineserv.chuangastudio.shared.common.PageResponse;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 
-import mz.netlineserv.chuangastudio.domain.enums.StatusCotacao;
-import mz.netlineserv.chuangastudio.dto.request.CriarCotacaoRequest;
-import mz.netlineserv.chuangastudio.dto.response.CotacaoResponse;
-import mz.netlineserv.chuangastudio.service.CotacaoService;
+import mz.netlineserv.chuangastudio.modules.quotations.domain.StatusCotacao;
+import mz.netlineserv.chuangastudio.modules.quotations.request.CriarCotacaoRequest;
+import mz.netlineserv.chuangastudio.modules.quotations.vm.CotacaoResponse;
+import mz.netlineserv.chuangastudio.modules.quotations.service.CotacaoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
