@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.dto;
+package mz.netlineserv.chuangastudio.modules.schedule.vm;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
