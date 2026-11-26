@@ -1,8 +1,8 @@
-package mz.netlineserv.chuangastudio.dto.response;
+package mz.netlineserv.chuangastudio.modules.quotations.vm;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import mz.netlineserv.chuangastudio.domain.entity.Cotacao;
+import mz.netlineserv.chuangastudio.modules.quotations.domain.Cotacao;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
