@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.common.validacao;
+package mz.netlineserv.chuangastudio.shared.validators;
 
 /** Expressões partilhadas pelas validações dos pedidos. */
 public final class Formatos {
