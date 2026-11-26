@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.domain.enums;
+package mz.netlineserv.chuangastudio.modules.notifications.domain;
 
 public enum TipoNotificacao {
     MARCACAO_NOVA,
