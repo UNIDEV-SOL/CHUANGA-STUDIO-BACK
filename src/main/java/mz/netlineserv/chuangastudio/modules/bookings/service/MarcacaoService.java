@@ -1,30 +1,28 @@
-package mz.netlineserv.chuangastudio.service.impl;
+package mz.netlineserv.chuangastudio.modules.bookings.service;
 
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.common.exception.AcessoNegadoException;
-import mz.netlineserv.chuangastudio.common.exception.RecursoNaoEncontradoException;
-import mz.netlineserv.chuangastudio.common.exception.RegraNegocioException;
-import mz.netlineserv.chuangastudio.domain.entity.*;
-import mz.netlineserv.chuangastudio.domain.enums.PapelUsuario;
-import mz.netlineserv.chuangastudio.domain.enums.StatusMarcacao;
-import mz.netlineserv.chuangastudio.dto.request.CriarMarcacaoRequest;
-import mz.netlineserv.chuangastudio.dto.response.MarcacaoResponse;
-import mz.netlineserv.chuangastudio.notificacao.NotificacaoMarcacaoEvent;
-import mz.netlineserv.chuangastudio.common.PageResponse;
-import mz.netlineserv.chuangastudio.dto.request.FiltroMarcacoes;
-import mz.netlineserv.chuangastudio.repository.FaturaRepository;
-import mz.netlineserv.chuangastudio.repository.MarcacaoRepository;
-import mz.netlineserv.chuangastudio.repository.spec.BaseSpecification;
+import mz.netlineserv.chuangastudio.shared.exceptions.AcessoNegadoException;
+import mz.netlineserv.chuangastudio.shared.exceptions.RecursoNaoEncontradoException;
+import mz.netlineserv.chuangastudio.shared.exceptions.RegraNegocioException;
+import mz.netlineserv.chuangastudio.modules.users.domain.PapelUsuario;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.StatusMarcacao;
+import mz.netlineserv.chuangastudio.modules.bookings.request.CriarMarcacaoRequest;
+import mz.netlineserv.chuangastudio.modules.bookings.vm.MarcacaoResponse;
+import mz.netlineserv.chuangastudio.modules.notifications.event.NotificacaoMarcacaoEvent;
+import mz.netlineserv.chuangastudio.shared.common.PageResponse;
+import mz.netlineserv.chuangastudio.modules.bookings.request.FiltroMarcacoes;
+import mz.netlineserv.chuangastudio.modules.invoices.repository.FaturaRepository;
+import mz.netlineserv.chuangastudio.modules.bookings.repository.MarcacaoRepository;
+import mz.netlineserv.chuangastudio.shared.persistence.BaseSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import mz.netlineserv.chuangastudio.repository.ProfissionalRepository;
-import mz.netlineserv.chuangastudio.repository.ServicoRepository;
-import mz.netlineserv.chuangastudio.repository.UsuarioRepository;
-import mz.netlineserv.chuangastudio.service.AgendaService;
-import mz.netlineserv.chuangastudio.service.MarcacaoService;
-import mz.netlineserv.chuangastudio.service.MoradaResolver;
-import mz.netlineserv.chuangastudio.service.UsuarioService;
+import mz.netlineserv.chuangastudio.modules.professionals.repository.ProfissionalRepository;
+import mz.netlineserv.chuangastudio.modules.catalog.repository.ServicoRepository;
+import mz.netlineserv.chuangastudio.modules.users.repository.UsuarioRepository;
+import mz.netlineserv.chuangastudio.modules.schedule.service.AgendaService;
+import mz.netlineserv.chuangastudio.modules.locations.service.MoradaResolver;
+import mz.netlineserv.chuangastudio.modules.users.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,10 +38,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.Marcacao;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.MarcacaoServico;
+import mz.netlineserv.chuangastudio.modules.catalog.domain.Servico;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.Fatura;
+import mz.netlineserv.chuangastudio.modules.professionals.domain.Profissional;
+import mz.netlineserv.chuangastudio.modules.users.domain.Usuario;
 
 @Service
 @RequiredArgsConstructor
-public class MarcacaoServiceImpl implements MarcacaoService {
+public class MarcacaoService {
 
     private static final BigDecimal VALOR_ADIANTAMENTO_PADRAO = new BigDecimal("150.00");
     private static final int TAMANHO_MINIMO_REFERENCIA = 4;
@@ -63,7 +67,6 @@ public class MarcacaoServiceImpl implements MarcacaoService {
     @Value("${app.marcacoes.antecedencia-remarcar-horas:24}")
     private int antecedenciaRemarcarHoras;
 
-    @Override
     @Transactional
     public MarcacaoResponse criar(CriarMarcacaoRequest request, boolean autenticado) {
 
@@ -156,11 +159,10 @@ public class MarcacaoServiceImpl implements MarcacaoService {
         novoCliente.setPapel(PapelUsuario.CLIENTE);
         moradaResolver.aplicar(novoCliente, request.getProvinciaId(), request.getDistritoId());
         Usuario salvo = usuarioRepository.save(novoCliente);
-        eventPublisher.publishEvent(new mz.netlineserv.chuangastudio.notificacao.NovoClienteEvent(salvo.getId()));
+        eventPublisher.publishEvent(new mz.netlineserv.chuangastudio.modules.notifications.event.NovoClienteEvent(salvo.getId()));
         return salvo;
     }
 
-    @Override
     @Transactional(readOnly = true)
     public PageResponse<MarcacaoResponse> listarDoClienteOnline(Pageable pageable) {
         Usuario cliente = usuarioService.obterUsuarioOnline();
@@ -168,7 +170,6 @@ public class MarcacaoServiceImpl implements MarcacaoService {
         return PageResponse.from(marcacaoRepository.findAll(spec, pageable).map(MarcacaoResponse::deEntidade));
     }
 
-    @Override
     @Transactional(readOnly = true)
     public PageResponse<MarcacaoResponse> listarAdmin(FiltroMarcacoes filtro, Pageable pageable) {
         Specification<Marcacao> spec = BaseSpecification.of(Marcacao.class)
@@ -184,7 +185,6 @@ public class MarcacaoServiceImpl implements MarcacaoService {
         return PageResponse.from(pagina);
     }
 
-    @Override
     @Transactional(readOnly = true)
     public MarcacaoResponse obterAdmin(UUID id) {
         MarcacaoResponse resposta = MarcacaoResponse.deEntidade(buscarPorId(id));
@@ -212,7 +212,6 @@ public class MarcacaoServiceImpl implements MarcacaoService {
         }
     }
 
-    @Override
     @Transactional
     public MarcacaoResponse atualizarStatus(UUID id, StatusMarcacao novoStatus) {
         Marcacao marcacao = buscarPorId(id);
@@ -236,7 +235,6 @@ public class MarcacaoServiceImpl implements MarcacaoService {
         return MarcacaoResponse.deEntidade(marcacaoRepository.save(marcacao));
     }
 
-    @Override
     @Transactional
     public MarcacaoResponse confirmarPagamento(UUID id) {
         Marcacao marcacao = buscarPorId(id);
@@ -252,7 +250,6 @@ public class MarcacaoServiceImpl implements MarcacaoService {
         return MarcacaoResponse.deEntidade(marcacaoRepository.save(marcacao));
     }
 
-    @Override
     @Transactional
     public MarcacaoResponse cancelarDoClienteOnline(UUID id) {
         Usuario cliente = usuarioService.obterUsuarioOnline();
@@ -269,7 +266,7 @@ public class MarcacaoServiceImpl implements MarcacaoService {
         return MarcacaoResponse.deEntidade(marcacaoRepository.save(marcacao));
     }
 
-    @Override
+    /** Pela cliente: só marcações ativas e com antecedência mínima (app.marcacoes.antecedencia-remarcar-horas). */
     @Transactional
     public MarcacaoResponse remarcarDoClienteOnline(UUID id, LocalDate data, LocalTime hora) {
         Usuario cliente = usuarioService.obterUsuarioOnline();
@@ -286,7 +283,7 @@ public class MarcacaoServiceImpl implements MarcacaoService {
         return remarcar(marcacao, data, hora, true);
     }
 
-    @Override
+    /** Pelo estúdio: muda quem faz o atendimento (nulo = sem profissional). */
     @Transactional
     public MarcacaoResponse atribuirProfissional(UUID id, UUID profissionalId) {
         Marcacao marcacao = buscarPorId(id);
@@ -305,7 +302,7 @@ public class MarcacaoServiceImpl implements MarcacaoService {
         return MarcacaoResponse.deEntidade(marcacaoRepository.save(marcacao));
     }
 
-    @Override
+    /** Pelo estúdio: sem antecedência mínima. */
     @Transactional
     public MarcacaoResponse remarcarAdmin(UUID id, LocalDate data, LocalTime hora) {
         return remarcar(buscarPorId(id), data, hora, false);
@@ -345,7 +342,6 @@ public class MarcacaoServiceImpl implements MarcacaoService {
         return MarcacaoResponse.deEntidade(salva);
     }
 
-    @Override
     @Transactional
     public void eliminar(UUID id) {
         Marcacao marcacao = buscarPorId(id);
