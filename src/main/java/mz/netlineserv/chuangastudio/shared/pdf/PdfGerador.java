@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.notificacao;
+package mz.netlineserv.chuangastudio.shared.pdf;
 
 import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder.FontStyle;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Base64;
 import java.util.List;
+import mz.netlineserv.chuangastudio.shared.config.DadosEstudio;
+import mz.netlineserv.chuangastudio.shared.utils.Formatos;
 
 /**
  * Template Thymeleaf -> PDF com a identidade do estúdio (as fontes do site e o coração do logótipo).
