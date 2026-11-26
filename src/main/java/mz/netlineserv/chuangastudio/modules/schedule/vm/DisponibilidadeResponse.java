@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.dto.response;
+package mz.netlineserv.chuangastudio.modules.schedule.vm;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
