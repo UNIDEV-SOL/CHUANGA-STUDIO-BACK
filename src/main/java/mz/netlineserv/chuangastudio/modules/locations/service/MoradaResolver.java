@@ -1,11 +1,11 @@
-package mz.netlineserv.chuangastudio.service;
+package mz.netlineserv.chuangastudio.modules.locations.service;
 
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.common.exception.RegraNegocioException;
-import mz.netlineserv.chuangastudio.domain.entity.Distrito;
-import mz.netlineserv.chuangastudio.domain.entity.Usuario;
-import mz.netlineserv.chuangastudio.repository.DistritoRepository;
-import mz.netlineserv.chuangastudio.repository.ProvinciaRepository;
+import mz.netlineserv.chuangastudio.shared.exceptions.RegraNegocioException;
+import mz.netlineserv.chuangastudio.modules.locations.domain.Distrito;
+import mz.netlineserv.chuangastudio.modules.users.domain.Usuario;
+import mz.netlineserv.chuangastudio.modules.locations.repository.DistritoRepository;
+import mz.netlineserv.chuangastudio.modules.locations.repository.ProvinciaRepository;
 import org.springframework.stereotype.Component;
 
 /** Aplica província/distrito (opcionais) a um utilizador, garantindo que o distrito é da província. */
