@@ -1,6 +1,6 @@
-package mz.netlineserv.chuangastudio.repository;
+package mz.netlineserv.chuangastudio.modules.locations.repository;
 
-import mz.netlineserv.chuangastudio.domain.entity.Distrito;
+import mz.netlineserv.chuangastudio.modules.locations.domain.Distrito;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
