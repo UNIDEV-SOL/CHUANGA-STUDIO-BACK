@@ -27,7 +27,7 @@ services:
       start_period: 20s
 
   api:
-    image: ghcr.io/igortobias/chuanga-studio-backend:${TAG:-latest}
+    image: ghcr.io/unidev-sol/chuanga-studio-backend:${TAG:-latest}
     restart: unless-stopped
     env_file: .env
     environment:
@@ -40,7 +40,7 @@ services:
     networks: [interna]
 
   web:
-    image: ghcr.io/igortobias/chuanga-studio-frontend:${TAG:-latest}
+    image: ghcr.io/unidev-sol/chuanga-studio-frontend:${TAG:-latest}
     restart: unless-stopped
     depends_on:
       api:

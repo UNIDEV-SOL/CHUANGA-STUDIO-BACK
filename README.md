@@ -73,7 +73,7 @@ src/main/resources/db/migration/   (Flyway)
 ## Docker e deploy
 
 - `Dockerfile` — imagem de produção (build com Maven, runtime só com JRE 21, sem root, healthcheck).
-- `.github/workflows/docker-publish.yml` — testa e publica a imagem em `ghcr.io/igortobias/chuanga-studio-backend`.
+- `.github/workflows/docker-publish.yml` — testa e publica a imagem em `ghcr.io/unidev-sol/chuanga-studio-backend`.
 - `deploy/` — `compose.yaml` e `.env.example` para o servidor; passo a passo em [`deploy/DEPLOY.md`](deploy/DEPLOY.md).
 
 ## Mapeamento rota do frontend → endpoint

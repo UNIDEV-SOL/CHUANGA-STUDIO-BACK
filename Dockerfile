@@ -15,7 +15,7 @@ RUN mvn -q -B clean package -DskipTests
 FROM eclipse-temurin:21-jre-alpine
 LABEL org.opencontainers.image.title="chuanga-studio-backend" \
       org.opencontainers.image.description="API do Chuanga Studio (Spring Boot)" \
-      org.opencontainers.image.source="https://github.com/igortobias/CHUANGA-STUDIO-BACK"
+      org.opencontainers.image.source="https://github.com/UNIDEV-SOL/CHUANGA-STUDIO-BACK"
 WORKDIR /app
 # Sem utilizador root dentro do contentor.
 RUN addgroup -S app && adduser -S app -G app
