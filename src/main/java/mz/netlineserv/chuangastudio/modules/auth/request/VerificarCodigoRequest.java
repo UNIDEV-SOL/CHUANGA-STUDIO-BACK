@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.dto.request;
+package mz.netlineserv.chuangastudio.modules.auth.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
