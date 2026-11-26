@@ -1,16 +1,15 @@
-package mz.netlineserv.chuangastudio.service.impl;
+package mz.netlineserv.chuangastudio.modules.reports.service;
 
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.common.exception.RegraNegocioException;
-import mz.netlineserv.chuangastudio.domain.entity.Fatura;
-import mz.netlineserv.chuangastudio.domain.entity.FaturaItem;
-import mz.netlineserv.chuangastudio.domain.enums.FormaPagamento;
-import mz.netlineserv.chuangastudio.domain.enums.StatusFatura;
-import mz.netlineserv.chuangastudio.domain.enums.StatusMarcacao;
-import mz.netlineserv.chuangastudio.dto.response.RelatorioCaixaResponse;
-import mz.netlineserv.chuangastudio.repository.FaturaRepository;
-import mz.netlineserv.chuangastudio.repository.MarcacaoRepository;
-import mz.netlineserv.chuangastudio.service.RelatorioService;
+import mz.netlineserv.chuangastudio.shared.exceptions.RegraNegocioException;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.Fatura;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.FaturaItem;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.FormaPagamento;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.StatusFatura;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.StatusMarcacao;
+import mz.netlineserv.chuangastudio.modules.reports.vm.RelatorioCaixaResponse;
+import mz.netlineserv.chuangastudio.modules.invoices.repository.FaturaRepository;
+import mz.netlineserv.chuangastudio.modules.bookings.repository.MarcacaoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,14 +27,13 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class RelatorioServiceImpl implements RelatorioService {
+public class RelatorioService {
 
     private static final int MAX_DIAS = 366;
 
     private final FaturaRepository faturaRepository;
     private final MarcacaoRepository marcacaoRepository;
 
-    @Override
     @Transactional(readOnly = true)
     public RelatorioCaixaResponse caixa(LocalDate inicio, LocalDate fim) {
         if (fim.isBefore(inicio)) {
