@@ -1,14 +1,15 @@
-package mz.netlineserv.chuangastudio.fidelizacao;
+package mz.netlineserv.chuangastudio.modules.loyalty.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mz.netlineserv.chuangastudio.notificacao.EmailComposer;
-import mz.netlineserv.chuangastudio.notificacao.EmailSender;
+import mz.netlineserv.chuangastudio.shared.email.EmailComposer;
+import mz.netlineserv.chuangastudio.shared.email.EmailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
+import mz.netlineserv.chuangastudio.modules.loyalty.repository.ValeRepository;
 
 /** Envia o vale-oferta por email a quem o recebe (quando foi indicado um email). */
 @Slf4j
