@@ -1,6 +1,6 @@
-package mz.netlineserv.chuangastudio.dto.response;
+package mz.netlineserv.chuangastudio.modules.professionals.vm;
 
-import mz.netlineserv.chuangastudio.domain.entity.Profissional;
+import mz.netlineserv.chuangastudio.modules.professionals.domain.Profissional;
 
 import java.util.UUID;
 
