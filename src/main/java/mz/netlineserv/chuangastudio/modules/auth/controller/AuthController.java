@@ -1,15 +1,15 @@
-package mz.netlineserv.chuangastudio.controller;
+package mz.netlineserv.chuangastudio.modules.auth.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.common.ApiResponse;
-import mz.netlineserv.chuangastudio.dto.request.CadastroRequest;
-import mz.netlineserv.chuangastudio.dto.request.LoginRequest;
-import mz.netlineserv.chuangastudio.dto.request.RecuperarSenhaRequest;
-import mz.netlineserv.chuangastudio.dto.request.RedefinirSenhaRequest;
-import mz.netlineserv.chuangastudio.dto.request.VerificarCodigoRequest;
-import mz.netlineserv.chuangastudio.dto.response.AutenticacaoResponse;
-import mz.netlineserv.chuangastudio.service.AuthService;
+import mz.netlineserv.chuangastudio.shared.common.ApiResponse;
+import mz.netlineserv.chuangastudio.modules.auth.request.CadastroRequest;
+import mz.netlineserv.chuangastudio.modules.auth.request.LoginRequest;
+import mz.netlineserv.chuangastudio.modules.auth.request.RecuperarSenhaRequest;
+import mz.netlineserv.chuangastudio.modules.auth.request.RedefinirSenhaRequest;
+import mz.netlineserv.chuangastudio.modules.auth.request.VerificarCodigoRequest;
+import mz.netlineserv.chuangastudio.modules.auth.vm.AutenticacaoResponse;
+import mz.netlineserv.chuangastudio.modules.auth.service.AuthService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
