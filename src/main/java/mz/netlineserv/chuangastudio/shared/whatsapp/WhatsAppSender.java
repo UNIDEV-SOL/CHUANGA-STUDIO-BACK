@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.notificacao;
+package mz.netlineserv.chuangastudio.shared.whatsapp;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +15,7 @@ import org.springframework.web.client.RestClientResponseException;
 
 import java.util.List;
 import java.util.Map;
+import mz.netlineserv.chuangastudio.shared.utils.Formatos;
 
 /**
  * Envia a fatura em PDF pela WhatsApp Business Cloud API (Meta).
