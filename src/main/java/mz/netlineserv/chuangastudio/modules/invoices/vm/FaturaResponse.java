@@ -1,10 +1,10 @@
-package mz.netlineserv.chuangastudio.dto.response;
+package mz.netlineserv.chuangastudio.modules.invoices.vm;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import mz.netlineserv.chuangastudio.domain.entity.Fatura;
-import mz.netlineserv.chuangastudio.domain.entity.FaturaItem;
-import mz.netlineserv.chuangastudio.domain.entity.Usuario;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.Fatura;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.FaturaItem;
+import mz.netlineserv.chuangastudio.modules.users.domain.Usuario;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
