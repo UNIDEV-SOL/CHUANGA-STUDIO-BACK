@@ -1,6 +1,6 @@
-package mz.netlineserv.chuangastudio.repository;
+package mz.netlineserv.chuangastudio.modules.professionals.repository;
 
-import mz.netlineserv.chuangastudio.domain.entity.Profissional;
+import mz.netlineserv.chuangastudio.modules.professionals.domain.Profissional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
