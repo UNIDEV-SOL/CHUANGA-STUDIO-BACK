@@ -1,11 +1,11 @@
-package mz.netlineserv.chuangastudio.dto.request;
+package mz.netlineserv.chuangastudio.modules.auth.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import mz.netlineserv.chuangastudio.common.validacao.Formatos;
-import mz.netlineserv.chuangastudio.common.validacao.SenhaValida;
+import mz.netlineserv.chuangastudio.shared.validators.Formatos;
+import mz.netlineserv.chuangastudio.shared.validators.SenhaValida;
 import lombok.Getter;
 import lombok.Setter;
 
