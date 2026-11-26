@@ -1,17 +1,17 @@
-package mz.netlineserv.chuangastudio.controller;
+package mz.netlineserv.chuangastudio.modules.reports.controller;
 
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.common.ApiResponse;
-import mz.netlineserv.chuangastudio.dto.response.ClienteResumoResponse;
-import mz.netlineserv.chuangastudio.dto.response.EstatisticasAdminResponse;
-import mz.netlineserv.chuangastudio.dto.response.MarcacaoResponse;
-import mz.netlineserv.chuangastudio.service.AdminDashboardService;
+import mz.netlineserv.chuangastudio.shared.common.ApiResponse;
+import mz.netlineserv.chuangastudio.modules.clients.vm.ClienteResumoResponse;
+import mz.netlineserv.chuangastudio.modules.reports.vm.EstatisticasAdminResponse;
+import mz.netlineserv.chuangastudio.modules.bookings.vm.MarcacaoResponse;
+import mz.netlineserv.chuangastudio.modules.reports.service.AdminDashboardService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
-import mz.netlineserv.chuangastudio.common.PageResponse;
+import mz.netlineserv.chuangastudio.shared.common.PageResponse;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
