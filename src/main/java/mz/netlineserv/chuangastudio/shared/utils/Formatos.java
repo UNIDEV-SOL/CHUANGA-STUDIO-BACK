@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.notificacao;
+package mz.netlineserv.chuangastudio.shared.utils;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
