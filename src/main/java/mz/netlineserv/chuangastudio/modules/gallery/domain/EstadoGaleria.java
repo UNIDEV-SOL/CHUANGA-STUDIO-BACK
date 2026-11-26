@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.domain.enums;
+package mz.netlineserv.chuangastudio.modules.gallery.domain;
 
 /** Fotos da equipa entram APROVADA; sugestões das clientes entram PENDENTE até à curadoria. */
 public enum EstadoGaleria {
