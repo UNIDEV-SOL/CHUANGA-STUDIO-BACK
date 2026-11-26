@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.domain.entity;
+package mz.netlineserv.chuangastudio.modules.professionals.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -6,7 +6,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mz.netlineserv.chuangastudio.common.BaseAuditEntity;
+import mz.netlineserv.chuangastudio.shared.persistence.BaseAuditEntity;
 
 /** Técnica do estúdio. Só as ativas contam para a capacidade e aparecem na reserva. */
 @Getter
