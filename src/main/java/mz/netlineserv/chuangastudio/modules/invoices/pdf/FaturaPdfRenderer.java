@@ -1,9 +1,10 @@
-package mz.netlineserv.chuangastudio.notificacao;
+package mz.netlineserv.chuangastudio.modules.invoices.pdf;
 
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.domain.entity.Fatura;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.Fatura;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.Context;
+import mz.netlineserv.chuangastudio.shared.pdf.PdfGerador;
 
 /** PDF da fatura a partir de templates/fatura/fatura.html. */
 @Component
