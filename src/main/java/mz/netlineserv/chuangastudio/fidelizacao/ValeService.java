@@ -1,5 +1,8 @@
 package mz.netlineserv.chuangastudio.fidelizacao;
 
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import mz.netlineserv.chuangastudio.common.PageResponse;
 import mz.netlineserv.chuangastudio.common.exception.RecursoNaoEncontradoException;
@@ -31,8 +34,14 @@ public class ValeService {
     private final ValeRepository valeRepository;
     private final ApplicationEventPublisher eventPublisher;
 
-    public record CriarValeRequest(BigDecimal valor, String compradorNome, String compradorContacto,
-                                   String beneficiarioNome, String beneficiarioEmail, String mensagem, LocalDate validoAte) {
+    public record CriarValeRequest(
+            @DecimalMax(value = "1000000", message = "O valor máximo de um vale é 1 000 000 MZN") BigDecimal valor,
+            @Size(max = 150, message = "O nome de quem compra pode ter até 150 caracteres") String compradorNome,
+            @Size(max = 150, message = "O contacto de quem compra pode ter até 150 caracteres") String compradorContacto,
+            @Size(max = 150, message = "O nome da beneficiária pode ter até 150 caracteres") String beneficiarioNome,
+            @Email(message = "Email da beneficiária inválido") @Size(max = 180, message = "O email pode ter até 180 caracteres") String beneficiarioEmail,
+            @Size(max = 400, message = "A mensagem pode ter até 400 caracteres") String mensagem,
+            LocalDate validoAte) {
     }
 
     public record ValeResponse(UUID id, String codigo, BigDecimal valorInicial, BigDecimal saldo, String compradorNome,
