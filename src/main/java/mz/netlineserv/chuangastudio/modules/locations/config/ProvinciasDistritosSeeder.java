@@ -1,8 +1,8 @@
-package mz.netlineserv.chuangastudio.config;
+package mz.netlineserv.chuangastudio.modules.locations.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mz.netlineserv.chuangastudio.repository.ProvinciaRepository;
+import mz.netlineserv.chuangastudio.modules.locations.repository.ProvinciaRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
