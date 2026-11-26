@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.common.exception;
+package mz.netlineserv.chuangastudio.shared.exceptions;
 
 public class ContaDesativadaException extends RuntimeException {
     public ContaDesativadaException(String mensagem) {
