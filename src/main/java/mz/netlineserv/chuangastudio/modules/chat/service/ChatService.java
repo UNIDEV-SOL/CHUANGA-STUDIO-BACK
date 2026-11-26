@@ -1,12 +1,12 @@
-package mz.netlineserv.chuangastudio.chat;
+package mz.netlineserv.chuangastudio.modules.chat.service;
 
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.common.PageResponse;
-import mz.netlineserv.chuangastudio.common.exception.AcessoNegadoException;
-import mz.netlineserv.chuangastudio.common.exception.RecursoNaoEncontradoException;
-import mz.netlineserv.chuangastudio.common.exception.RegraNegocioException;
-import mz.netlineserv.chuangastudio.domain.entity.Usuario;
-import mz.netlineserv.chuangastudio.repository.spec.BaseSpecification;
+import mz.netlineserv.chuangastudio.shared.common.PageResponse;
+import mz.netlineserv.chuangastudio.shared.exceptions.AcessoNegadoException;
+import mz.netlineserv.chuangastudio.shared.exceptions.RecursoNaoEncontradoException;
+import mz.netlineserv.chuangastudio.shared.exceptions.RegraNegocioException;
+import mz.netlineserv.chuangastudio.modules.users.domain.Usuario;
+import mz.netlineserv.chuangastudio.shared.persistence.BaseSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +21,15 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static mz.netlineserv.chuangastudio.chat.ChatSuporte.*;
+import static mz.netlineserv.chuangastudio.modules.chat.service.ChatSuporte.*;
+import mz.netlineserv.chuangastudio.modules.chat.domain.ChatAnexo;
+import mz.netlineserv.chuangastudio.modules.chat.domain.Conversa;
+import mz.netlineserv.chuangastudio.modules.chat.domain.ConversaMembro;
+import mz.netlineserv.chuangastudio.modules.chat.domain.Mensagem;
+import mz.netlineserv.chuangastudio.modules.chat.repository.ChatAnexoRepository;
+import mz.netlineserv.chuangastudio.modules.chat.repository.ConversaMembroRepository;
+import mz.netlineserv.chuangastudio.modules.chat.repository.ConversaRepository;
+import mz.netlineserv.chuangastudio.modules.chat.repository.MensagemRepository;
 
 /**
  * Chat ao estilo WhatsApp (sem chamadas):
