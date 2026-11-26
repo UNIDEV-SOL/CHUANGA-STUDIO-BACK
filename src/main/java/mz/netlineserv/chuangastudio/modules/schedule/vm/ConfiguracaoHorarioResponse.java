@@ -1,6 +1,5 @@
-package mz.netlineserv.chuangastudio.dto.response;
+package mz.netlineserv.chuangastudio.modules.schedule.vm;
 
-import mz.netlineserv.chuangastudio.dto.HorarioDiaDto;
 
 import java.time.LocalDate;
 import java.util.List;
