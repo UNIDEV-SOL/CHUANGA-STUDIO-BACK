@@ -1,6 +1,6 @@
-package mz.netlineserv.chuangastudio.security;
+package mz.netlineserv.chuangastudio.shared.security;
 
-import mz.netlineserv.chuangastudio.common.exception.LimiteExcedidoException;
+import mz.netlineserv.chuangastudio.shared.exceptions.LimiteExcedidoException;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
