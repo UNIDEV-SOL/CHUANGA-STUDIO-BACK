@@ -1,6 +1,6 @@
-package mz.netlineserv.chuangastudio.security;
+package mz.netlineserv.chuangastudio.shared.security;
 
-import mz.netlineserv.chuangastudio.common.exception.LimiteExcedidoException;
+import mz.netlineserv.chuangastudio.shared.exceptions.LimiteExcedidoException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
