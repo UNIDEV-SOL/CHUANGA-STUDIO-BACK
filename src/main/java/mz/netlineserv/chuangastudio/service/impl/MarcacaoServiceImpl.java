@@ -138,9 +138,14 @@ public class MarcacaoServiceImpl implements MarcacaoService {
         if (usuarioRepository.existsByEmailAndDeletadoFalse(request.getEmail())) {
             throw new RegraNegocioException("Já existe uma conta com este email. Inicie sessão para concluir a reserva.");
         }
-        if (request.getSenha() == null || request.getSenha().length() < 6) {
-            throw new RegraNegocioException(
-                    "Defina uma palavra-passe com pelo menos 6 caracteres para criar a sua conta.");
+        if (request.getSenha() == null || request.getSenha().isBlank()) {
+            throw new RegraNegocioException("Defina uma palavra-passe para criar a sua conta e concluir a reserva.");
+        }
+        if (request.getNome() == null || request.getNome().isBlank()) {
+            throw new RegraNegocioException("Nome é obrigatório para concluir a reserva.");
+        }
+        if (request.getTelefone() == null || request.getTelefone().isBlank()) {
+            throw new RegraNegocioException("Telefone é obrigatório para concluir a reserva.");
         }
 
         Usuario novoCliente = new Usuario();
