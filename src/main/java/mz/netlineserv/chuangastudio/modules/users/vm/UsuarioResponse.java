@@ -1,8 +1,8 @@
-package mz.netlineserv.chuangastudio.dto.response;
+package mz.netlineserv.chuangastudio.modules.users.vm;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import mz.netlineserv.chuangastudio.domain.entity.Usuario;
+import mz.netlineserv.chuangastudio.modules.users.domain.Usuario;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
