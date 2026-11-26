@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="pt"
-      th:replace="~{email/layout :: layout(~{::conteudo}, 'Use o botão para escolher uma nova palavra-passe. O link é válido durante ' + ${validadeMinutos} + ' minutos.')}">
+      th:replace="~{email/layout :: layout(~{::conteudo}, 'O seu código é ' + ${codigo} + '. É válido durante ' + ${validadeMinutos} + ' minutos.')}">
 <body>
 <th:block th:fragment="conteudo">
-    <th:block th:replace="~{email/componentes :: titulo('A sua conta', 'Nova', 'palavra-passe')}"></th:block>
+    <th:block th:replace="~{email/componentes :: titulo('A sua conta', 'Código de', 'recuperação')}"></th:block>
     <p style="margin:18px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#555e6f;">
         Olá <span th:text="${nome}">Ana</span>, recebemos um pedido para redefinir a palavra-passe da sua conta
-        no Chuanga Studio. Carregue no botão para escolher uma nova.
+        no Chuanga Studio. Introduza este código no site para continuar:
     </p>
-    <table th:replace="~{email/componentes :: botao(${link}, 'Escolher nova palavra-passe')}"></table>
-    <p style="margin:22px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.7;color:#8a8fa0;">
-        O link é válido durante <span th:text="${validadeMinutos}">60</span> minutos e só pode ser usado uma vez.
+    <p style="margin:28px 0 0;text-align:center;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:34px;font-weight:700;letter-spacing:10px;color:#2b2f3a;"
+       th:text="${codigo}">482913</p>
+    <p style="margin:28px 0 0;font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.7;color:#8a8fa0;">
+        O código é válido durante <span th:text="${validadeMinutos}">10</span> minutos e só pode ser usado uma vez.
+        Nunca o partilhe com ninguém: a equipa do estúdio nunca lho vai pedir.
         Se não fez este pedido, ignore este email: a palavra-passe atual continua a funcionar.
     </p>
 </th:block>
