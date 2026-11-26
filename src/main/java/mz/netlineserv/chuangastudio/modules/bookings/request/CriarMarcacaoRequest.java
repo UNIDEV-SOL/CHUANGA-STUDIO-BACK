@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.dto.request;
+package mz.netlineserv.chuangastudio.modules.bookings.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -6,11 +6,11 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import mz.netlineserv.chuangastudio.common.validacao.Formatos;
-import mz.netlineserv.chuangastudio.common.validacao.SenhaValida;
+import mz.netlineserv.chuangastudio.shared.validators.Formatos;
+import mz.netlineserv.chuangastudio.shared.validators.SenhaValida;
 import lombok.Getter;
 import lombok.Setter;
-import mz.netlineserv.chuangastudio.domain.enums.MetodoPagamento;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.MetodoPagamento;
 
 
 import java.time.LocalDate;
