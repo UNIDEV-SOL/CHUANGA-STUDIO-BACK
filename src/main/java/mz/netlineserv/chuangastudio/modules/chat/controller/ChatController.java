@@ -1,11 +1,11 @@
-package mz.netlineserv.chuangastudio.chat;
+package mz.netlineserv.chuangastudio.modules.chat.controller;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.common.ApiResponse;
-import mz.netlineserv.chuangastudio.common.PageResponse;
+import mz.netlineserv.chuangastudio.shared.common.ApiResponse;
+import mz.netlineserv.chuangastudio.shared.common.PageResponse;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -21,6 +21,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import mz.netlineserv.chuangastudio.modules.chat.service.ChatService;
+import mz.netlineserv.chuangastudio.modules.chat.service.ChatSuporte;
+import mz.netlineserv.chuangastudio.modules.chat.service.GrupoService;
+import mz.netlineserv.chuangastudio.modules.chat.service.TiposAnexo;
 
 /** Chat para clientes e equipa (qualquer utilizador autenticado; os serviços decidem o acesso). */
 @RestController
