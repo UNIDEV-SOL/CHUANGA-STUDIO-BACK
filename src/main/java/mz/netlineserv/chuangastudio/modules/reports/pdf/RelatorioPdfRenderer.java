@@ -1,9 +1,10 @@
-package mz.netlineserv.chuangastudio.notificacao;
+package mz.netlineserv.chuangastudio.modules.reports.pdf;
 
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.dto.response.RelatorioCaixaResponse;
+import mz.netlineserv.chuangastudio.modules.reports.vm.RelatorioCaixaResponse;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.Context;
+import mz.netlineserv.chuangastudio.shared.pdf.PdfGerador;
 
 /** PDF do relatório de caixa a partir de templates/relatorio/caixa.html. */
 @Component
