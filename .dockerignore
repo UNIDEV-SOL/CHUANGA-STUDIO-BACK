@@ -1,0 +1,14 @@
+# Só o pom.xml e o src/ entram na imagem; o resto fica de fora (e os segredos nunca).
+.git
+.github
+.idea
+.vscode
+target
+deploy
+*.iml
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example
+README.md

@@ -1,0 +1,58 @@
+# Chuanga Studio — produção (chuanga-studio.com)
+#
+#   internet ──► proxy do servidor (HTTPS) ──► web :80 ──┬─► ficheiros do site (React)
+#                                                         └─► /api/* ──► api :8080 ──► db :5432
+#
+# Só o "web" fica acessível de fora do Docker (e só em 127.0.0.1); a API e a base de
+# dados ficam numa rede interna. Ver DEPLOY.md.
+name: chuanga-studio
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      TZ: Africa/Maputo
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    networks: [interna]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  api:
+    image: ghcr.io/igortobias/chuanga-studio-backend:${TAG:-latest}
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      SERVER_PORT: 8080
+    depends_on:
+      db:
+        condition: service_healthy
+    networks: [interna]
+
+  web:
+    image: ghcr.io/igortobias/chuanga-studio-frontend:${TAG:-latest}
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      # Só localhost: o proxy do servidor (nginx/Caddy/Traefik) é que fala com a internet.
+      - "127.0.0.1:${WEB_PORT:-8085}:80"
+    networks: [interna]
+
+volumes:
+  # Tudo o que importa (incluindo as fotos da galeria e do chat) fica aqui: é isto que se faz backup.
+  dbdata:
+
+networks:
+  interna:
