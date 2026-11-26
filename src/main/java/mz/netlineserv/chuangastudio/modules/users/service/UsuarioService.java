@@ -1,13 +1,12 @@
-package mz.netlineserv.chuangastudio.service.impl;
+package mz.netlineserv.chuangastudio.modules.users.service;
 
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.common.exception.RecursoNaoEncontradoException;
-import mz.netlineserv.chuangastudio.domain.entity.Usuario;
-import mz.netlineserv.chuangastudio.domain.enums.PapelUsuario;
-import mz.netlineserv.chuangastudio.dto.response.UsuarioResponse;
-import mz.netlineserv.chuangastudio.repository.UsuarioRepository;
-import mz.netlineserv.chuangastudio.security.UsuarioAutenticado;
-import mz.netlineserv.chuangastudio.service.UsuarioService;
+import mz.netlineserv.chuangastudio.shared.exceptions.RecursoNaoEncontradoException;
+import mz.netlineserv.chuangastudio.modules.users.domain.Usuario;
+import mz.netlineserv.chuangastudio.modules.users.domain.PapelUsuario;
+import mz.netlineserv.chuangastudio.modules.users.vm.UsuarioResponse;
+import mz.netlineserv.chuangastudio.modules.users.repository.UsuarioRepository;
+import mz.netlineserv.chuangastudio.shared.security.UsuarioAutenticado;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UsuarioServiceImpl implements UsuarioService {
+public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
@@ -26,7 +25,6 @@ public class UsuarioServiceImpl implements UsuarioService {
      * Retorna o Usuario correspondente ao utilizador autenticado na requisição atual.
      * Segue o mesmo padrão do userService.getOnlineUser() usado no SPO-BACK.
      */
-    @Override
     public Usuario obterUsuarioOnline() {
         Authentication autenticacao = SecurityContextHolder.getContext().getAuthentication();
 
@@ -37,7 +35,6 @@ public class UsuarioServiceImpl implements UsuarioService {
         return buscarPorId(usuarioAutenticado.getId());
     }
 
-    @Override
     public List<UsuarioResponse> listarClientes() {
         return usuarioRepository.findByPapelAndDeletadoFalseOrderByCriadoEmDesc(PapelUsuario.CLIENTE)
                 .stream()
@@ -45,7 +42,6 @@ public class UsuarioServiceImpl implements UsuarioService {
                 .collect(Collectors.toList());
     }
 
-    @Override
     public Usuario buscarPorId(UUID id) {
         return usuarioRepository.findById(id)
                 .filter(usuario -> !usuario.isDeletado())
