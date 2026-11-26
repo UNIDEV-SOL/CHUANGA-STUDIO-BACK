@@ -1,6 +1,6 @@
-package mz.netlineserv.chuangastudio.dto.request;
+package mz.netlineserv.chuangastudio.modules.bookings.request;
 
-import mz.netlineserv.chuangastudio.domain.enums.StatusMarcacao;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.StatusMarcacao;
 
 import java.time.LocalDate;
 import java.util.UUID;
