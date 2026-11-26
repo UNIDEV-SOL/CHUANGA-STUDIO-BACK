@@ -1,23 +1,22 @@
-package mz.netlineserv.chuangastudio.service.impl;
+package mz.netlineserv.chuangastudio.modules.auth.service;
 
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.common.exception.ContaDesativadaException;
-import mz.netlineserv.chuangastudio.common.exception.RegraNegocioException;
-import mz.netlineserv.chuangastudio.domain.entity.TokenRecuperacaoSenha;
-import mz.netlineserv.chuangastudio.domain.entity.Usuario;
-import mz.netlineserv.chuangastudio.domain.enums.PapelUsuario;
-import mz.netlineserv.chuangastudio.dto.request.CadastroRequest;
-import mz.netlineserv.chuangastudio.dto.request.LoginRequest;
-import mz.netlineserv.chuangastudio.dto.response.AutenticacaoResponse;
-import mz.netlineserv.chuangastudio.dto.response.UsuarioResponse;
-import mz.netlineserv.chuangastudio.notificacao.NotificacaoRecuperacaoSenhaEvent;
-import mz.netlineserv.chuangastudio.repository.TokenRecuperacaoSenhaRepository;
-import mz.netlineserv.chuangastudio.repository.UsuarioRepository;
-import mz.netlineserv.chuangastudio.security.JwtService;
-import mz.netlineserv.chuangastudio.security.ProtecaoLogin;
-import mz.netlineserv.chuangastudio.security.UsuarioAutenticado;
-import mz.netlineserv.chuangastudio.service.AuthService;
-import mz.netlineserv.chuangastudio.service.MoradaResolver;
+import mz.netlineserv.chuangastudio.shared.exceptions.ContaDesativadaException;
+import mz.netlineserv.chuangastudio.shared.exceptions.RegraNegocioException;
+import mz.netlineserv.chuangastudio.modules.auth.domain.TokenRecuperacaoSenha;
+import mz.netlineserv.chuangastudio.modules.users.domain.Usuario;
+import mz.netlineserv.chuangastudio.modules.users.domain.PapelUsuario;
+import mz.netlineserv.chuangastudio.modules.auth.request.CadastroRequest;
+import mz.netlineserv.chuangastudio.modules.auth.request.LoginRequest;
+import mz.netlineserv.chuangastudio.modules.auth.vm.AutenticacaoResponse;
+import mz.netlineserv.chuangastudio.modules.users.vm.UsuarioResponse;
+import mz.netlineserv.chuangastudio.modules.notifications.event.NotificacaoRecuperacaoSenhaEvent;
+import mz.netlineserv.chuangastudio.modules.auth.repository.TokenRecuperacaoSenhaRepository;
+import mz.netlineserv.chuangastudio.modules.users.repository.UsuarioRepository;
+import mz.netlineserv.chuangastudio.shared.security.JwtService;
+import mz.netlineserv.chuangastudio.shared.security.ProtecaoLogin;
+import mz.netlineserv.chuangastudio.shared.security.UsuarioAutenticado;
+import mz.netlineserv.chuangastudio.modules.locations.service.MoradaResolver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -35,7 +34,7 @@ import java.util.HexFormat;
 
 @Service
 @RequiredArgsConstructor
-public class AuthServiceImpl implements AuthService {
+public class AuthService {
 
     private static final SecureRandom ALEATORIO = new SecureRandom();
 
@@ -59,7 +58,6 @@ public class AuthServiceImpl implements AuthService {
     @Value("${app.seguranca.recuperacao-senha-tentativas:5}")
     private int maxTentativasCodigo;
 
-    @Override
     public AutenticacaoResponse login(LoginRequest request) {
         String email = request.getEmail().trim();
         protecaoLogin.verificar(email);
@@ -92,7 +90,6 @@ public class AuthServiceImpl implements AuthService {
         return hashFicticio;
     }
 
-    @Override
     @Transactional
     public AutenticacaoResponse cadastrar(CadastroRequest request) {
         if (usuarioRepository.existsByEmailAndDeletadoFalse(request.getEmail())) {
@@ -107,7 +104,7 @@ public class AuthServiceImpl implements AuthService {
         usuario.setPapel(PapelUsuario.CLIENTE);
         moradaResolver.aplicar(usuario, request.getProvinciaId(), request.getDistritoId());
         usuario = usuarioRepository.save(usuario);
-        eventPublisher.publishEvent(new mz.netlineserv.chuangastudio.notificacao.NovoClienteEvent(usuario.getId()));
+        eventPublisher.publishEvent(new mz.netlineserv.chuangastudio.modules.notifications.event.NovoClienteEvent(usuario.getId()));
 
         UsuarioAutenticado usuarioAutenticado = new UsuarioAutenticado(usuario);
         String token = jwtService.gerarToken(usuarioAutenticado);
@@ -115,7 +112,7 @@ public class AuthServiceImpl implements AuthService {
         return new AutenticacaoResponse(token, UsuarioResponse.deEntidade(usuario));
     }
 
-    @Override
+    /** Envia o código OTP por email se a conta existir; responde sempre igual para não revelar que emails estão registados. */
     @Transactional
     public void solicitarRecuperacaoSenha(String email) {
         usuarioRepository.findByEmailAndDeletadoFalse(email.trim()).ifPresent(usuario -> {
@@ -136,8 +133,8 @@ public class AuthServiceImpl implements AuthService {
         });
     }
 
-    @Override
     // As tentativas erradas ficam gravadas mesmo quando a resposta é um erro.
+    /** Confirma o código do email; devolve o token curto que autoriza escolher a nova palavra-passe. */
     @Transactional(noRollbackFor = RegraNegocioException.class)
     public String verificarCodigoRecuperacao(String email, String codigo) {
         TokenRecuperacaoSenha registo = tokenRepository.pedidoPendente(email.trim())
@@ -173,7 +170,7 @@ public class AuthServiceImpl implements AuthService {
         return token;
     }
 
-    @Override
+    /** Grava a nova palavra-passe e inicia sessão. */
     @Transactional
     public AutenticacaoResponse redefinirSenha(String token, String novaSenha, String confirmacaoSenha) {
         if (!novaSenha.equals(confirmacaoSenha)) {
