@@ -1,8 +1,8 @@
-package mz.netlineserv.chuangastudio.dto.response;
+package mz.netlineserv.chuangastudio.modules.bookings.vm;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import mz.netlineserv.chuangastudio.domain.entity.MarcacaoServico;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.MarcacaoServico;
 
 import java.math.BigDecimal;
 import java.util.UUID;
