@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.common;
+package mz.netlineserv.chuangastudio.shared.persistence;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
