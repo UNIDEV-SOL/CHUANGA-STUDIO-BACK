@@ -18,7 +18,7 @@ GitHub Container Registry (ghcr.io).
                          api (Spring Boot) ──► db (PostgreSQL 16, volume dbdata)
 ```
 
-- **Imagens**: `ghcr.io/igortobias/chuanga-studio-frontend` e `ghcr.io/igortobias/chuanga-studio-backend`.
+- **Imagens**: `ghcr.io/unidev-sol/chuanga-studio-frontend` e `ghcr.io/unidev-sol/chuanga-studio-backend`.
 - O site e a API estão no **mesmo domínio**: o browser chama `https://chuanga-studio.com/api/...`. Não há CORS
   e basta um certificado.
 - Só o contentor `web` tem uma porta no servidor, e só em `127.0.0.1`. A API e a base de dados não ficam
@@ -56,7 +56,7 @@ nano .env                     # preencher; gerar segredos com: openssl rand -bas
 chmod 600 .env                # só o dono lê os segredos
 
 # só se as imagens forem privadas:
-echo "<TOKEN>" | docker login ghcr.io -u igortobias --password-stdin
+echo "<TOKEN>" | docker login ghcr.io -u <utilizador-github> --password-stdin
 
 docker compose pull
 docker compose up -d
