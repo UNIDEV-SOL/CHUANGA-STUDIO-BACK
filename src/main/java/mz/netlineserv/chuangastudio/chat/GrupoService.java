@@ -348,12 +348,16 @@ public class GrupoService {
         Usuario eu = suporte.eu();
         Conversa c = grupo(id);
         exigirPodeEditarInfo(c, eu);
-        if (imagem.isEmpty() || imagem.getContentType() == null || !imagem.getContentType().startsWith("image/")) {
-            throw new RegraNegocioException("Envie uma imagem.");
+        if (imagem.isEmpty()) {
+            throw new RegraNegocioException("A imagem enviada está vazia (0 bytes).");
         }
+        if (imagem.getSize() > 5L * 1024 * 1024) {
+            throw new RegraNegocioException(String.format("A foto do grupo tem %.1f MB; o máximo é 5 MB.", imagem.getSize() / 1024.0 / 1024.0));
+        }
+        String tipo = TiposAnexo.exigirImagem(imagem.getContentType());
         ChatAnexo anexo = new ChatAnexo();
         anexo.setId(UUID.randomUUID());
-        anexo.setContentType(imagem.getContentType());
+        anexo.setContentType(tipo);
         anexo.setTamanho(imagem.getSize());
         anexo.setDados(imagem.getBytes());
         anexoRepository.save(anexo);
