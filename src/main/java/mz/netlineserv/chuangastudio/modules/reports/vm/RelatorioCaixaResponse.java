@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.dto.response;
+package mz.netlineserv.chuangastudio.modules.reports.vm;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
