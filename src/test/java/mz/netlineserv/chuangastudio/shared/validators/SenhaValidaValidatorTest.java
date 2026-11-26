@@ -1,6 +1,5 @@
-package mz.netlineserv.chuangastudio.common;
+package mz.netlineserv.chuangastudio.shared.validators;
 
-import mz.netlineserv.chuangastudio.common.validacao.SenhaValidaValidator;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
