@@ -1,8 +1,8 @@
-package mz.netlineserv.chuangastudio.avaliacao;
+package mz.netlineserv.chuangastudio.modules.reviews.controller;
 
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.common.ApiResponse;
-import mz.netlineserv.chuangastudio.common.PageResponse;
+import mz.netlineserv.chuangastudio.shared.common.ApiResponse;
+import mz.netlineserv.chuangastudio.shared.common.PageResponse;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.UUID;
+import mz.netlineserv.chuangastudio.modules.reviews.service.AvaliacaoService;
 
 @RestController
 @RequiredArgsConstructor
