@@ -1,10 +1,10 @@
-package mz.netlineserv.chuangastudio.fidelizacao;
+package mz.netlineserv.chuangastudio.modules.loyalty.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mz.netlineserv.chuangastudio.common.BaseAuditEntity;
+import mz.netlineserv.chuangastudio.shared.persistence.BaseAuditEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
