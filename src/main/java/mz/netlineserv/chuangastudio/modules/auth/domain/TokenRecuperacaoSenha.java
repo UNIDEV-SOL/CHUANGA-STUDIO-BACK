@@ -1,12 +1,13 @@
-package mz.netlineserv.chuangastudio.domain.entity;
+package mz.netlineserv.chuangastudio.modules.auth.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mz.netlineserv.chuangastudio.common.BaseAuditEntity;
+import mz.netlineserv.chuangastudio.shared.persistence.BaseAuditEntity;
 
 import java.time.LocalDateTime;
+import mz.netlineserv.chuangastudio.modules.users.domain.Usuario;
 
 /**
  * Pedido de nova palavra-passe por código OTP. Só se guardam hashes: o do código enviado por email e,
