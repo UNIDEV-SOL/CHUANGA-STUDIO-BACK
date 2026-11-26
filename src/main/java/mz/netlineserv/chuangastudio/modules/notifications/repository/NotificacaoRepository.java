@@ -1,6 +1,6 @@
-package mz.netlineserv.chuangastudio.repository;
+package mz.netlineserv.chuangastudio.modules.notifications.repository;
 
-import mz.netlineserv.chuangastudio.domain.entity.Notificacao;
+import mz.netlineserv.chuangastudio.modules.notifications.domain.Notificacao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
