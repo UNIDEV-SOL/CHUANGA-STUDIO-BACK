@@ -1,15 +1,17 @@
-package mz.netlineserv.chuangastudio.notificacao;
+package mz.netlineserv.chuangastudio.modules.reports.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mz.netlineserv.chuangastudio.dto.response.RelatorioCaixaResponse;
-import mz.netlineserv.chuangastudio.service.RelatorioService;
+import mz.netlineserv.chuangastudio.modules.reports.vm.RelatorioCaixaResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import mz.netlineserv.chuangastudio.modules.reports.pdf.RelatorioPdfRenderer;
+import mz.netlineserv.chuangastudio.shared.email.EmailComposer;
+import mz.netlineserv.chuangastudio.shared.email.EmailSender;
 
 /**
  * Relatórios de caixa enviados por email ao estúdio (EMAIL_ESTUDIO), com o PDF em anexo:
