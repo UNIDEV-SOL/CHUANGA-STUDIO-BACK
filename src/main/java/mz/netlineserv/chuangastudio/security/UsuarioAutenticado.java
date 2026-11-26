@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -19,6 +20,7 @@ public class UsuarioAutenticado implements UserDetails {
     private final String senhaHash;
     private final boolean contaAtiva;
     private final String papel;
+    private final LocalDateTime senhaAlteradaEm;
 
     public UsuarioAutenticado(Usuario usuario) {
         this.id = usuario.getId();
@@ -27,6 +29,7 @@ public class UsuarioAutenticado implements UserDetails {
         this.senhaHash = usuario.getSenhaHash();
         this.contaAtiva = usuario.isContaAtiva();
         this.papel = usuario.getPapel().name();
+        this.senhaAlteradaEm = usuario.getSenhaAlteradaEm();
     }
 
     @Override
