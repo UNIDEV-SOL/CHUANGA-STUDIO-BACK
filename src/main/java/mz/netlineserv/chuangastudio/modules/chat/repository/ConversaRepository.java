@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.chat;
+package mz.netlineserv.chuangastudio.modules.chat.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import mz.netlineserv.chuangastudio.modules.chat.domain.Conversa;
 
 public interface ConversaRepository extends JpaRepository<Conversa, UUID>, JpaSpecificationExecutor<Conversa> {
 
