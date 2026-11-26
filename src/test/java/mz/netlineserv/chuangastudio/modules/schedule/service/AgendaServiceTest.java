@@ -1,18 +1,18 @@
-package mz.netlineserv.chuangastudio.service.impl;
+package mz.netlineserv.chuangastudio.modules.schedule.service;
 
-import mz.netlineserv.chuangastudio.common.exception.RegraNegocioException;
-import mz.netlineserv.chuangastudio.domain.entity.DiaFechado;
-import mz.netlineserv.chuangastudio.domain.entity.HorarioFuncionamento;
-import mz.netlineserv.chuangastudio.domain.entity.Marcacao;
-import mz.netlineserv.chuangastudio.domain.entity.MarcacaoServico;
-import mz.netlineserv.chuangastudio.domain.entity.Servico;
-import mz.netlineserv.chuangastudio.dto.response.DisponibilidadeResponse;
-import mz.netlineserv.chuangastudio.repository.DiaFechadoRepository;
-import mz.netlineserv.chuangastudio.repository.HorarioFuncionamentoRepository;
-import mz.netlineserv.chuangastudio.domain.entity.Profissional;
-import mz.netlineserv.chuangastudio.repository.MarcacaoRepository;
-import mz.netlineserv.chuangastudio.repository.ProfissionalRepository;
-import mz.netlineserv.chuangastudio.repository.ServicoRepository;
+import mz.netlineserv.chuangastudio.shared.exceptions.RegraNegocioException;
+import mz.netlineserv.chuangastudio.modules.schedule.domain.DiaFechado;
+import mz.netlineserv.chuangastudio.modules.schedule.domain.HorarioFuncionamento;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.Marcacao;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.MarcacaoServico;
+import mz.netlineserv.chuangastudio.modules.catalog.domain.Servico;
+import mz.netlineserv.chuangastudio.modules.schedule.vm.DisponibilidadeResponse;
+import mz.netlineserv.chuangastudio.modules.schedule.repository.DiaFechadoRepository;
+import mz.netlineserv.chuangastudio.modules.schedule.repository.HorarioFuncionamentoRepository;
+import mz.netlineserv.chuangastudio.modules.professionals.domain.Profissional;
+import mz.netlineserv.chuangastudio.modules.bookings.repository.MarcacaoRepository;
+import mz.netlineserv.chuangastudio.modules.professionals.repository.ProfissionalRepository;
+import mz.netlineserv.chuangastudio.modules.catalog.repository.ServicoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,7 +44,7 @@ import static org.mockito.Mockito.when;
 /** Horas livres e validação de marcações: horário, pausa, dias fechados e sobreposição. */
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-class AgendaServiceImplTest {
+class AgendaServiceTest {
 
     @Mock HorarioFuncionamentoRepository horarioRepository;
     @Mock DiaFechadoRepository diaFechadoRepository;
@@ -52,7 +52,7 @@ class AgendaServiceImplTest {
     @Mock ServicoRepository servicoRepository;
     @Mock ProfissionalRepository profissionalRepository;
 
-    @InjectMocks AgendaServiceImpl service;
+    @InjectMocks AgendaService service;
 
     /** Uma quarta-feira daqui a 1–2 semanas: no futuro e dentro da antecedência máxima. */
     private final LocalDate quarta = LocalDate.now(ZoneId.of("Africa/Maputo")).plusWeeks(1)
