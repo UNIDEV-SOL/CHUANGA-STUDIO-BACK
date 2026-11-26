@@ -2,9 +2,12 @@ package mz.netlineserv.chuangastudio.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import mz.netlineserv.chuangastudio.common.validacao.SenhaValida;
 
+/** Último passo da recuperação: o token vem da confirmação do código OTP. */
 public record RedefinirSenhaRequest(
-        @NotBlank(message = "Link inválido") String token,
-        @NotBlank(message = "Palavra-passe é obrigatória")
-        @Size(min = 6, max = 64, message = "A palavra-passe deve ter entre 6 e 64 caracteres") String novaSenha) {
+        @NotBlank(message = "Falta o token da confirmação do código. Comece de novo e peça um código.")
+        @Size(max = 100, message = "Token de recuperação inválido") String token,
+        @NotBlank(message = "Palavra-passe é obrigatória") @SenhaValida String novaSenha,
+        @NotBlank(message = "Confirme a nova palavra-passe") String confirmacaoSenha) {
 }
