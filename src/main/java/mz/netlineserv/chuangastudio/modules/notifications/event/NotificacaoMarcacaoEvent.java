@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.notificacao;
+package mz.netlineserv.chuangastudio.modules.notifications.event;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
