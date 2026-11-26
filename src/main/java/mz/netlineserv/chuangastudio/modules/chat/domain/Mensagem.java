@@ -1,11 +1,11 @@
-package mz.netlineserv.chuangastudio.chat;
+package mz.netlineserv.chuangastudio.modules.chat.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mz.netlineserv.chuangastudio.common.BaseAuditEntity;
-import mz.netlineserv.chuangastudio.domain.entity.Usuario;
+import mz.netlineserv.chuangastudio.shared.persistence.BaseAuditEntity;
+import mz.netlineserv.chuangastudio.modules.users.domain.Usuario;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
