@@ -1,11 +1,11 @@
-package mz.netlineserv.chuangastudio.chat;
+package mz.netlineserv.chuangastudio.modules.chat.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mz.netlineserv.chuangastudio.common.BaseAuditEntity;
-import mz.netlineserv.chuangastudio.domain.entity.Usuario;
+import mz.netlineserv.chuangastudio.shared.persistence.BaseAuditEntity;
+import mz.netlineserv.chuangastudio.modules.users.domain.Usuario;
 
 import java.time.LocalDateTime;
 
@@ -55,7 +55,7 @@ public class Conversa extends BaseAuditEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "servico_id")
-    private mz.netlineserv.chuangastudio.domain.entity.Servico servico;
+    private mz.netlineserv.chuangastudio.modules.catalog.domain.Servico servico;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
