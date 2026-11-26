@@ -1,9 +1,9 @@
-package mz.netlineserv.chuangastudio.common.exception;
+package mz.netlineserv.chuangastudio.shared.exceptions;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import mz.netlineserv.chuangastudio.common.ApiResponse;
+import mz.netlineserv.chuangastudio.shared.common.ApiResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
