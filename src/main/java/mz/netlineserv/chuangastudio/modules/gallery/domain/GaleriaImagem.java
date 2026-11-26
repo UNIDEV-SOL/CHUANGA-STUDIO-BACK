@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.domain.entity;
+package mz.netlineserv.chuangastudio.modules.gallery.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
