@@ -1,6 +1,6 @@
-package mz.netlineserv.chuangastudio.controller;
+package mz.netlineserv.chuangastudio.shared.web;
 
-import mz.netlineserv.chuangastudio.common.ApiResponse;
+import mz.netlineserv.chuangastudio.shared.common.ApiResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
