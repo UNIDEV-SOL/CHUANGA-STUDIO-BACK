@@ -1,6 +1,7 @@
 package mz.netlineserv.chuangastudio.chat;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import mz.netlineserv.chuangastudio.common.ApiResponse;
@@ -9,16 +10,12 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.CacheControl;
-import org.springframework.http.ContentDisposition;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,16 +31,16 @@ public class ChatController {
     public record TextoRequest(@Size(max = 4000, message = "Mensagem demasiado longa (máx. 4000 caracteres)") String texto, UUID respostaA) {
     }
 
-    public record ReacaoRequest(String emoji) {
+    public record ReacaoRequest(@Size(max = 16, message = "Reação inválida") String emoji) {
     }
 
-    public record EncaminharRequest(List<UUID> conversas) {
+    public record EncaminharRequest(@NotEmpty(message = "Escolha para onde reencaminhar") @Size(max = 20, message = "Pode reencaminhar para até 20 conversas de cada vez") List<UUID> conversas) {
     }
 
     public record FixarRequest(UUID mensagemId) {
     }
 
-    public record MembrosRequest(List<UUID> usuarios) {
+    public record MembrosRequest(@NotEmpty(message = "Escolha quem adicionar") @Size(max = 100, message = "Pode adicionar até 100 pessoas de cada vez") List<UUID> usuarios) {
     }
 
     public record DetalhesResponse(ChatSuporte.ConversaResponse conversa, GrupoService.Detalhes detalhes) {
@@ -143,13 +140,11 @@ public class ChatController {
 
     @GetMapping("/conversas/{id}/foto")
     public ResponseEntity<byte[]> foto(@PathVariable UUID id) {
-        ChatAnexo a = grupoService.fotoAnexo(id);
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType(a.getContentType()))
-                .cacheControl(CacheControl.maxAge(Duration.ofHours(1)).cachePrivate()).body(a.getDados());
+        return TiposAnexo.servir(grupoService.fotoAnexo(id), TiposAnexo.cachePrivado(Duration.ofHours(1)));
     }
 
     @PostMapping("/grupos/{id}/membros")
-    public ResponseEntity<ApiResponse<Void>> adicionar(@PathVariable UUID id, @RequestBody MembrosRequest corpo) {
+    public ResponseEntity<ApiResponse<Void>> adicionar(@PathVariable UUID id, @Valid @RequestBody MembrosRequest corpo) {
         grupoService.adicionar(id, corpo.usuarios());
         return ResponseEntity.ok(ApiResponse.sucesso("Adicionadas ao grupo.", null));
     }
@@ -206,7 +201,7 @@ public class ChatController {
 
     @GetMapping("/conversas/{id}/pesquisar")
     public ResponseEntity<ApiResponse<PageResponse<ChatSuporte.MensagemResponse>>> pesquisar(
-            @PathVariable UUID id, @RequestParam String q, @ParameterObject @PageableDefault(size = 30) Pageable pageable) {
+            @PathVariable UUID id, @RequestParam @Size(max = 200, message = "Pesquisa demasiado longa (máx. 200 caracteres)") String q, @ParameterObject @PageableDefault(size = 30) Pageable pageable) {
         return ResponseEntity.ok(ApiResponse.sucesso(chatService.pesquisar(id, q, pageable)));
     }
 
@@ -231,7 +226,7 @@ public class ChatController {
     public ResponseEntity<ApiResponse<ChatSuporte.MensagemResponse>> enviarImagem(
             @PathVariable UUID id,
             @RequestPart("imagem") MultipartFile imagem,
-            @RequestParam(required = false) String legenda,
+            @RequestParam(required = false) @Size(max = 4000, message = "Legenda demasiado longa (máx. 4000 caracteres)") String legenda,
             @RequestParam(required = false) UUID respostaA) throws IOException {
         return ResponseEntity.ok(ApiResponse.sucesso(chatService.enviarImagem(id, imagem, legenda, respostaA)));
     }
@@ -259,7 +254,7 @@ public class ChatController {
     }
 
     @PutMapping("/mensagens/{id}/reacao")
-    public ResponseEntity<ApiResponse<ChatSuporte.MensagemResponse>> reagir(@PathVariable UUID id, @RequestBody ReacaoRequest corpo) {
+    public ResponseEntity<ApiResponse<ChatSuporte.MensagemResponse>> reagir(@PathVariable UUID id, @Valid @RequestBody ReacaoRequest corpo) {
         return ResponseEntity.ok(ApiResponse.sucesso(chatService.reagir(id, corpo.emoji())));
     }
 
@@ -269,7 +264,7 @@ public class ChatController {
     }
 
     @PostMapping("/mensagens/{id}/encaminhar")
-    public ResponseEntity<ApiResponse<Void>> encaminhar(@PathVariable UUID id, @RequestBody EncaminharRequest corpo) {
+    public ResponseEntity<ApiResponse<Void>> encaminhar(@PathVariable UUID id, @Valid @RequestBody EncaminharRequest corpo) {
         int n = chatService.encaminhar(id, corpo.conversas());
         return ResponseEntity.ok(ApiResponse.sucesso(n == 1 ? "Mensagem reencaminhada." : "Mensagem reencaminhada para " + n + " conversas.", null));
     }
@@ -282,13 +277,6 @@ public class ChatController {
     /** Ficheiro da mensagem (foto, documento ou voz). */
     @GetMapping({"/mensagens/{id}/anexo", "/mensagens/{id}/imagem"})
     public ResponseEntity<byte[]> anexo(@PathVariable UUID id) {
-        ChatAnexo anexo = chatService.anexo(id);
-        ResponseEntity.BodyBuilder r = ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(anexo.getContentType()))
-                .cacheControl(CacheControl.maxAge(Duration.ofDays(7)).cachePrivate());
-        if (anexo.getNome() != null) {
-            r.header(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.inline().filename(anexo.getNome(), StandardCharsets.UTF_8).build().toString());
-        }
-        return r.body(anexo.getDados());
+        return TiposAnexo.servir(chatService.anexo(id), TiposAnexo.cachePrivado(Duration.ofDays(7)));
     }
 }
