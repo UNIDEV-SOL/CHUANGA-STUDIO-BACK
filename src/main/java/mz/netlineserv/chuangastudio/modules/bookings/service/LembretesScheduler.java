@@ -1,10 +1,10 @@
-package mz.netlineserv.chuangastudio.notificacao;
+package mz.netlineserv.chuangastudio.modules.bookings.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mz.netlineserv.chuangastudio.domain.entity.Marcacao;
-import mz.netlineserv.chuangastudio.domain.enums.StatusMarcacao;
-import mz.netlineserv.chuangastudio.repository.MarcacaoRepository;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.Marcacao;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.StatusMarcacao;
+import mz.netlineserv.chuangastudio.modules.bookings.repository.MarcacaoRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -15,6 +15,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import mz.netlineserv.chuangastudio.modules.notifications.event.NotificacaoMarcacaoEvent;
+import mz.netlineserv.chuangastudio.shared.email.EmailComposer;
+import mz.netlineserv.chuangastudio.shared.email.EmailSender;
 
 /**
  * Tarefas automáticas por email (gratuitas):
