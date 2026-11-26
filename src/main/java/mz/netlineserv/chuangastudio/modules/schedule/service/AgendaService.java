@@ -1,25 +1,24 @@
-package mz.netlineserv.chuangastudio.service.impl;
+package mz.netlineserv.chuangastudio.modules.schedule.service;
 
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.common.exception.RecursoNaoEncontradoException;
-import mz.netlineserv.chuangastudio.common.exception.RegraNegocioException;
-import mz.netlineserv.chuangastudio.domain.entity.DiaFechado;
-import mz.netlineserv.chuangastudio.domain.entity.HorarioFuncionamento;
-import mz.netlineserv.chuangastudio.domain.entity.Marcacao;
-import mz.netlineserv.chuangastudio.domain.entity.Servico;
-import mz.netlineserv.chuangastudio.domain.enums.StatusMarcacao;
-import mz.netlineserv.chuangastudio.dto.HorarioDiaDto;
-import mz.netlineserv.chuangastudio.dto.request.AtualizarHorarioRequest;
-import mz.netlineserv.chuangastudio.dto.request.DiaFechadoRequest;
-import mz.netlineserv.chuangastudio.dto.response.ConfiguracaoHorarioResponse;
-import mz.netlineserv.chuangastudio.dto.response.DisponibilidadeResponse;
-import mz.netlineserv.chuangastudio.repository.DiaFechadoRepository;
-import mz.netlineserv.chuangastudio.repository.HorarioFuncionamentoRepository;
-import mz.netlineserv.chuangastudio.domain.entity.Profissional;
-import mz.netlineserv.chuangastudio.repository.MarcacaoRepository;
-import mz.netlineserv.chuangastudio.repository.ProfissionalRepository;
-import mz.netlineserv.chuangastudio.repository.ServicoRepository;
-import mz.netlineserv.chuangastudio.service.AgendaService;
+import mz.netlineserv.chuangastudio.shared.exceptions.RecursoNaoEncontradoException;
+import mz.netlineserv.chuangastudio.shared.exceptions.RegraNegocioException;
+import mz.netlineserv.chuangastudio.modules.schedule.domain.DiaFechado;
+import mz.netlineserv.chuangastudio.modules.schedule.domain.HorarioFuncionamento;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.Marcacao;
+import mz.netlineserv.chuangastudio.modules.catalog.domain.Servico;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.StatusMarcacao;
+import mz.netlineserv.chuangastudio.modules.schedule.vm.HorarioDiaDto;
+import mz.netlineserv.chuangastudio.modules.schedule.request.AtualizarHorarioRequest;
+import mz.netlineserv.chuangastudio.modules.schedule.request.DiaFechadoRequest;
+import mz.netlineserv.chuangastudio.modules.schedule.vm.ConfiguracaoHorarioResponse;
+import mz.netlineserv.chuangastudio.modules.schedule.vm.DisponibilidadeResponse;
+import mz.netlineserv.chuangastudio.modules.schedule.repository.DiaFechadoRepository;
+import mz.netlineserv.chuangastudio.modules.schedule.repository.HorarioFuncionamentoRepository;
+import mz.netlineserv.chuangastudio.modules.professionals.domain.Profissional;
+import mz.netlineserv.chuangastudio.modules.bookings.repository.MarcacaoRepository;
+import mz.netlineserv.chuangastudio.modules.professionals.repository.ProfissionalRepository;
+import mz.netlineserv.chuangastudio.modules.catalog.repository.ServicoRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,9 +37,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.UUID;
 
+/** Horário de funcionamento, dias fechados e horas livres para marcações. */
 @Service
 @RequiredArgsConstructor
-public class AgendaServiceImpl implements AgendaService {
+public class AgendaService {
 
     private static final ZoneId FUSO_ESTUDIO = ZoneId.of("Africa/Maputo");
     private static final Locale PORTUGUES = Locale.forLanguageTag("pt-PT");
@@ -69,7 +69,10 @@ public class AgendaServiceImpl implements AgendaService {
         }
     }
 
-    @Override
+    /**
+     * ignorarMarcacaoId: ao remarcar, a própria marcação não conta como ocupação.
+     * profissionalId: só horas em que essa profissional está livre (nulo = qualquer uma).
+     */
     @Transactional(readOnly = true)
     public DisponibilidadeResponse disponibilidade(LocalDate data, List<UUID> servicosIds, UUID ignorarMarcacaoId, UUID profissionalId) {
         int duracao = duracaoDosServicos(servicosIds);
@@ -101,7 +104,7 @@ public class AgendaServiceImpl implements AgendaService {
                 algumLivre ? null : "Sem horários livres neste dia. Experimente outra data.", duracao, horarios);
     }
 
-    @Override
+    /** Lança RegraNegocioException com o motivo se não for possível marcar nesse dia/hora (com essa profissional, se indicada). */
     @Transactional(readOnly = true)
     public void validarMarcacao(LocalDate data, LocalTime hora, int duracaoMinutos, UUID ignorarMarcacaoId, UUID profissionalId) {
         String motivoFechado = motivoDiaIndisponivel(data);
@@ -131,7 +134,7 @@ public class AgendaServiceImpl implements AgendaService {
         }
     }
 
-    @Override
+    /** Primeira profissional ativa livre nesse intervalo, pela ordem da equipa. Vazio se não há equipa ou ninguém livre. */
     @Transactional(readOnly = true)
     public Optional<Profissional> escolherProfissional(LocalDate data, LocalTime hora, int duracaoMinutos, UUID ignorarMarcacaoId) {
         LocalTime fim = hora.plusMinutes(duracaoMinutos);
@@ -144,7 +147,6 @@ public class AgendaServiceImpl implements AgendaService {
                 .findFirst();
     }
 
-    @Override
     @Transactional(readOnly = true)
     public ConfiguracaoHorarioResponse configuracao() {
         List<HorarioDiaDto> semana = horarioRepository.findByDeletadoFalseOrderByDiaSemanaAsc().stream()
@@ -158,7 +160,6 @@ public class AgendaServiceImpl implements AgendaService {
         return new ConfiguracaoHorarioResponse(semana, fechados, intervaloMinutos, diasAntecedenciaMaxima);
     }
 
-    @Override
     @Transactional
     public ConfiguracaoHorarioResponse atualizarHorario(AtualizarHorarioRequest request) {
         for (HorarioDiaDto dto : request.semana()) {
@@ -180,7 +181,6 @@ public class AgendaServiceImpl implements AgendaService {
         return configuracao();
     }
 
-    @Override
     @Transactional
     public ConfiguracaoHorarioResponse adicionarDiaFechado(DiaFechadoRequest request) {
         if (request.data().isBefore(hoje())) {
@@ -196,7 +196,6 @@ public class AgendaServiceImpl implements AgendaService {
         return configuracao();
     }
 
-    @Override
     @Transactional
     public ConfiguracaoHorarioResponse removerDiaFechado(UUID id) {
         DiaFechado dia = diaFechadoRepository.findById(id)
