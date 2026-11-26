@@ -1,6 +1,6 @@
-package mz.netlineserv.chuangastudio.notificacao;
+package mz.netlineserv.chuangastudio.modules.reports.pdf;
 
-import mz.netlineserv.chuangastudio.dto.response.RelatorioCaixaResponse;
+import mz.netlineserv.chuangastudio.modules.reports.vm.RelatorioCaixaResponse;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.Context;
 
@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-import static mz.netlineserv.chuangastudio.notificacao.Formatos.*;
+import static mz.netlineserv.chuangastudio.shared.utils.Formatos.*;
 
 /** Variáveis do relatório de caixa para o PDF e para o email, já formatadas. */
 @Component
