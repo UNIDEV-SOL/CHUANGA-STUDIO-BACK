@@ -1,5 +1,6 @@
 package mz.netlineserv.chuangastudio.fidelizacao;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mz.netlineserv.chuangastudio.common.ApiResponse;
 import mz.netlineserv.chuangastudio.common.PageResponse;
@@ -54,7 +55,7 @@ public class FidelizacaoController {
     }
 
     @PostMapping("/admin/vales")
-    public ResponseEntity<ApiResponse<ValeService.ValeResponse>> criar(@RequestBody ValeService.CriarValeRequest request) {
+    public ResponseEntity<ApiResponse<ValeService.ValeResponse>> criar(@Valid @RequestBody ValeService.CriarValeRequest request) {
         return ResponseEntity.ok(ApiResponse.sucesso("Vale emitido.", valeService.criar(request)));
     }
 
