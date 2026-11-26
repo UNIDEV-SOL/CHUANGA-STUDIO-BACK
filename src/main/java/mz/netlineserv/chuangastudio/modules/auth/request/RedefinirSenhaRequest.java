@@ -1,8 +1,8 @@
-package mz.netlineserv.chuangastudio.dto.request;
+package mz.netlineserv.chuangastudio.modules.auth.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import mz.netlineserv.chuangastudio.common.validacao.SenhaValida;
+import mz.netlineserv.chuangastudio.shared.validators.SenhaValida;
 
 /** Último passo da recuperação: o token vem da confirmação do código OTP. */
 public record RedefinirSenhaRequest(
