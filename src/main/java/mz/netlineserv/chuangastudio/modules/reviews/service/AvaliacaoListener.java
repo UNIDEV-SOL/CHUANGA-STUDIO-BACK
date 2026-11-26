@@ -1,10 +1,10 @@
-package mz.netlineserv.chuangastudio.avaliacao;
+package mz.netlineserv.chuangastudio.modules.reviews.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mz.netlineserv.chuangastudio.domain.enums.StatusFatura;
-import mz.netlineserv.chuangastudio.notificacao.NotificacaoFaturaEvent;
-import mz.netlineserv.chuangastudio.repository.FaturaRepository;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.StatusFatura;
+import mz.netlineserv.chuangastudio.modules.notifications.event.NotificacaoFaturaEvent;
+import mz.netlineserv.chuangastudio.modules.invoices.repository.FaturaRepository;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
