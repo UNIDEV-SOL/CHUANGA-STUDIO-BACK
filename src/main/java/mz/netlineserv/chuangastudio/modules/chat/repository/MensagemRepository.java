@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.chat;
+package mz.netlineserv.chuangastudio.modules.chat.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import mz.netlineserv.chuangastudio.modules.chat.domain.Mensagem;
 
 public interface MensagemRepository extends JpaRepository<Mensagem, UUID> {
 
