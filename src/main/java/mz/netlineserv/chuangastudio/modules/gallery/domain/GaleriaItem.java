@@ -1,13 +1,13 @@
-package mz.netlineserv.chuangastudio.domain.entity;
+package mz.netlineserv.chuangastudio.modules.gallery.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mz.netlineserv.chuangastudio.common.BaseAuditEntity;
-import mz.netlineserv.chuangastudio.domain.enums.EstadoGaleria;
+import mz.netlineserv.chuangastudio.shared.persistence.BaseAuditEntity;
 
 import java.util.UUID;
+import mz.netlineserv.chuangastudio.modules.users.domain.Usuario;
 
 /** Trabalho publicado na galeria do site. */
 @Getter
