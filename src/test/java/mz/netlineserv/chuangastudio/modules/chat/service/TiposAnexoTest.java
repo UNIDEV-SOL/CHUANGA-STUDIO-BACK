@@ -1,6 +1,6 @@
-package mz.netlineserv.chuangastudio.chat;
+package mz.netlineserv.chuangastudio.modules.chat.service;
 
-import mz.netlineserv.chuangastudio.common.exception.RegraNegocioException;
+import mz.netlineserv.chuangastudio.shared.exceptions.RegraNegocioException;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -10,6 +10,7 @@ import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import mz.netlineserv.chuangastudio.modules.chat.domain.ChatAnexo;
 
 /** Ficheiros que correriam scripts no domínio da API (HTML, SVG) não entram nem saem como tal. */
 class TiposAnexoTest {
