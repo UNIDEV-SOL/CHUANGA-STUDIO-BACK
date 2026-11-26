@@ -1,13 +1,13 @@
-package mz.netlineserv.chuangastudio.fidelizacao;
+package mz.netlineserv.chuangastudio.modules.loyalty.service;
 
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.common.PageResponse;
-import mz.netlineserv.chuangastudio.common.exception.RecursoNaoEncontradoException;
-import mz.netlineserv.chuangastudio.common.exception.RegraNegocioException;
-import mz.netlineserv.chuangastudio.repository.spec.BaseSpecification;
+import mz.netlineserv.chuangastudio.shared.common.PageResponse;
+import mz.netlineserv.chuangastudio.shared.exceptions.RecursoNaoEncontradoException;
+import mz.netlineserv.chuangastudio.shared.exceptions.RegraNegocioException;
+import mz.netlineserv.chuangastudio.shared.persistence.BaseSpecification;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,6 +20,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.UUID;
+import mz.netlineserv.chuangastudio.modules.loyalty.domain.Vale;
+import mz.netlineserv.chuangastudio.modules.loyalty.repository.ValeRepository;
 
 /** Vales-oferta: a equipa emite depois de receber o pagamento; usam-se no fecho de conta até o saldo acabar. */
 @Service
