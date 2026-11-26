@@ -1,8 +1,8 @@
-package mz.netlineserv.chuangastudio.security;
+package mz.netlineserv.chuangastudio.shared.security;
 
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.domain.entity.Usuario;
-import mz.netlineserv.chuangastudio.repository.UsuarioRepository;
+import mz.netlineserv.chuangastudio.modules.users.domain.Usuario;
+import mz.netlineserv.chuangastudio.modules.users.repository.UsuarioRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
