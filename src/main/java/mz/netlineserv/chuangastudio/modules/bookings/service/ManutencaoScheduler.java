@@ -1,11 +1,11 @@
-package mz.netlineserv.chuangastudio.notificacao;
+package mz.netlineserv.chuangastudio.modules.bookings.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mz.netlineserv.chuangastudio.domain.entity.Marcacao;
-import mz.netlineserv.chuangastudio.domain.entity.MarcacaoServico;
-import mz.netlineserv.chuangastudio.domain.enums.StatusMarcacao;
-import mz.netlineserv.chuangastudio.repository.MarcacaoRepository;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.Marcacao;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.MarcacaoServico;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.StatusMarcacao;
+import mz.netlineserv.chuangastudio.modules.bookings.repository.MarcacaoRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -16,6 +16,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Comparator;
 import java.util.List;
+import mz.netlineserv.chuangastudio.shared.email.EmailComposer;
+import mz.netlineserv.chuangastudio.shared.email.EmailSender;
 
 /**
  * "Está na hora da manutenção": X dias depois de um serviço com manutencao_dias,
