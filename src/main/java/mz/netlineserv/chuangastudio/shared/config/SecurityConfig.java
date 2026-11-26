@@ -1,10 +1,10 @@
-package mz.netlineserv.chuangastudio.config;
+package mz.netlineserv.chuangastudio.shared.config;
 
 import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.security.JwtAuthenticationFilter;
-import mz.netlineserv.chuangastudio.security.LimitePedidosFilter;
-import mz.netlineserv.chuangastudio.security.RespostasSeguranca;
+import mz.netlineserv.chuangastudio.shared.security.JwtAuthenticationFilter;
+import mz.netlineserv.chuangastudio.shared.security.LimitePedidosFilter;
+import mz.netlineserv.chuangastudio.shared.security.RespostasSeguranca;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
