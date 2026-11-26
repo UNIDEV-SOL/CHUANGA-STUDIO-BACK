@@ -15,14 +15,19 @@ import mz.netlineserv.chuangastudio.common.exception.RecursoNaoEncontradoExcepti
 import mz.netlineserv.chuangastudio.common.exception.RegraNegocioException;
 import mz.netlineserv.chuangastudio.domain.entity.Usuario;
 import mz.netlineserv.chuangastudio.domain.enums.PapelUsuario;
+import mz.netlineserv.chuangastudio.dto.response.AutenticacaoResponse;
 import mz.netlineserv.chuangastudio.dto.response.UsuarioResponse;
 import mz.netlineserv.chuangastudio.repository.UsuarioRepository;
+import mz.netlineserv.chuangastudio.security.JwtService;
+import mz.netlineserv.chuangastudio.security.UsuarioAutenticado;
+import mz.netlineserv.chuangastudio.common.validacao.SenhaValida;
 import mz.netlineserv.chuangastudio.service.UsuarioService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,13 +39,14 @@ public class UtilizadorController {
     private final UsuarioRepository usuarioRepository;
     private final UsuarioService usuarioService;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     public record NovoAdminRequest(
-            @NotBlank(message = "Nome é obrigatório") @Size(max = 150) String nome,
-            @NotBlank(message = "Email é obrigatório") @Email(message = "Email inválido") String email,
-            @Size(max = 30) String telefone,
-            @NotBlank(message = "Palavra-passe é obrigatória")
-            @Size(min = 8, max = 64, message = "A palavra-passe deve ter entre 8 e 64 caracteres") String senha) {
+            @NotBlank(message = "Nome é obrigatório") @Size(max = 150, message = "O nome pode ter até 150 caracteres") String nome,
+            @NotBlank(message = "Email é obrigatório") @Email(message = "Email inválido")
+            @Size(max = 180, message = "O email pode ter até 180 caracteres") String email,
+            @Size(max = 30, message = "O telefone pode ter até 30 caracteres") String telefone,
+            @NotBlank(message = "Palavra-passe é obrigatória") @SenhaValida String senha) {
     }
 
     public record AtivoRequest(boolean ativo) {
@@ -48,8 +54,7 @@ public class UtilizadorController {
 
     public record TrocarSenhaRequest(
             @NotBlank(message = "Indique a palavra-passe atual") String senhaAtual,
-            @NotBlank(message = "Indique a nova palavra-passe")
-            @Size(min = 6, max = 64, message = "A nova palavra-passe deve ter entre 6 e 64 caracteres") String novaSenha) {
+            @NotBlank(message = "Indique a nova palavra-passe") @SenhaValida String novaSenha) {
     }
 
     @GetMapping("/admin/utilizadores")
@@ -103,13 +108,20 @@ public class UtilizadorController {
 
     @PatchMapping("/minha-area/senha")
     @Transactional
-    public ResponseEntity<ApiResponse<Void>> trocarSenha(@Valid @RequestBody TrocarSenhaRequest request) {
+    public ResponseEntity<ApiResponse<AutenticacaoResponse>> trocarSenha(@Valid @RequestBody TrocarSenhaRequest request) {
         Usuario usuario = usuarioService.obterUsuarioOnline();
         if (!passwordEncoder.matches(request.senhaAtual(), usuario.getSenhaHash())) {
             throw new RegraNegocioException("A palavra-passe atual não está correta.");
         }
+        if (passwordEncoder.matches(request.novaSenha(), usuario.getSenhaHash())) {
+            throw new RegraNegocioException("A nova palavra-passe tem de ser diferente da atual.");
+        }
         usuario.setSenhaHash(passwordEncoder.encode(request.novaSenha()));
+        // As outras sessões abertas deixam de valer; esta recebe um token novo.
+        usuario.setSenhaAlteradaEm(LocalDateTime.now());
         usuarioRepository.save(usuario);
-        return ResponseEntity.ok(ApiResponse.sucesso("Palavra-passe alterada.", null));
+        String token = jwtService.gerarToken(new UsuarioAutenticado(usuario));
+        return ResponseEntity.ok(ApiResponse.sucesso("Palavra-passe alterada. As sessões noutros dispositivos foram terminadas.",
+                new AutenticacaoResponse(token, UsuarioResponse.deEntidade(usuario))));
     }
 }
