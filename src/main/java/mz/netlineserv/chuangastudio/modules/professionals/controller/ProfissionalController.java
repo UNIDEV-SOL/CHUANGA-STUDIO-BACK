@@ -1,18 +1,18 @@
-package mz.netlineserv.chuangastudio.controller;
+package mz.netlineserv.chuangastudio.modules.professionals.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.common.ApiResponse;
-import mz.netlineserv.chuangastudio.common.PageResponse;
-import mz.netlineserv.chuangastudio.repository.spec.BaseSpecification;
+import mz.netlineserv.chuangastudio.shared.common.ApiResponse;
+import mz.netlineserv.chuangastudio.shared.common.PageResponse;
+import mz.netlineserv.chuangastudio.shared.persistence.BaseSpecification;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import mz.netlineserv.chuangastudio.common.exception.RecursoNaoEncontradoException;
-import mz.netlineserv.chuangastudio.domain.entity.Profissional;
-import mz.netlineserv.chuangastudio.dto.request.ProfissionalRequest;
-import mz.netlineserv.chuangastudio.dto.response.ProfissionalResponse;
-import mz.netlineserv.chuangastudio.repository.ProfissionalRepository;
+import mz.netlineserv.chuangastudio.shared.exceptions.RecursoNaoEncontradoException;
+import mz.netlineserv.chuangastudio.modules.professionals.domain.Profissional;
+import mz.netlineserv.chuangastudio.modules.professionals.request.ProfissionalRequest;
+import mz.netlineserv.chuangastudio.modules.professionals.vm.ProfissionalResponse;
+import mz.netlineserv.chuangastudio.modules.professionals.repository.ProfissionalRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
