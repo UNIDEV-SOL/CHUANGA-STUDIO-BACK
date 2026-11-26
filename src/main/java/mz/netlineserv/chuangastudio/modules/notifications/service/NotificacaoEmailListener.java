@@ -1,15 +1,20 @@
-package mz.netlineserv.chuangastudio.notificacao;
+package mz.netlineserv.chuangastudio.modules.notifications.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mz.netlineserv.chuangastudio.repository.CotacaoRepository;
-import mz.netlineserv.chuangastudio.repository.MarcacaoRepository;
-import mz.netlineserv.chuangastudio.repository.UsuarioRepository;
+import mz.netlineserv.chuangastudio.modules.quotations.repository.CotacaoRepository;
+import mz.netlineserv.chuangastudio.modules.bookings.repository.MarcacaoRepository;
+import mz.netlineserv.chuangastudio.modules.users.repository.UsuarioRepository;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
+import mz.netlineserv.chuangastudio.modules.notifications.event.NotificacaoCotacaoEvent;
+import mz.netlineserv.chuangastudio.modules.notifications.event.NotificacaoMarcacaoEvent;
+import mz.netlineserv.chuangastudio.modules.notifications.event.NotificacaoRecuperacaoSenhaEvent;
+import mz.netlineserv.chuangastudio.shared.email.EmailComposer;
+import mz.netlineserv.chuangastudio.shared.email.EmailSender;
 
 /**
  * Envia os emails (cliente e estúdio) depois do commit e fora da thread do pedido:
