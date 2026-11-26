@@ -1,7 +1,7 @@
-package mz.netlineserv.chuangastudio.notificacao;
+package mz.netlineserv.chuangastudio.shared.utils;
 
-import mz.netlineserv.chuangastudio.domain.entity.Marcacao;
-import mz.netlineserv.chuangastudio.domain.entity.MarcacaoServico;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.Marcacao;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.MarcacaoServico;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
