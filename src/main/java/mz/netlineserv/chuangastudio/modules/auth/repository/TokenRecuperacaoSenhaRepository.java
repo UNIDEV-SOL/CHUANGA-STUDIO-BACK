@@ -1,6 +1,6 @@
-package mz.netlineserv.chuangastudio.repository;
+package mz.netlineserv.chuangastudio.modules.auth.repository;
 
-import mz.netlineserv.chuangastudio.domain.entity.TokenRecuperacaoSenha;
+import mz.netlineserv.chuangastudio.modules.auth.domain.TokenRecuperacaoSenha;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
