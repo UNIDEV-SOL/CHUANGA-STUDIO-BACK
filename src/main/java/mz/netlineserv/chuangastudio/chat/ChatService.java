@@ -262,10 +262,10 @@ public class ChatService {
 
     @Transactional
     public MensagemResponse enviarImagem(UUID conversaId, MultipartFile imagem, String legenda, UUID respostaA) throws IOException {
-        if (imagem.isEmpty() || imagem.getContentType() == null || !imagem.getContentType().startsWith("image/")) {
-            throw new RegraNegocioException("Envie uma imagem.");
+        if (imagem.isEmpty()) {
+            throw new RegraNegocioException("A imagem enviada está vazia (0 bytes).");
         }
-        UUID anexo = guardarAnexo(imagem, null);
+        UUID anexo = guardarAnexo(imagem, TiposAnexo.exigirImagem(imagem.getContentType()), null);
         return enviar(conversaId, Mensagem.Tipo.IMAGEM, vazioParaNulo(legenda), anexo, respostaA, null);
     }
 
@@ -275,25 +275,25 @@ public class ChatService {
         if (ficheiro.isEmpty()) {
             throw new RegraNegocioException("O ficheiro está vazio.");
         }
-        String tipo = ficheiro.getContentType() == null ? "application/octet-stream" : ficheiro.getContentType();
-        if (voz && !tipo.startsWith("audio/")) {
-            throw new RegraNegocioException("A mensagem de voz tem de ser áudio.");
+        String nome = ficheiro.getOriginalFilename() == null || ficheiro.getOriginalFilename().isBlank()
+                ? "documento" : ficheiro.getOriginalFilename();
+        String tipo = voz ? TiposAnexo.exigirAudio(ficheiro.getContentType()) : TiposAnexo.exigirFicheiro(ficheiro.getContentType(), nome);
+        if (duracao != null && (duracao < 0 || duracao > 3600)) {
+            throw new RegraNegocioException("Duração da mensagem de voz inválida (" + duracao + " s): tem de estar entre 0 e 3600 segundos.");
         }
-        String nome = ficheiro.getOriginalFilename() == null ? "documento" : ficheiro.getOriginalFilename();
-        UUID anexo = guardarAnexo(ficheiro, nome.length() > 200 ? nome.substring(nome.length() - 200) : nome);
+        UUID anexo = guardarAnexo(ficheiro, tipo, nome.length() > 200 ? nome.substring(nome.length() - 200) : nome);
         return voz
                 ? enviar(conversaId, Mensagem.Tipo.AUDIO, null, anexo, respostaA, duracao)
                 : enviar(conversaId, Mensagem.Tipo.DOCUMENTO, nome, anexo, respostaA, null);
     }
 
-    private UUID guardarAnexo(MultipartFile f, String nome) throws IOException {
+    private UUID guardarAnexo(MultipartFile f, String tipo, String nome) throws IOException {
         if (f.getSize() > MAX_FICHEIRO) {
-            throw new RegraNegocioException("O ficheiro pode ter até 10 MB.");
+            throw new RegraNegocioException(String.format("O ficheiro tem %.1f MB; o máximo é 10 MB.", f.getSize() / 1024.0 / 1024.0));
         }
         ChatAnexo anexo = new ChatAnexo();
         anexo.setId(UUID.randomUUID());
-        String tipo = f.getContentType() == null ? "application/octet-stream" : f.getContentType();
-        anexo.setContentType(tipo.length() > 120 ? tipo.substring(0, 120) : tipo);
+        anexo.setContentType(tipo);
         anexo.setNome(nome);
         anexo.setTamanho(f.getSize());
         anexo.setDados(f.getBytes());
