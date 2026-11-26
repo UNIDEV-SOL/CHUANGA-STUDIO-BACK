@@ -1,6 +1,6 @@
-package mz.netlineserv.chuangastudio.repository;
+package mz.netlineserv.chuangastudio.modules.schedule.repository;
 
-import mz.netlineserv.chuangastudio.domain.entity.DiaFechado;
+import mz.netlineserv.chuangastudio.modules.schedule.domain.DiaFechado;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
