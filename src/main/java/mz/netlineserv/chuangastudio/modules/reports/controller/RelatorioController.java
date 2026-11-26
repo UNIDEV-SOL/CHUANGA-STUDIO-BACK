@@ -1,10 +1,10 @@
-package mz.netlineserv.chuangastudio.controller;
+package mz.netlineserv.chuangastudio.modules.reports.controller;
 
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.common.ApiResponse;
-import mz.netlineserv.chuangastudio.dto.response.RelatorioCaixaResponse;
-import mz.netlineserv.chuangastudio.notificacao.RelatorioPdfRenderer;
-import mz.netlineserv.chuangastudio.service.RelatorioService;
+import mz.netlineserv.chuangastudio.shared.common.ApiResponse;
+import mz.netlineserv.chuangastudio.modules.reports.vm.RelatorioCaixaResponse;
+import mz.netlineserv.chuangastudio.modules.reports.pdf.RelatorioPdfRenderer;
+import mz.netlineserv.chuangastudio.modules.reports.service.RelatorioService;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
