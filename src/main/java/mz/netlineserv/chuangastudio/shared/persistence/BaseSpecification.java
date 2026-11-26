@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.repository.spec;
+package mz.netlineserv.chuangastudio.shared.persistence;
 
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
