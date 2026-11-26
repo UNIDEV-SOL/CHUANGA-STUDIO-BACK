@@ -1,10 +1,10 @@
-package mz.netlineserv.chuangastudio.chat;
+package mz.netlineserv.chuangastudio.modules.chat.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mz.netlineserv.chuangastudio.notificacao.NotificacaoMarcacaoEvent;
-import mz.netlineserv.chuangastudio.notificacao.NovoClienteEvent;
-import mz.netlineserv.chuangastudio.repository.UsuarioRepository;
+import mz.netlineserv.chuangastudio.modules.notifications.event.NotificacaoMarcacaoEvent;
+import mz.netlineserv.chuangastudio.modules.notifications.event.NovoClienteEvent;
+import mz.netlineserv.chuangastudio.modules.users.repository.UsuarioRepository;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
