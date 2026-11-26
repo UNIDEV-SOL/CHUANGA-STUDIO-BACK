@@ -1,14 +1,15 @@
-package mz.netlineserv.chuangastudio.domain.entity;
+package mz.netlineserv.chuangastudio.modules.users.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mz.netlineserv.chuangastudio.common.BaseAuditEntity;
-import mz.netlineserv.chuangastudio.domain.enums.PapelUsuario;
+import mz.netlineserv.chuangastudio.shared.persistence.BaseAuditEntity;
 
 import java.time.LocalDateTime;
+import mz.netlineserv.chuangastudio.modules.locations.domain.Distrito;
+import mz.netlineserv.chuangastudio.modules.locations.domain.Provincia;
 
 @Getter
 @Setter
