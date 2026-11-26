@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.dto.request;
+package mz.netlineserv.chuangastudio.modules.bookings.request;
 
 import jakarta.validation.constraints.NotNull;
 
