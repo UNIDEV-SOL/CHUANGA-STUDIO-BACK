@@ -1,16 +1,16 @@
-package mz.netlineserv.chuangastudio.service.impl;
+package mz.netlineserv.chuangastudio.modules.auth.service;
 
-import mz.netlineserv.chuangastudio.common.exception.RegraNegocioException;
-import mz.netlineserv.chuangastudio.domain.entity.TokenRecuperacaoSenha;
-import mz.netlineserv.chuangastudio.domain.entity.Usuario;
-import mz.netlineserv.chuangastudio.domain.enums.PapelUsuario;
-import mz.netlineserv.chuangastudio.dto.response.AutenticacaoResponse;
-import mz.netlineserv.chuangastudio.notificacao.NotificacaoRecuperacaoSenhaEvent;
-import mz.netlineserv.chuangastudio.repository.TokenRecuperacaoSenhaRepository;
-import mz.netlineserv.chuangastudio.repository.UsuarioRepository;
-import mz.netlineserv.chuangastudio.security.JwtService;
-import mz.netlineserv.chuangastudio.security.ProtecaoLogin;
-import mz.netlineserv.chuangastudio.service.MoradaResolver;
+import mz.netlineserv.chuangastudio.shared.exceptions.RegraNegocioException;
+import mz.netlineserv.chuangastudio.modules.auth.domain.TokenRecuperacaoSenha;
+import mz.netlineserv.chuangastudio.modules.users.domain.Usuario;
+import mz.netlineserv.chuangastudio.modules.users.domain.PapelUsuario;
+import mz.netlineserv.chuangastudio.modules.auth.vm.AutenticacaoResponse;
+import mz.netlineserv.chuangastudio.modules.notifications.event.NotificacaoRecuperacaoSenhaEvent;
+import mz.netlineserv.chuangastudio.modules.auth.repository.TokenRecuperacaoSenhaRepository;
+import mz.netlineserv.chuangastudio.modules.users.repository.UsuarioRepository;
+import mz.netlineserv.chuangastudio.shared.security.JwtService;
+import mz.netlineserv.chuangastudio.shared.security.ProtecaoLogin;
+import mz.netlineserv.chuangastudio.modules.locations.service.MoradaResolver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -31,13 +31,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /** Recuperação por OTP: email → código (com limite de tentativas) → nova palavra-passe → sessão iniciada. */
-class AuthServiceImplRecuperacaoTest {
+class AuthServiceRecuperacaoTest {
 
     private final UsuarioRepository usuarioRepository = mock(UsuarioRepository.class);
     private final TokenRecuperacaoSenhaRepository tokenRepository = mock(TokenRecuperacaoSenhaRepository.class);
     private final ApplicationEventPublisher eventos = mock(ApplicationEventPublisher.class);
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(4);
-    private AuthServiceImpl service;
+    private AuthService service;
     private Usuario ana;
     private TokenRecuperacaoSenha registo;
 
@@ -47,7 +47,7 @@ class AuthServiceImplRecuperacaoTest {
         ReflectionTestUtils.setField(jwt, "segredo", "segredo-de-teste-com-mais-de-trinta-e-dois-bytes!!");
         ReflectionTestUtils.setField(jwt, "expiracaoMs", 60_000L);
         ReflectionTestUtils.invokeMethod(jwt, "iniciar");
-        service = new AuthServiceImpl(usuarioRepository, encoder, jwt, tokenRepository, mock(MoradaResolver.class), eventos, new ProtecaoLogin(5, 15));
+        service = new AuthService(usuarioRepository, encoder, jwt, tokenRepository, mock(MoradaResolver.class), eventos, new ProtecaoLogin(5, 15));
         ReflectionTestUtils.setField(service, "validadeRecuperacaoMinutos", 10);
         ReflectionTestUtils.setField(service, "maxTentativasCodigo", 3);
 
