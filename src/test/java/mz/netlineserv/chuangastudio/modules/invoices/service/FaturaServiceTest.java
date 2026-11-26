@@ -1,22 +1,22 @@
-package mz.netlineserv.chuangastudio.service.impl;
+package mz.netlineserv.chuangastudio.modules.invoices.service;
 
-import mz.netlineserv.chuangastudio.common.exception.RegraNegocioException;
-import mz.netlineserv.chuangastudio.domain.entity.Fatura;
-import mz.netlineserv.chuangastudio.domain.entity.Marcacao;
-import mz.netlineserv.chuangastudio.domain.entity.Servico;
-import mz.netlineserv.chuangastudio.domain.entity.Usuario;
-import mz.netlineserv.chuangastudio.domain.enums.FormaPagamento;
-import mz.netlineserv.chuangastudio.domain.enums.StatusFatura;
-import mz.netlineserv.chuangastudio.domain.enums.StatusMarcacao;
-import mz.netlineserv.chuangastudio.dto.request.EmitirFaturaRequest;
-import mz.netlineserv.chuangastudio.dto.response.FaturaResponse;
-import mz.netlineserv.chuangastudio.notificacao.DadosEstudio;
-import mz.netlineserv.chuangastudio.notificacao.FaturaPdfRenderer;
-import mz.netlineserv.chuangastudio.notificacao.NotificacaoFaturaEvent;
-import mz.netlineserv.chuangastudio.repository.FaturaRepository;
-import mz.netlineserv.chuangastudio.repository.MarcacaoRepository;
-import mz.netlineserv.chuangastudio.repository.ServicoRepository;
-import mz.netlineserv.chuangastudio.service.UsuarioService;
+import mz.netlineserv.chuangastudio.shared.exceptions.RegraNegocioException;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.Fatura;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.Marcacao;
+import mz.netlineserv.chuangastudio.modules.catalog.domain.Servico;
+import mz.netlineserv.chuangastudio.modules.users.domain.Usuario;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.FormaPagamento;
+import mz.netlineserv.chuangastudio.modules.invoices.domain.StatusFatura;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.StatusMarcacao;
+import mz.netlineserv.chuangastudio.modules.invoices.request.EmitirFaturaRequest;
+import mz.netlineserv.chuangastudio.modules.invoices.vm.FaturaResponse;
+import mz.netlineserv.chuangastudio.shared.config.DadosEstudio;
+import mz.netlineserv.chuangastudio.modules.invoices.pdf.FaturaPdfRenderer;
+import mz.netlineserv.chuangastudio.modules.notifications.event.NotificacaoFaturaEvent;
+import mz.netlineserv.chuangastudio.modules.invoices.repository.FaturaRepository;
+import mz.netlineserv.chuangastudio.modules.bookings.repository.MarcacaoRepository;
+import mz.netlineserv.chuangastudio.modules.catalog.repository.ServicoRepository;
+import mz.netlineserv.chuangastudio.modules.users.service.UsuarioService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,7 +46,7 @@ import static org.mockito.Mockito.when;
 /** As contas da fatura: subtotal, desconto, adiantamento e total a pagar. */
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-class FaturaServiceImplTest {
+class FaturaServiceTest {
 
     @Mock FaturaRepository faturaRepository;
     @Mock MarcacaoRepository marcacaoRepository;
@@ -55,10 +55,10 @@ class FaturaServiceImplTest {
     @Mock FaturaPdfRenderer faturaPdfRenderer;
     @Mock DadosEstudio dadosEstudio;
     @Mock ApplicationEventPublisher eventPublisher;
-    @Mock mz.netlineserv.chuangastudio.fidelizacao.FidelizacaoService fidelizacaoService;
-    @Mock mz.netlineserv.chuangastudio.fidelizacao.ValeService valeService;
+    @Mock mz.netlineserv.chuangastudio.modules.loyalty.service.FidelizacaoService fidelizacaoService;
+    @Mock mz.netlineserv.chuangastudio.modules.loyalty.service.ValeService valeService;
 
-    @InjectMocks FaturaServiceImpl service;
+    @InjectMocks FaturaService service;
 
     private Marcacao marcacao;
     private Servico manicure;
@@ -203,7 +203,7 @@ class FaturaServiceImplTest {
     @Test
     void recompensaDeFidelizacaoEValeEntramNasContas() {
         when(fidelizacaoService.valorParaAplicar(marcacao.getCliente().getId())).thenReturn(new BigDecimal("500.00"));
-        var vale = new mz.netlineserv.chuangastudio.fidelizacao.Vale();
+        var vale = new mz.netlineserv.chuangastudio.modules.loyalty.domain.Vale();
         vale.setCodigo("CHG-TEST-0001");
         vale.setSaldo(new BigDecimal("300.00"));
         when(valeService.validarParaUso("CHG-TEST-0001")).thenReturn(vale);
@@ -224,7 +224,7 @@ class FaturaServiceImplTest {
 
     @Test
     void valeComSaldoMaiorSoPagaOQueFalta() {
-        var vale = new mz.netlineserv.chuangastudio.fidelizacao.Vale();
+        var vale = new mz.netlineserv.chuangastudio.modules.loyalty.domain.Vale();
         vale.setCodigo("CHG-GRANDE");
         vale.setSaldo(new BigDecimal("5000.00"));
         when(valeService.validarParaUso("CHG-GRANDE")).thenReturn(vale);
