@@ -1,20 +1,20 @@
-package mz.netlineserv.chuangastudio.chat;
+package mz.netlineserv.chuangastudio.modules.chat.service;
 
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.common.exception.AcessoNegadoException;
-import mz.netlineserv.chuangastudio.common.exception.RecursoNaoEncontradoException;
-import mz.netlineserv.chuangastudio.common.exception.RegraNegocioException;
-import mz.netlineserv.chuangastudio.domain.entity.Marcacao;
-import mz.netlineserv.chuangastudio.domain.entity.MarcacaoServico;
-import mz.netlineserv.chuangastudio.domain.entity.Servico;
-import mz.netlineserv.chuangastudio.domain.entity.Usuario;
-import mz.netlineserv.chuangastudio.domain.enums.PapelUsuario;
-import mz.netlineserv.chuangastudio.domain.enums.StatusMarcacao;
-import mz.netlineserv.chuangastudio.notificacao.DadosEstudio;
-import mz.netlineserv.chuangastudio.repository.MarcacaoRepository;
-import mz.netlineserv.chuangastudio.repository.ServicoRepository;
-import mz.netlineserv.chuangastudio.repository.UsuarioRepository;
-import mz.netlineserv.chuangastudio.repository.spec.BaseSpecification;
+import mz.netlineserv.chuangastudio.shared.exceptions.AcessoNegadoException;
+import mz.netlineserv.chuangastudio.shared.exceptions.RecursoNaoEncontradoException;
+import mz.netlineserv.chuangastudio.shared.exceptions.RegraNegocioException;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.Marcacao;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.MarcacaoServico;
+import mz.netlineserv.chuangastudio.modules.catalog.domain.Servico;
+import mz.netlineserv.chuangastudio.modules.users.domain.Usuario;
+import mz.netlineserv.chuangastudio.modules.users.domain.PapelUsuario;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.StatusMarcacao;
+import mz.netlineserv.chuangastudio.shared.config.DadosEstudio;
+import mz.netlineserv.chuangastudio.modules.bookings.repository.MarcacaoRepository;
+import mz.netlineserv.chuangastudio.modules.catalog.repository.ServicoRepository;
+import mz.netlineserv.chuangastudio.modules.users.repository.UsuarioRepository;
+import mz.netlineserv.chuangastudio.shared.persistence.BaseSpecification;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -25,8 +25,16 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static mz.netlineserv.chuangastudio.chat.ChatSuporte.eEquipa;
-import static mz.netlineserv.chuangastudio.chat.ChatSuporte.primeiroNome;
+import static mz.netlineserv.chuangastudio.modules.chat.service.ChatSuporte.eEquipa;
+import static mz.netlineserv.chuangastudio.modules.chat.service.ChatSuporte.primeiroNome;
+import mz.netlineserv.chuangastudio.modules.chat.domain.ChatAnexo;
+import mz.netlineserv.chuangastudio.modules.chat.domain.Conversa;
+import mz.netlineserv.chuangastudio.modules.chat.domain.ConversaMembro;
+import mz.netlineserv.chuangastudio.modules.chat.domain.Mensagem;
+import mz.netlineserv.chuangastudio.modules.chat.repository.ChatAnexoRepository;
+import mz.netlineserv.chuangastudio.modules.chat.repository.ConversaMembroRepository;
+import mz.netlineserv.chuangastudio.modules.chat.repository.ConversaRepository;
+import mz.netlineserv.chuangastudio.modules.chat.repository.MensagemRepository;
 
 /**
  * Grupos e comunidade, como no WhatsApp:
