@@ -1,12 +1,12 @@
-package mz.netlineserv.chuangastudio.avaliacao;
+package mz.netlineserv.chuangastudio.modules.reviews.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mz.netlineserv.chuangastudio.common.BaseAuditEntity;
-import mz.netlineserv.chuangastudio.domain.entity.Marcacao;
-import mz.netlineserv.chuangastudio.domain.entity.Usuario;
+import mz.netlineserv.chuangastudio.shared.persistence.BaseAuditEntity;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.Marcacao;
+import mz.netlineserv.chuangastudio.modules.users.domain.Usuario;
 
 import java.time.LocalDateTime;
 
