@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.domain.enums;
+package mz.netlineserv.chuangastudio.modules.invoices.domain;
 
 /** Como o cliente pagou a fatura na caixa (o adiantamento continua em MetodoPagamento). */
 public enum FormaPagamento {
