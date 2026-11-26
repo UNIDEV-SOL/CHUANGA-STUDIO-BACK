@@ -1,19 +1,18 @@
-package mz.netlineserv.chuangastudio.service.impl;
+package mz.netlineserv.chuangastudio.modules.reports.service;
 
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.domain.entity.Marcacao;
-import mz.netlineserv.chuangastudio.domain.entity.Usuario;
-import mz.netlineserv.chuangastudio.domain.enums.PapelUsuario;
-import mz.netlineserv.chuangastudio.domain.enums.StatusMarcacao;
-import mz.netlineserv.chuangastudio.dto.response.ClienteResumoResponse;
-import mz.netlineserv.chuangastudio.dto.response.EstatisticasAdminResponse;
-import mz.netlineserv.chuangastudio.dto.response.MarcacaoResponse;
-import mz.netlineserv.chuangastudio.repository.CotacaoRepository;
-import mz.netlineserv.chuangastudio.repository.MarcacaoRepository;
-import mz.netlineserv.chuangastudio.repository.UsuarioRepository;
-import mz.netlineserv.chuangastudio.service.AdminDashboardService;
-import mz.netlineserv.chuangastudio.common.PageResponse;
-import mz.netlineserv.chuangastudio.repository.spec.BaseSpecification;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.Marcacao;
+import mz.netlineserv.chuangastudio.modules.users.domain.Usuario;
+import mz.netlineserv.chuangastudio.modules.users.domain.PapelUsuario;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.StatusMarcacao;
+import mz.netlineserv.chuangastudio.modules.clients.vm.ClienteResumoResponse;
+import mz.netlineserv.chuangastudio.modules.reports.vm.EstatisticasAdminResponse;
+import mz.netlineserv.chuangastudio.modules.bookings.vm.MarcacaoResponse;
+import mz.netlineserv.chuangastudio.modules.quotations.repository.CotacaoRepository;
+import mz.netlineserv.chuangastudio.modules.bookings.repository.MarcacaoRepository;
+import mz.netlineserv.chuangastudio.modules.users.repository.UsuarioRepository;
+import mz.netlineserv.chuangastudio.shared.common.PageResponse;
+import mz.netlineserv.chuangastudio.shared.persistence.BaseSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +33,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class AdminDashboardServiceImpl implements AdminDashboardService {
+public class AdminDashboardService {
 
     private static final ZoneId FUSO_ESTUDIO = ZoneId.of("Africa/Maputo");
 
@@ -42,7 +41,6 @@ public class AdminDashboardServiceImpl implements AdminDashboardService {
     private final UsuarioRepository usuarioRepository;
     private final CotacaoRepository cotacaoRepository;
 
-    @Override
     public EstatisticasAdminResponse obterEstatisticas() {
         LocalDate hoje = LocalDate.now();
         LocalDate inicioMes = hoje.with(TemporalAdjusters.firstDayOfMonth());
@@ -56,7 +54,6 @@ public class AdminDashboardServiceImpl implements AdminDashboardService {
         return new EstatisticasAdminResponse(marcacoesHoje, receitaDoMes, totalClientes, totalCotacoes);
     }
 
-    @Override
     public PageResponse<MarcacaoResponse> proximasMarcacoes(Pageable pageable) {
         Specification<Marcacao> spec = BaseSpecification.of(Marcacao.class)
                 .in("status", List.of(StatusMarcacao.AGUARDA_CONFIRMACAO, StatusMarcacao.CONFIRMADA))
@@ -67,7 +64,6 @@ public class AdminDashboardServiceImpl implements AdminDashboardService {
         return PageResponse.from(marcacaoRepository.findAll(spec, ordenado).map(MarcacaoResponse::deEntidade));
     }
 
-    @Override
     public PageResponse<MarcacaoResponse> atividadeRecente(Pageable pageable) {
         Pageable ordenado = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
                 Sort.by(Sort.Direction.DESC, "criadoEm"));
@@ -75,7 +71,6 @@ public class AdminDashboardServiceImpl implements AdminDashboardService {
                 .map(MarcacaoResponse::deEntidade));
     }
 
-    @Override
     public PageResponse<ClienteResumoResponse> listarClientes(String busca, Long provinciaId, Long distritoId, Pageable pageable) {
         Specification<Usuario> spec = BaseSpecification.of(Usuario.class)
                 .equals("papel", PapelUsuario.CLIENTE)
