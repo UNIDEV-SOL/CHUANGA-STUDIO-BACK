@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.chat;
+package mz.netlineserv.chuangastudio.modules.chat.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import mz.netlineserv.chuangastudio.modules.chat.domain.ConversaMembro;
 
 public interface ConversaMembroRepository extends JpaRepository<ConversaMembro, ConversaMembro.Chave> {
 
