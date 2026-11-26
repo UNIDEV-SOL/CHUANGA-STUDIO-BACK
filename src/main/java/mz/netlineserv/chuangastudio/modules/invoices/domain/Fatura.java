@@ -1,17 +1,16 @@
-package mz.netlineserv.chuangastudio.domain.entity;
+package mz.netlineserv.chuangastudio.modules.invoices.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mz.netlineserv.chuangastudio.common.BaseAuditEntity;
-import mz.netlineserv.chuangastudio.domain.enums.FormaPagamento;
-import mz.netlineserv.chuangastudio.domain.enums.StatusFatura;
+import mz.netlineserv.chuangastudio.shared.persistence.BaseAuditEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import mz.netlineserv.chuangastudio.modules.bookings.domain.Marcacao;
 
 /**
  * Conta final de uma marcação: os serviços realmente feitos, menos desconto
@@ -74,7 +73,7 @@ public class Fatura extends BaseAuditEntity {
     /** Vale-oferta usado como forma de pagamento (parcial ou total). */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vale_id")
-    private mz.netlineserv.chuangastudio.fidelizacao.Vale vale;
+    private mz.netlineserv.chuangastudio.modules.loyalty.domain.Vale vale;
 
     @Column(name = "valor_vale", nullable = false, precision = 12, scale = 2)
     private BigDecimal valorVale = BigDecimal.ZERO;
