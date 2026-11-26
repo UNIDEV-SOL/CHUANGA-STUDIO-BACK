@@ -1,6 +1,6 @@
-package mz.netlineserv.chuangastudio.repository;
+package mz.netlineserv.chuangastudio.modules.gallery.repository;
 
-import mz.netlineserv.chuangastudio.domain.entity.GaleriaItem;
+import mz.netlineserv.chuangastudio.modules.gallery.domain.GaleriaItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
