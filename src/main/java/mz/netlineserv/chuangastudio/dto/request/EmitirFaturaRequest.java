@@ -1,11 +1,12 @@
 package mz.netlineserv.chuangastudio.dto.request;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 import mz.netlineserv.chuangastudio.domain.enums.FormaPagamento;
@@ -23,6 +24,7 @@ import java.util.UUID;
 public class EmitirFaturaRequest {
 
     @NotEmpty(message = "Indique pelo menos um serviço realizado")
+    @Size(max = 50, message = "Uma fatura pode ter até 50 linhas")
     @Valid
     private List<Item> itens;
 
@@ -61,6 +63,7 @@ public class EmitirFaturaRequest {
         private BigDecimal precoUnitario;
 
         @Min(value = 1, message = "A quantidade mínima é 1")
+        @Max(value = 100, message = "A quantidade máxima por linha é 100")
         private Integer quantidade;
     }
 }
