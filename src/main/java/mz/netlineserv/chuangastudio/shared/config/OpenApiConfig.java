@@ -1,4 +1,4 @@
-package mz.netlineserv.chuangastudio.config;
+package mz.netlineserv.chuangastudio.shared.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
