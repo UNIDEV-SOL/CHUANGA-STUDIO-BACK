@@ -1,6 +1,6 @@
-package mz.netlineserv.chuangastudio.chat;
+package mz.netlineserv.chuangastudio.modules.chat.service;
 
-import mz.netlineserv.chuangastudio.common.exception.RegraNegocioException;
+import mz.netlineserv.chuangastudio.shared.exceptions.RegraNegocioException;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
@@ -12,12 +12,13 @@ import java.time.Duration;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import mz.netlineserv.chuangastudio.modules.chat.domain.ChatAnexo;
 
 /**
  * Tipos de ficheiro aceites no chat. Lista fechada de propósito: HTML, SVG ou XML enviados como
  * "anexo" e abertos no domínio da API correriam JavaScript (XSS armazenado).
  */
-final class TiposAnexo {
+public final class TiposAnexo {
 
     static final Set<String> IMAGENS = Set.of("image/jpeg", "image/png", "image/webp", "image/gif");
 
@@ -80,7 +81,7 @@ final class TiposAnexo {
      * Resposta para servir um anexo guardado. Imagens, áudio e PDF abrem no navegador; o resto
      * descarrega. Tipos fora da lista (anexos antigos) vão como binário genérico, nunca interpretados.
      */
-    static ResponseEntity<byte[]> servir(ChatAnexo anexo, CacheControl cache) {
+    public static ResponseEntity<byte[]> servir(ChatAnexo anexo, CacheControl cache) {
         String tipo = normalizar(anexo.getContentType());
         boolean conhecido = tipo != null && (IMAGENS.contains(tipo) || AUDIO.contains(tipo) || DOCUMENTOS.containsKey(tipo));
         boolean inline = conhecido && (IMAGENS.contains(tipo) || AUDIO.contains(tipo) || "application/pdf".equals(tipo));
@@ -98,7 +99,7 @@ final class TiposAnexo {
         return r.body(anexo.getDados());
     }
 
-    static CacheControl cachePrivado(Duration duracao) {
+    public static CacheControl cachePrivado(Duration duracao) {
         return CacheControl.maxAge(duracao).cachePrivate();
     }
 }
