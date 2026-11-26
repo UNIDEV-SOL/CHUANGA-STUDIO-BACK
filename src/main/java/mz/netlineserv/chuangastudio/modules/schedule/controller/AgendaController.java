@@ -1,13 +1,13 @@
-package mz.netlineserv.chuangastudio.controller;
+package mz.netlineserv.chuangastudio.modules.schedule.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import mz.netlineserv.chuangastudio.common.ApiResponse;
-import mz.netlineserv.chuangastudio.dto.request.AtualizarHorarioRequest;
-import mz.netlineserv.chuangastudio.dto.request.DiaFechadoRequest;
-import mz.netlineserv.chuangastudio.dto.response.ConfiguracaoHorarioResponse;
-import mz.netlineserv.chuangastudio.dto.response.DisponibilidadeResponse;
-import mz.netlineserv.chuangastudio.service.AgendaService;
+import mz.netlineserv.chuangastudio.shared.common.ApiResponse;
+import mz.netlineserv.chuangastudio.modules.schedule.request.AtualizarHorarioRequest;
+import mz.netlineserv.chuangastudio.modules.schedule.request.DiaFechadoRequest;
+import mz.netlineserv.chuangastudio.modules.schedule.vm.ConfiguracaoHorarioResponse;
+import mz.netlineserv.chuangastudio.modules.schedule.vm.DisponibilidadeResponse;
+import mz.netlineserv.chuangastudio.modules.schedule.service.AgendaService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
